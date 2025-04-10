@@ -1,10 +1,10 @@
-package de.thk.gm.fddw.proxyparcelbox_oliver_russmann
+package de.thk.gm.fddw.lecturefaq
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class ProxyparcelboxOliverRussmannApplicationTests {
+class LecturefaqApplicationTests {
 
     @Test
     fun contextLoads() {

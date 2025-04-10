@@ -1,11 +1,11 @@
-package de.thk.gm.fddw.proxyparcelbox_oliver_russmann
+package de.thk.gm.fddw.lecturefaq
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ProxyparcelboxOliverRussmannApplication
+class LecturefaqApplication
 
 fun main(args: Array<String>) {
-    runApplication<ProxyparcelboxOliverRussmannApplication>(*args)
+	runApplication<LecturefaqApplication>(*args)
 }
