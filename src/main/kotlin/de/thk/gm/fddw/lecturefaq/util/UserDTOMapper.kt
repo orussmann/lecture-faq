@@ -28,7 +28,7 @@ class UserDTOMapper {  //TODO: Find better name
         )
     }
 
-    fun updateUserFromTo(
+    fun mapToUpdatedUser(
         updateUserRequestDTO: UpdateUserRequestDTO,
         user: User
     ): User {

@@ -45,7 +45,7 @@ class UserServiceImpl(
             .orElseThrow {
                 NoSuchElementException("User not found")
             }
-        val updatedUser = userDTOMapper.updateUserFromTo(userDTO, existingUser)
+        val updatedUser = userDTOMapper.mapToUpdatedUser(userDTO, existingUser)
         val savedUser = userRepository.save(updatedUser)
         return userDTOMapper.mapToUserResponse(savedUser)
     }
