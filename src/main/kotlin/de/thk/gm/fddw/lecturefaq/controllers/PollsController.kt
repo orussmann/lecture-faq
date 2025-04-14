@@ -49,7 +49,7 @@ class PollsController(
     @ResponseStatus(HttpStatus.CREATED)
     fun createPoll(
         @RequestBody poll: CreatePollRequestDTO,
-        @PathVariable userId: String
+        @PathVariable userId: UUID
     ): PollResponseDTO {
         try {
             if (poll.answers.size < MINIMUM_ANSWERS_COUNT) {
@@ -60,7 +60,7 @@ class PollsController(
         } catch (e: ResponseStatusException) {
             throw e
         } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.CREATED)
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create poll")
         }
     }
 
@@ -68,7 +68,7 @@ class PollsController(
     @ResponseStatus(HttpStatus.OK)
     fun deletePoll(
         @PathVariable pollId: UUID,
-        @PathVariable userId: String
+        @PathVariable userId: UUID
     ) {
         try {
             pollsService.removeById(pollId)
