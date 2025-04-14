@@ -1,12 +1,10 @@
 package de.thk.gm.fddw.lecturefaq.models
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
+import jakarta.persistence.*
 import java.util.*
-import jakarta.persistence.Id
-import jakarta.persistence.Table
 import jakarta.validation.constraints.Email
 
+//TODO: Consider having a bidirectional 1-n-relationship
 @Entity
 @Table(name = "Lecture_User")
 data class User(
@@ -23,5 +21,8 @@ data class User(
     val firstName: String,
 
     @Column(name = "last_name", nullable = false)
-    val lastName: String
+    val lastName: String,
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val polls: MutableList<Poll> = mutableListOf()
 )
