@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
+import de.thk.gm.fddw.lecturefaq.constants.MINIMUM_ANSWERS_COUNT
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
@@ -51,8 +52,13 @@ class PollsController(
         @PathVariable userId: String
     ): PollResponseDTO {
         try {
+            if (poll.answers.size < MINIMUM_ANSWERS_COUNT) {
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Minimum 2 answers expected")
+            }
             val createdPoll = pollsService.save(poll)
             return createdPoll
+        } catch (e: ResponseStatusException) {
+            throw e
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.CREATED)
         }
