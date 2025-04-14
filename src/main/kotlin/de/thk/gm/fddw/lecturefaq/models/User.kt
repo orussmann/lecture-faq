@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models
 
+import de.thk.gm.fddw.lecturefaq.constants.Role
 import jakarta.persistence.*
 import java.util.*
 import jakarta.validation.constraints.Email
@@ -22,6 +23,9 @@ data class User(
 
     @Column(name = "last_name", nullable = false)
     val lastName: String,
+
+    @Column
+    val role: Role,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val polls: MutableList<Poll> = mutableListOf()

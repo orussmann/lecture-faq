@@ -14,7 +14,8 @@ class UsersDTOMapper {  //TODO: Find better name
             userId = user.id,
             email = user.email,
             firstName = user.firstName,
-            lastName = user.lastName
+            lastName = user.lastName,
+            role = user.role
         )
     }
 
@@ -24,7 +25,8 @@ class UsersDTOMapper {  //TODO: Find better name
         return User(
             email = createUserRequestDTO.email,
             firstName = createUserRequestDTO.firstName,
-            lastName = createUserRequestDTO.lastName
+            lastName = createUserRequestDTO.lastName,
+            role = createUserRequestDTO.role
         )
     }
 
@@ -35,7 +37,8 @@ class UsersDTOMapper {  //TODO: Find better name
         return user.copy(
             email = updateUserRequestDTO.email ?: user.email,
             firstName = updateUserRequestDTO.firstName ?: user.firstName,
-            lastName = updateUserRequestDTO.lastName ?: user.lastName
+            lastName = updateUserRequestDTO.lastName ?: user.lastName,
+            role = updateUserRequestDTO.role ?: user.role
         )
     }
 }
