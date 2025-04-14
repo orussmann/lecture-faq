@@ -7,6 +7,6 @@ import java.util.*
 
 
 @Repository
-interface UserRepository: CrudRepository<User, UUID> {
+interface UsersRepository: CrudRepository<User, java.util.UUID> {
 
 }

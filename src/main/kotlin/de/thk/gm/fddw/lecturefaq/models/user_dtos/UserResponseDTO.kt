@@ -1,4 +1,4 @@
-package de.thk.gm.fddw.lecturefaq.models.dtos
+package de.thk.gm.fddw.lecturefaq.models.user_dtos
 
 import java.util.*
 
