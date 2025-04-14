@@ -3,8 +3,10 @@ package de.thk.gm.fddw.lecturefaq.services
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
+import de.thk.gm.fddw.lecturefaq.repositories.AnswersRepository
 import de.thk.gm.fddw.lecturefaq.repositories.PollsRepository
 import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
+import de.thk.gm.fddw.lecturefaq.util.AnswersDTOMapper
 import de.thk.gm.fddw.lecturefaq.util.PollsDTOMapper
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,12 +16,15 @@ import kotlin.NoSuchElementException
 class PollsServiceImpl(
     private val pollsRepository: PollsRepository,
     private val pollsDTOMapper: PollsDTOMapper,
-    private val usersRepository: UsersRepository
+    private val usersRepository: UsersRepository,
+    private val answersDTOMapper: AnswersDTOMapper
 ) : PollsService {
     override fun save(poll: CreatePollRequestDTO): PollResponseDTO {
         val user = usersRepository.findById(poll.userId)
             .orElseThrow { NoSuchElementException("User for this poll not found") }
         val newPoll = pollsDTOMapper.mapToNewPoll(poll, user)
+        val answers = poll.answers.map { answer -> answersDTOMapper.mapToNewAnswer(answer, newPoll) }
+        newPoll.answers.addAll(answers)
         val savedPoll = pollsRepository.save(newPoll)
         return pollsDTOMapper.mapToPollResponse(savedPoll)
     }

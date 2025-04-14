@@ -13,6 +13,9 @@ data class Poll(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
 
+    @OneToMany(mappedBy = "poll", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val answers: MutableList<Answer> = mutableListOf(),
+
     @Column(nullable = false)
     val title: String,
 
