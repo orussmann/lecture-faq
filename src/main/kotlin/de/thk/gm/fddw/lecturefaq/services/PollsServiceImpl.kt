@@ -3,7 +3,6 @@ package de.thk.gm.fddw.lecturefaq.services
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
-import de.thk.gm.fddw.lecturefaq.repositories.AnswersRepository
 import de.thk.gm.fddw.lecturefaq.repositories.PollsRepository
 import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.util.AnswersDTOMapper
