@@ -28,5 +28,8 @@ data class User(
     val role: Role,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val polls: MutableList<Poll> = mutableListOf()
+    val polls: MutableList<Poll> = mutableListOf(),
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val lectures: MutableList<Lecture> = mutableListOf()
 )

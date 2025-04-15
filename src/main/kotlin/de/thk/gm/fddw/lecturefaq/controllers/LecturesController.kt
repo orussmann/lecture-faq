@@ -1,0 +1,91 @@
+package de.thk.gm.fddw.lecturefaq.controllers
+
+import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.CreateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.LectureResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.UpdateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.services.LecturesService
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
+import java.util.*
+
+@RestController
+class LecturesController(private val lecturesService: LecturesService) {
+
+
+    @GetMapping("/users/{userId}/lectures/{lectureId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getLecture(
+        @PathVariable userId: UUID,
+        @PathVariable lectureId: UUID
+    ): LectureResponseDTO {
+        try {
+            val lecture = lecturesService.findById(lectureId)
+            return lecture
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")
+        }
+    }
+
+    @GetMapping("/lectures")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllLectures(): MutableIterable<LectureResponseDTO> {
+        try {
+            val lectures = lecturesService.findAll()
+            return lectures
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
+        }
+    }
+
+    @GetMapping("/users/{userId}/lectures")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllLecturesFromUser(@PathVariable userId: UUID): List<LectureResponseDTO> {
+        try {
+            val lectures = lecturesService.findAllByUserId(userId)
+            return lectures
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
+        }
+    }
+
+    @PostMapping("/users/{userId}/lectures")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createLectures(
+        @RequestBody lectureDTO: CreateLectureRequestDTO
+    ): LectureResponseDTO {
+        try {
+            return lecturesService.save(lectureDTO)
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create lecture")
+        }
+    }
+
+    @DeleteMapping("/users/{userId}/lectures/{lectureId}")   //TODO: Handln, wenn nichts gelöscht wird
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteLecture(
+        @PathVariable lectureId: UUID,
+        @PathVariable userId: String
+    ) {
+        try {
+            lecturesService.removeById(lectureId)
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete lecture")
+        }
+    }
+
+    @PutMapping("/users/{userId}/lectures/{lectureId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun updateLecture(
+        @PathVariable userId: UUID,
+        @RequestBody updatedLectureDTO: UpdateLectureRequestDTO,
+        @PathVariable lectureId: UUID
+    ): LectureResponseDTO {
+        try {
+            return lecturesService.updateById(lectureId, updatedLectureDTO)
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update lecture")
+        }
+    }
+
+}
