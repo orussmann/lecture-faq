@@ -51,7 +51,7 @@ class LecturesController(private val lecturesService: LecturesService) {
 
     @PostMapping("/users/{userId}/lectures")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createLectures(
+    fun createLecture(
         @RequestBody lectureDTO: CreateLectureRequestDTO
     ): LectureResponseDTO {
         try {
