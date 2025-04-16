@@ -1,11 +1,7 @@
 package de.thk.gm.fddw.lecturefaq.models
 
 import de.thk.gm.fddw.lecturefaq.constants.Type
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 import java.util.*
 
 @Entity
@@ -29,6 +25,9 @@ data class Lecture(
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
+
+    @OneToMany(mappedBy = "lecture", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val questions: MutableList<Question> = mutableListOf(),
 
     @Column(nullable = false)
     val code: Short
