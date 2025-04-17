@@ -12,7 +12,7 @@ import kotlin.Exception
 
 @RestController
 @RequestMapping("/api/v1")
-class UsersController(private val usersService: UsersService) {
+class UsersRestController(private val usersService: UsersService) {
 
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)

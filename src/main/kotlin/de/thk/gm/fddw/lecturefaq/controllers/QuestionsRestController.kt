@@ -11,7 +11,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1")
-class QuestionsController(private val questionsService: QuestionsService) {
+class QuestionsRestController(private val questionsService: QuestionsService) {
 
 
     @GetMapping("/lectures/{lectureId}/questions/{questionId}")

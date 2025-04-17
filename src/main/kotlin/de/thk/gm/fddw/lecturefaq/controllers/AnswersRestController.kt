@@ -11,7 +11,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1")
-class AnswersController(
+class AnswersRestController(
     private val answersService: AnswersService
 ) {
     //TODO: Consider using ResponseEntity

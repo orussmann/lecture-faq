@@ -12,7 +12,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1")
-class PollsController(
+class PollsRestController(
     private val pollsService: PollsService
 ) {
 
