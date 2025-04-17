@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
+@RequestMapping("/api/v1")
 class LecturesController(private val lecturesService: LecturesService) {
 
 

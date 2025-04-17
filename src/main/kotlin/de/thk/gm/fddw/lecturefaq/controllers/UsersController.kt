@@ -11,6 +11,7 @@ import java.util.*
 import kotlin.Exception
 
 @RestController
+@RequestMapping("/api/v1")
 class UsersController(private val usersService: UsersService) {
 
     @GetMapping("/users/{id}")

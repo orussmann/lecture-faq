@@ -10,9 +10,11 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
+@RequestMapping("/api/v1")
 class AnswersController(
     private val answersService: AnswersService
 ) {
+    //TODO: Consider using ResponseEntity
 
 
     @GetMapping("/polls/{pollId}/answers")
