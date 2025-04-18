@@ -3,9 +3,9 @@ package de.thk.gm.fddw.lecturefaq.util
 import de.thk.gm.fddw.lecturefaq.models.Lecture
 import de.thk.gm.fddw.lecturefaq.models.Question
 import de.thk.gm.fddw.lecturefaq.models.User
-import de.thk.gm.fddw.lecturefaq.models.questions_dto.CreateQuestionRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.questions_dto.QuestionResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.questions_dto.UpdateQuestionRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dto.CreateQuestionRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dto.QuestionResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dto.UpdateQuestionRequestDTO
 import org.springframework.stereotype.Component
 
 @Component
@@ -32,7 +32,7 @@ class QuestionsDTOMapper {
         )
     }
 
-    fun updateQuestionFromTo(
+    fun mapToUpdatedQuestion(
         questionForUpdate: UpdateQuestionRequestDTO,
         lecture: Lecture,
         user: User,

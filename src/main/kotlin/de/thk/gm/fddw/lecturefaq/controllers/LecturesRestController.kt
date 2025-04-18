@@ -1,8 +1,8 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.CreateLectureRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.LectureResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.UpdateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.LectureResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*

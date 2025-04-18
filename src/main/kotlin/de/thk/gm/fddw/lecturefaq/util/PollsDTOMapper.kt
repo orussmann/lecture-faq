@@ -27,7 +27,7 @@ class PollsDTOMapper {
         )
     }
 
-    fun updatePollFromTo(
+    fun mapToUpdatedPoll(
         updatePollRequestDTO: UpdatePollRequestDTO,
         poll: Poll
     ): Poll {

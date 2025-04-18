@@ -1,8 +1,8 @@
 package de.thk.gm.fddw.lecturefaq.services
 
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.AnswerResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.CreateAnswerRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.UpdateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
 import java.util.*
 
 interface AnswersService {

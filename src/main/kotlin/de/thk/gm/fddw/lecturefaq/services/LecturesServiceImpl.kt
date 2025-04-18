@@ -1,9 +1,8 @@
 package de.thk.gm.fddw.lecturefaq.services
 
-import ch.qos.logback.classic.boolex.MarkerList
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.CreateLectureRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.LectureResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.UpdateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.LectureResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.repositories.LecturesRepository
 import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.util.LecturesDTOMapper
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service
 import java.util.*
 import kotlin.NoSuchElementException
 import org.slf4j.LoggerFactory
-import org.slf4j.Marker
 import org.slf4j.MarkerFactory
 
 
@@ -66,7 +64,7 @@ class LecturesServiceImpl(
                 .findById(lectureDTO.userId)
                 .orElseThrow { NoSuchElementException("User for this update not found") }
         }
-        val updatedLecture = lecturesDTOMapper.updateLectureFromTo(lectureDTO, existingLecture, updatedUser)
+        val updatedLecture = lecturesDTOMapper.mapToUpdatedLecture(lectureDTO, existingLecture, updatedUser)
         val savedLecture = lecturesRepository.save(updatedLecture)
         return lecturesDTOMapper.mapToLecturesResponse(savedLecture)
     }

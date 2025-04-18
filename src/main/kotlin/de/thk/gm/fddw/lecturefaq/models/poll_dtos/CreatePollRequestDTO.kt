@@ -1,6 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models.poll_dtos
 
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import java.util.*
 
 data class CreatePollRequestDTO(

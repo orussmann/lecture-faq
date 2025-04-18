@@ -1,8 +1,8 @@
 package de.thk.gm.fddw.lecturefaq.services
 
-import de.thk.gm.fddw.lecturefaq.models.questions_dto.CreateQuestionRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.questions_dto.QuestionResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.questions_dto.UpdateQuestionRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dto.CreateQuestionRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dto.QuestionResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dto.UpdateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.repositories.LecturesRepository
 import de.thk.gm.fddw.lecturefaq.repositories.QuestionsRepository
 import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
@@ -77,7 +77,7 @@ class QuestionsServiceImpl(
                 .orElseThrow { NoSuchElementException("User not found") }
 
         }
-        val updatedQuestion = questionsDTOMapper.updateQuestionFromTo(
+        val updatedQuestion = questionsDTOMapper.mapToUpdatedQuestion(
             questionDTO,
             lectureForUpdate,
             userForUpdate,

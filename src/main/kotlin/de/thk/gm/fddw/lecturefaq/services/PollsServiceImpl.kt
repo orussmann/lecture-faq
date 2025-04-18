@@ -57,7 +57,7 @@ class PollsServiceImpl(
             .orElseThrow {
                 NoSuchElementException("Poll not found")
             }
-        val updatedPoll = pollsDTOMapper.updatePollFromTo(pollDTO, existingPoll)
+        val updatedPoll = pollsDTOMapper.mapToUpdatedPoll(pollDTO, existingPoll)
         val savedPoll = pollsRepository.save(updatedPoll)
         return pollsDTOMapper.mapToPollResponse(savedPoll)
     }

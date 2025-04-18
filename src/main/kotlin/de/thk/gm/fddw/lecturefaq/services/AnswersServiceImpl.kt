@@ -1,8 +1,8 @@
 package de.thk.gm.fddw.lecturefaq.services
 
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.AnswerResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.CreateAnswerRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.answers_dto.UpdateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.repositories.AnswersRepository
 import de.thk.gm.fddw.lecturefaq.repositories.PollsRepository
 import de.thk.gm.fddw.lecturefaq.util.AnswersDTOMapper
@@ -51,7 +51,7 @@ class AnswersServiceImpl(
         val existingAnswer = answersRepository
             .findById(answerId)
             .orElseThrow { NoSuchElementException("Answer not found") }
-        val updatedAnswer = answersDTOMapper.updateAnswerFromTo(answerDTO, existingAnswer)
+        val updatedAnswer = answersDTOMapper.mapToUpdatedAnswer(answerDTO, existingAnswer)
         val savedAnswer = answersRepository.save(updatedAnswer)
         return answersDTOMapper.mapToAnswerResponse(savedAnswer)
     }

@@ -2,9 +2,9 @@ package de.thk.gm.fddw.lecturefaq.util
 
 import de.thk.gm.fddw.lecturefaq.models.Lecture
 import de.thk.gm.fddw.lecturefaq.models.User
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.CreateLectureRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.LectureResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.lectures_dtos.UpdateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.LectureResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import org.springframework.stereotype.Component
 
 @Component
@@ -34,7 +34,7 @@ class LecturesDTOMapper {
     }
 
     //TODO: Consider encapsulating more of the logic to get needed infos for mapping inside this method
-    fun updateLectureFromTo(updateLectureRequestDTO: UpdateLectureRequestDTO, lecture: Lecture, user: User): Lecture {
+    fun mapToUpdatedLecture(updateLectureRequestDTO: UpdateLectureRequestDTO, lecture: Lecture, user: User): Lecture {
         return lecture.copy(
             title = updateLectureRequestDTO.title ?: lecture.title,
             description = updateLectureRequestDTO.description ?: lecture.description,
