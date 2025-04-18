@@ -27,6 +27,9 @@ class PollsRestController(
         }
     }
 
+    //TODO: Add GET for one poll
+
+
     @GetMapping("/polls")
     @ResponseStatus(HttpStatus.OK)
     fun getAllPolls(): MutableIterable<PollResponseDTO> {

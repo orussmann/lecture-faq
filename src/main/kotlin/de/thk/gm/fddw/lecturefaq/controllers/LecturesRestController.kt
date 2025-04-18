@@ -39,6 +39,8 @@ class LecturesRestController(private val lecturesService: LecturesService) {
         }
     }
 
+    //TODO: GET mapping for one lecture
+
     @GetMapping("/users/{userId}/lectures")
     @ResponseStatus(HttpStatus.OK)
     fun getAllLecturesFromUser(@PathVariable userId: UUID): List<LectureResponseDTO> {

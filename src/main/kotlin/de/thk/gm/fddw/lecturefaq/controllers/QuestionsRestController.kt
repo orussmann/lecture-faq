@@ -27,6 +27,7 @@ class QuestionsRestController(private val questionsService: QuestionsService) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch question")
         }
     }
+    //TODO: GET mapping for one question
 
     @GetMapping("/questions")
     @ResponseStatus(HttpStatus.OK)
