@@ -1,4 +1,4 @@
-package de.thk.gm.fddw.lecturefaq.models.questions_dto
+package de.thk.gm.fddw.lecturefaq.models.question_dto
 
 import java.util.UUID
 
