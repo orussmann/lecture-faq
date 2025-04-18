@@ -34,7 +34,8 @@ class AnswersController(
         }
     }
 
-    @GetMapping("/answers")
+    //TODO: Consider removing this
+    /*@GetMapping("/answers")
     @ResponseStatus(HttpStatus.OK)
     fun getAllAnswers(model: Model): String {
         try {
@@ -45,6 +46,7 @@ class AnswersController(
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch answers")
         }
     }
+*/
 
     @PostMapping("/polls/{pollId}/answers")
     fun createAnswer(
