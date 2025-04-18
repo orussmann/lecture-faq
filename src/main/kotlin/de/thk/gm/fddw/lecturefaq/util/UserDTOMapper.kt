@@ -1,9 +1,9 @@
 package de.thk.gm.fddw.lecturefaq.util
 
 import de.thk.gm.fddw.lecturefaq.models.User
-import de.thk.gm.fddw.lecturefaq.models.dtos.CreateUserRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.dtos.UpdateUserRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.dtos.UserResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserResponseDTO
 import org.springframework.stereotype.Component
 
 @Component
