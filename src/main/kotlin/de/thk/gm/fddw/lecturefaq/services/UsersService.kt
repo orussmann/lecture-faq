@@ -6,7 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.dtos.UserResponseDTO
 import java.util.*
 
 
-interface UserService {
+interface UsersService {
     fun save(userDTO: CreateUserRequestDTO): UserResponseDTO
     fun findAll(): MutableIterable<UserResponseDTO>
     fun findById(userId: UUID): UserResponseDTO

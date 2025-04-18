@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserServiceImpl(
+class UsersServiceImpl(
     private val userRepository: UserRepository,
     private val userDTOMapper: UserDTOMapper
-) : UserService {
+) : UsersService {
     override fun save(userDTO: CreateUserRequestDTO): UserResponseDTO {
         val newUser = userDTOMapper.mapToNewUser(userDTO)
         val savedUser = userRepository.save(newUser)

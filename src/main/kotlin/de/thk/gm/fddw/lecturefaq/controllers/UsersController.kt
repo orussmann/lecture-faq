@@ -3,8 +3,7 @@ package de.thk.gm.fddw.lecturefaq.controllers
 import de.thk.gm.fddw.lecturefaq.models.dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.dtos.UserResponseDTO
-import de.thk.gm.fddw.lecturefaq.services.UserService
-import jakarta.validation.Valid
+import de.thk.gm.fddw.lecturefaq.services.UsersService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -12,13 +11,13 @@ import java.util.*
 import kotlin.Exception
 
 @RestController
-class UsersController(private val userService: UserService) {
+class UsersController(private val usersService: UsersService) {
 
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getUser(@PathVariable id: UUID): UserResponseDTO {
         try {
-            val user = userService.findById(id)
+            val user = usersService.findById(id)
             return user
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
@@ -29,7 +28,7 @@ class UsersController(private val userService: UserService) {
     @ResponseStatus(HttpStatus.OK)
     fun getAllUsers(): MutableIterable<UserResponseDTO> {
         try {
-            val users = userService.findAll()
+            val users = usersService.findAll()
             return users
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch users")
@@ -42,7 +41,7 @@ class UsersController(private val userService: UserService) {
         @RequestBody userDTO: CreateUserRequestDTO
     ): UserResponseDTO {
         try {
-            return userService.save(userDTO)
+            return usersService.save(userDTO)
         } catch (e: java.lang.Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create user")
         }
@@ -52,7 +51,7 @@ class UsersController(private val userService: UserService) {
     @ResponseStatus(HttpStatus.OK)
     fun deleteUser(@PathVariable id: UUID) {
         try {
-            userService.removeById(id)
+            usersService.removeById(id)
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete user")
         }
@@ -65,7 +64,7 @@ class UsersController(private val userService: UserService) {
         @RequestBody updatedUserDTO: UpdateUserRequestDTO
     ): UserResponseDTO {
         try {
-            return userService.updateById(id, updatedUserDTO)
+            return usersService.updateById(id, updatedUserDTO)
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
         }
