@@ -1,7 +1,7 @@
 <#import "../layout.ftlh" as base>
 
 <@base.layout>
-    <h1>Answers</h1>
+    <h2>Answers</h2>
     <ul>
         <#list answers as answer>
             <li>
