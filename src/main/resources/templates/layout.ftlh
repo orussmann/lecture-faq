@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        Lecture FAQ
+        <h1>Lecture FAQ</h1>
     </header>
     <hr>
     <main>
