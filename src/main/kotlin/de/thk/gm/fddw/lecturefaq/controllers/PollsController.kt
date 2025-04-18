@@ -3,7 +3,6 @@ package de.thk.gm.fddw.lecturefaq.controllers
 import de.thk.gm.fddw.lecturefaq.constants.MINIMUM_ANSWERS_COUNT
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.PollsService
 import de.thk.gm.fddw.lecturefaq.services.UsersServiceImpl
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
