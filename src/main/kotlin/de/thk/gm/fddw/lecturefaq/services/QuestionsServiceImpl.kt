@@ -9,6 +9,7 @@ import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.util.LecturesDTOMapper
 import de.thk.gm.fddw.lecturefaq.util.QuestionsDTOMapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -20,6 +21,7 @@ class QuestionsServiceImpl(
     private val lecturesDTOMapper: LecturesDTOMapper,
     private val usersRepository: UsersRepository
 ) : QuestionsService {
+    @Transactional
     override fun save(question: CreateQuestionRequestDTO): QuestionResponseDTO {
         val lecture = lecturesRepository
             .findById(question.lectureId)
@@ -64,6 +66,7 @@ class QuestionsServiceImpl(
         questionsRepository.deleteById(questionId)
     }
 
+    @Transactional
     override fun updateById(questionId: UUID, questionDTO: UpdateQuestionRequestDTO): QuestionResponseDTO {
         val existingQuestion = questionsRepository
             .findById(questionId)

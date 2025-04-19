@@ -8,6 +8,7 @@ import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.util.AnswersDTOMapper
 import de.thk.gm.fddw.lecturefaq.util.PollsDTOMapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -18,6 +19,7 @@ class PollsServiceImpl(
     private val usersRepository: UsersRepository,
     private val answersDTOMapper: AnswersDTOMapper
 ) : PollsService {
+    @Transactional
     override fun save(poll: CreatePollRequestDTO): PollResponseDTO {
         val user = usersRepository.findById(poll.userId)
             .orElseThrow { NoSuchElementException("User for this poll not found") }
@@ -51,6 +53,7 @@ class PollsServiceImpl(
         pollsRepository.deleteById(pollId)
     }
 
+    @Transactional
     override fun updateById(pollId: UUID, pollDTO: UpdatePollRequestDTO): PollResponseDTO {
         val existingPoll = pollsRepository
             .findById(pollId)

@@ -6,6 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserResponseDTO
 import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.util.UsersDTOMapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -39,6 +40,7 @@ class UsersServiceImpl(
         usersRepository.deleteById(userId)
     }
 
+    @Transactional
     override fun updateById(userId: UUID, userDTO: UpdateUserRequestDTO): UserResponseDTO {
         val existingUser = usersRepository
             .findById(userId)

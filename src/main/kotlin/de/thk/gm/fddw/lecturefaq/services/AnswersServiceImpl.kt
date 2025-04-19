@@ -7,6 +7,7 @@ import de.thk.gm.fddw.lecturefaq.repositories.AnswersRepository
 import de.thk.gm.fddw.lecturefaq.repositories.PollsRepository
 import de.thk.gm.fddw.lecturefaq.util.AnswersDTOMapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -16,6 +17,7 @@ class AnswersServiceImpl(
     private val answersRepository: AnswersRepository,
     private val answersDTOMapper: AnswersDTOMapper
 ) : AnswersService {
+    @Transactional
     override fun save(answer: CreateAnswerRequestDTO): AnswerResponseDTO {
         val poll = pollsRepository.findById(answer.pollId!!)
             .orElseThrow { NoSuchElementException("Poll for this answer not found") }
@@ -47,6 +49,7 @@ class AnswersServiceImpl(
         answersRepository.deleteById(answerId)
     }
 
+    @Transactional
     override fun updateById(answerId: UUID, answerDTO: UpdateAnswerRequestDTO): AnswerResponseDTO {
         val existingAnswer = answersRepository
             .findById(answerId)

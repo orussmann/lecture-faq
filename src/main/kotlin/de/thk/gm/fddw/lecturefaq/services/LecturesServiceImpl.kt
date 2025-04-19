@@ -11,6 +11,7 @@ import java.util.*
 import kotlin.NoSuchElementException
 import org.slf4j.LoggerFactory
 import org.slf4j.MarkerFactory
+import org.springframework.transaction.annotation.Transactional
 
 
 private val logger = LoggerFactory.getLogger(LecturesServiceImpl::class.java)
@@ -21,6 +22,7 @@ class LecturesServiceImpl(
     private val lecturesDTOMapper: LecturesDTOMapper,
     private val usersRepository: UsersRepository
 ) : LecturesService {
+    @Transactional
     override fun save(lecture: CreateLectureRequestDTO): LectureResponseDTO {
         val user = usersRepository
             .findById(lecture.userId)
@@ -54,6 +56,7 @@ class LecturesServiceImpl(
         lecturesRepository.deleteById(lectureId)
     }
 
+    @Transactional
     override fun updateById(lectureId: UUID, lectureDTO: UpdateLectureRequestDTO): LectureResponseDTO {
         val existingLecture = lecturesRepository
             .findById(lectureId)
