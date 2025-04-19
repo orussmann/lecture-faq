@@ -24,7 +24,13 @@ class QuestionsServiceImpl(
         val lecture = lecturesRepository
             .findById(question.lectureId)
             .orElseThrow { NoSuchElementException("Lecture not found") }
-        val questionToBeSaved = questionsDTOMapper.mapToNewQuestion(question, lecture, lecture.user)
+        //TODO: Is this correct? -> Is there a relationship user-question?
+        val user = usersRepository
+            .findById(question.userId)
+            .orElseThrow {
+                IllegalArgumentException("User not found")
+            }
+        val questionToBeSaved = questionsDTOMapper.mapToNewQuestion(question, lecture, user)
         lecture.questions.add(questionToBeSaved)
         lecturesRepository.save(lecture)
         return questionsDTOMapper.mapToQuestionResponse(questionToBeSaved)
@@ -63,7 +69,7 @@ class QuestionsServiceImpl(
             .findById(questionId)
             .orElseThrow { NoSuchElementException("Question not found") }
         var lectureForUpdate = existingQuestion.lecture
-        var userForUpdate = existingQuestion.user
+        var userForUpdate = existingQuestion.user           //TODO: Fix needed? -> What if user does not exist?
         val textForUpdate = questionDTO.text ?: existingQuestion.text
         if (questionDTO.lectureId != null) {
             lectureForUpdate = lecturesRepository
