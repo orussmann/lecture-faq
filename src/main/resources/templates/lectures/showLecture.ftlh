@@ -4,6 +4,8 @@
 
         <p>Lecture ID: ${lecture.id}</p>
 
+        <a href="/app/lectures/${lecture.id}/questions">Questions</a>
+
         <label>Lecture title</label><br>
         <input type="text" value="${lecture.title}" name="title"><br>
 
