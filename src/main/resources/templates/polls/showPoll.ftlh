@@ -4,7 +4,7 @@
 
         <p>Poll ID: ${poll.id}</p>
 
-        <p>User ID: ${poll.userId}></p>
+        <p>User ID: ${poll.userId}</p>
 
         <a href="/app/polls/${poll.id}/answers">Answers</a>
 

@@ -2,9 +2,9 @@
 <@base.layout>
     <form action="/app/lectures/${lectureId}/questions/${questionId}" method="post">
 
-        <p>Question ID: ${questionId}></p>
+        <p>Question ID: ${questionId}</p>
 
-        <p>Lecture ID: ${lectureId}></p>
+        <p>Lecture ID: ${lectureId}</p>
 
         <a href="/app/lectures/${lectureId}/questions">Questions</a>
 

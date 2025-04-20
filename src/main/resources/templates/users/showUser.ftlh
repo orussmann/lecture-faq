@@ -2,7 +2,7 @@
 <@base.layout>
     <form action="/app/users/${user.userId}" method="post">
 
-        <p>User ID: ${user.userId}></p>
+        <p>User ID: ${user.userId}</p>
 
         <a href="/app/users/${user.userId}/lectures">Lectures</a>
         <a href="/app/users/${user.userId}/polls">Polls</a>
