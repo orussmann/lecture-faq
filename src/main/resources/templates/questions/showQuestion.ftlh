@@ -9,7 +9,7 @@
         <a href="/app/lectures/${lectureId}/questions">Questions</a>
 
         <label>User ID</label><br>
-        <input type="text" placeholder="User ID" name="userId"><br>
+        <input type="text" placeholder="User ID" name="userId" required><br>
 
         <label>Question text</label><br>
         <input type="text" placeholder="Text" name="text"><br>
