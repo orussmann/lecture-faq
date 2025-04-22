@@ -83,6 +83,8 @@ class AnswersRestController(
         }
     }
 
+    //TODO: For all controllers, ID in body and in URI should be identical.
+    // First the server should use the ID from the body. If it's not provided, use it from the URI.
     @PutMapping("/polls/{pollId}/answers/{answerId}")
     @ResponseStatus(HttpStatus.OK)
     fun updateAnswer(
