@@ -19,10 +19,12 @@ class QuestionsController(private val questionsService: QuestionsService) {
     @ResponseStatus(HttpStatus.OK)
     fun getQuestion(
         @PathVariable questionId: UUID,
-        @PathVariable lectureId: UUID
+        @PathVariable lectureId: UUID,
+        model: Model
     ): String {
         try {
             val question = questionsService.findById(questionId)
+            model.addAttribute("question", question)
             return "questions/showQuestion"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch question")

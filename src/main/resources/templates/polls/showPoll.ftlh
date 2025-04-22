@@ -9,10 +9,10 @@
         <a href="/app/polls/${poll.id}/answers">Answers</a>
 
         <label>Poll title</label><br>
-        <input type="text" value="${poll.title}" name="title"><br>
+        <input type="text" value="${poll.title}" name="title" required><br>
 
         <label>Poll description</label>
-        <input type="text" value="${poll.description}" name="description"><br>
+        <input type="text" value="${poll.description}" name="description" required><br>
 
         <input type="hidden" name="_method" value="PUT"/>
         <button>Update</button>

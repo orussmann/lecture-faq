@@ -3,10 +3,10 @@
     <form action="/app/polls/${pollId}/answers/${answer.id}" method="post">
 
         <label>Answer text</label><br>
-        <input type="text" value="${answer.text}" name="text"><br>
+        <input type="text" value="${answer.text}" name="text" required><br>
 
         <label>Answer count</label>
-        <input type="text" value="${answer.count}" name="count"><br>
+        <input type="number" value="${answer.count}" name="count" min="0" required><br>
 
         <input type="hidden" name="_method" value="PUT"/>
         <button>Update</button>

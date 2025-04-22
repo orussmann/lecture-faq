@@ -17,10 +17,10 @@
     <form action="/app/lectures/${lectureId}/questions" method="post">
 
         <label>User ID</label><br>
-        <input type="text" placeholder="User ID" name="userId"><br>
+        <input type="text" placeholder="bdcc1a19-dd83-4d63-8891-6e63cfe2e580" name="userId" required><br>
 
         <label>Question text</label><br>
-        <input type="text" placeholder="Text" name="text"><br>
+        <input type="text" placeholder="Text" name="text" required><br>
 
         <button type="submit">Create question</button>
     </form>

@@ -9,10 +9,15 @@
         <a href="/app/lectures/${lectureId}/questions">Questions</a>
 
         <label>User ID</label><br>
-        <input type="text" placeholder="User ID" name="userId" required><br>
+        <input type="text"
+               value="${question.userId}"
+               name="userId"
+               pattern="^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+               required
+        ><br>
 
         <label>Question text</label><br>
-        <input type="text" placeholder="Text" name="text"><br>
+        <input type="text" value="${question.text}" name="text" required><br>
 
         <input type="hidden" name="_method" value="PUT"/>
         <button>Update</button>

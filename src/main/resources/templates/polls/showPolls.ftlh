@@ -16,16 +16,16 @@
     <form action="/app/users/${userId}/polls" method="post">
 
         <label>Poll title</label><br>
-        <input type="text" placeholder="Title" name="title"><br>
+        <input type="text" placeholder="What is a web server?" name="title" required><br>
 
         <label>Poll description</label>
-        <input type="text" placeholder="Description" name="description"><br>
+        <input type="text" placeholder="Describe the ins and outs of a web server..." name="description" required><br>
 
         <label>Answer 1</label>
-        <input type="text" placeholder="Answer 1" name="answer1"><br>
+        <input type="text" placeholder="It serves data to a web client.." name="answer1" required><br>
 
         <label>Answer 2</label>
-        <input type="text" placeholder="Answer 2" name="answer2"><br>
+        <input type="text" placeholder="Its communication is based on HTTP..." name="answer2" required><br>
 
         <label>Answer 3</label>
         <input type="text" placeholder="Answer 3" name="answer3"><br>

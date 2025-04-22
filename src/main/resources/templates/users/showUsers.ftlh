@@ -18,17 +18,22 @@
     <form action="/app/users" method="post">
 
         <label>User e-mail</label><br>
-        <input type="text" placeholder="User e-mail" name="email"><br>
+        <input type="email"  placeholder="gamer123@mail.com" name="email" required><br>
 
         <label>User first name</label><br>
-        <input type="text" placeholder="User first name" name="firstName"><br>
+        <input type="text" placeholder="Max" name="firstName" required><br>
 
         <label>User last name</label><br>
-        <input type="text" placeholder="User last name" name="lastName"><br>
+        <input type="text" placeholder="Mustermann" name="lastName" required><br>
 
-        <label>Question role</label><br>
-        <input type="text" placeholder="User role" name="role"><br>
-
+        <label>
+            <select name="role" required>
+                <option value="ADMIN">Admin</option>
+                <option value="LECTURER">Lecturer</option>
+                <option value="STUDENT">Student</option>
+                <option value="MODERATOR">Moderator</option>
+            </select>
+        </label>
         <button type="submit">Create user</button>
     </form>
     <br>

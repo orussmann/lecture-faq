@@ -13,7 +13,7 @@
         </#list>
     </ul>
     <form action="/app/polls/${pollId}/answers" method="post">
-        <input type="text" name="text">
+        <input type="text" name="text" placeholder="This is an answer" required>
         <button>Create answer</button>
     </form>
     <br>
