@@ -4,21 +4,21 @@ import jakarta.persistence.*
 import java.util.UUID
 
 @Entity
-data class Poll(
+class Poll(
     @Id
     @Column(name = "poll_id", nullable = false)
     val id: UUID = UUID.randomUUID(),
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    val user: User,
+    var user: User,
 
     @OneToMany(mappedBy = "poll", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val answers: MutableList<Answer> = mutableListOf(),
+    var answers: MutableList<Answer> = mutableListOf(),
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false)
-    val description: String
+    var description: String
 )

@@ -22,19 +22,19 @@
         <input type="text" placeholder="Describe the ins and outs of a web server..." name="description" required><br>
 
         <label>Answer 1</label>
-        <input type="text" placeholder="It serves data to a web client.." name="answer1" required><br>
+        <input type="text" placeholder="It serves data to a web client.." name="answers[0].text" required><br>
 
         <label>Answer 2</label>
-        <input type="text" placeholder="Its communication is based on HTTP..." name="answer2" required><br>
+        <input type="text" placeholder="Its communication is based on HTTP..." name="answers[1].text" required><br>
 
         <label>Answer 3</label>
-        <input type="text" placeholder="Answer 3" name="answer3"><br>
+        <input type="text" placeholder="Answer 3" name="answers[2].text"><br>
 
         <label>Answer 4</label>
-        <input type="text" placeholder="Answer 4" name="answer4"><br>
+        <input type="text" placeholder="Answer 4" name="answers[3].text"><br>
 
         <label>Answer 5</label>
-        <input type="text" placeholder="Answer 5" name="answer5"><br>
+        <input type="text" placeholder="Answer 5" name="answers[4].text"><br>
 
         <button type="submit">Create poll</button>
     </form>

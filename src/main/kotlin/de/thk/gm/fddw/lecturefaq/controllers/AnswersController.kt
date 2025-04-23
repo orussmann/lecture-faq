@@ -3,12 +3,16 @@ package de.thk.gm.fddw.lecturefaq.controllers
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.AnswersService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.awt.SystemColor.text
 import java.util.*
 
 //TODO: Consider using ResponseEntity
@@ -51,12 +55,16 @@ class AnswersController(
     @PostMapping("/polls/{pollId}/answers")
     fun createAnswer(
         @PathVariable pollId: UUID,
-        @RequestParam text: String,
-        model: Model
+        @Valid answer: CreateAnswerRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val answer = CreateAnswerRequestDTO(pollId, text)
-            answersService.save(answer)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                answersService.save(answer)
+            }
             return "redirect:/app/polls/${pollId}/answers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create answer")
@@ -97,12 +105,16 @@ class AnswersController(
     fun updateAnswer(
         @PathVariable pollId: UUID,
         @PathVariable answerId: UUID,
-        @RequestParam text: String,
-        @RequestParam count: Short,
-        model: Model
+        @Valid answer: UpdateAnswerRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            answersService.updateById(answerId, UpdateAnswerRequestDTO(text, count))
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                answersService.updateById(answerId, answer)
+            }
             return "redirect:/app/polls/${pollId}/answers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update answer")

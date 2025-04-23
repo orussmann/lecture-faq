@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.services
 
+import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
@@ -20,11 +21,15 @@ class PollsServiceImpl(
     private val answersDTOMapper: AnswersDTOMapper
 ) : PollsService {
     @Transactional
-    override fun save(poll: CreatePollRequestDTO): PollResponseDTO {
-        val user = usersRepository.findById(poll.userId)
+    override fun save(poll: CreatePollRequestDTO, userId: UUID): PollResponseDTO {
+        val user = usersRepository.findById(userId)
             .orElseThrow { NoSuchElementException("User for this poll not found") }
         val newPoll = pollsDTOMapper.mapToNewPoll(poll, user)
-        val answers = poll.answers.map { answer -> answersDTOMapper.mapToNewAnswer(answer, newPoll) }
+        val answers = poll
+            .answers
+            .map { answer ->
+                answersDTOMapper.mapToNewAnswer(answer, newPoll)
+            }
         newPoll.answers.addAll(answers)
         val savedPoll = pollsRepository.save(newPoll)
         return pollsDTOMapper.mapToPollResponse(savedPoll)

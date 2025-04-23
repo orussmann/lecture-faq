@@ -6,21 +6,27 @@ import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.PollsService
 import de.thk.gm.fddw.lecturefaq.services.UsersServiceImpl
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.UUID
-
 
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
@@ -60,28 +66,16 @@ class PollsController(
     @PostMapping("/users/{userId}/polls")
     fun createPoll(
         @PathVariable userId: UUID,
-        @RequestParam title: String,
-        @RequestParam description: String,
-        @RequestParam answer1: String,
-        @RequestParam answer2: String,
-        @RequestParam answer3: String,
-        @RequestParam answer4: String,
-        @RequestParam answer5: String
+        @Valid @ModelAttribute poll: CreatePollRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val answers = listOf(answer1, answer2, answer3, answer4, answer5)
-                .filter { it.isNotBlank() }
-                .map { answer ->  CreateAnswerRequestDTO(text = answer) }
-            if (answers.size < MINIMUM_ANSWERS_COUNT) {
-                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Minimum 2 answers expected")
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                pollsService.save(poll, userId)
             }
-            val poll = CreatePollRequestDTO(
-                userId = userId,
-                title = title,
-                description = description,
-                answers = answers
-            )
-            val createdPoll = pollsService.save(poll)
             return "redirect:/app/users/${userId}/polls"
         } catch (e: ResponseStatusException) {
             throw e
@@ -124,12 +118,16 @@ class PollsController(
     fun updatePoll(
         @PathVariable pollId: UUID,
         @PathVariable userId: UUID,
-        @RequestParam title: String,
-        @RequestParam description: String
+        @Valid poll: UpdatePollRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val poll = UpdatePollRequestDTO(title, description)
-            val updatedPoll = pollsService.updateById(pollId, poll)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                pollsService.updateById(pollId, poll)
+            }
             return "redirect:/app/users/${userId}/polls"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update poll")

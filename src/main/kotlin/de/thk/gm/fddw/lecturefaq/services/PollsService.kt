@@ -7,7 +7,7 @@ import java.util.UUID
 
 
 interface PollsService {
-    fun save(poll: CreatePollRequestDTO): PollResponseDTO
+    fun save(poll: CreatePollRequestDTO, userId: UUID): PollResponseDTO
     fun findAll(): MutableIterable<PollResponseDTO>
     fun findById(pollId: UUID): PollResponseDTO
     fun findAllByUserId(userId: UUID): List<PollResponseDTO>

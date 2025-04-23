@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Answer(
+class Answer(
     @Id
     val id: UUID = UUID.randomUUID(),
 
@@ -13,8 +13,8 @@ data class Answer(
     val poll: Poll,
 
     @Column(nullable = false)
-    val text: String,
+    var text: String,
 
     @Column(nullable = false)
-    val count: Short = 0
+    var count: Short = 0
 )

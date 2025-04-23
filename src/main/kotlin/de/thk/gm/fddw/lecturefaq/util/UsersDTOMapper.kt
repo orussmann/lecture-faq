@@ -34,11 +34,10 @@ class UsersDTOMapper {  //TODO: Find better name
         updateUserRequestDTO: UpdateUserRequestDTO,
         user: User
     ): User {
-        return user.copy(
-            email = updateUserRequestDTO.email ?: user.email,
-            firstName = updateUserRequestDTO.firstName ?: user.firstName,
-            lastName = updateUserRequestDTO.lastName ?: user.lastName,
-            role = updateUserRequestDTO.role ?: user.role
-        )
+        user.email = updateUserRequestDTO.email ?: user.email
+        user.firstName = updateUserRequestDTO.firstName ?: user.firstName
+        user.lastName = updateUserRequestDTO.lastName ?: user.lastName
+        user.role = updateUserRequestDTO.role ?: user.role
+        return user
     }
 }

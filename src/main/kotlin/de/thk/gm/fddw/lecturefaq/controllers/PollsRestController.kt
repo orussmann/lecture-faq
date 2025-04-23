@@ -5,6 +5,7 @@ import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.PollsService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -44,14 +45,11 @@ class PollsRestController(
     @PostMapping("/users/{userId}/polls")
     @ResponseStatus(HttpStatus.CREATED)
     fun createPoll(
-        @RequestBody poll: CreatePollRequestDTO,
-        @PathVariable userId: UUID
+        @PathVariable userId: UUID,
+        @Valid @RequestBody poll: CreatePollRequestDTO,
     ): PollResponseDTO {
         try {
-            if (poll.answers.size < MINIMUM_ANSWERS_COUNT) {
-                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Minimum 2 answers expected")
-            }
-            val createdPoll = pollsService.save(poll)
+            val createdPoll = pollsService.save(poll, userId)
             return createdPoll
         } catch (e: ResponseStatusException) {
             throw e
@@ -78,7 +76,7 @@ class PollsRestController(
     fun updatePoll(
         @PathVariable pollId: UUID,
         @PathVariable userId: UUID,
-        @RequestBody poll: UpdatePollRequestDTO
+        @Valid @RequestBody poll: UpdatePollRequestDTO
     ): PollResponseDTO {
         try {
             val updatedPoll = pollsService.updateById(pollId, poll)

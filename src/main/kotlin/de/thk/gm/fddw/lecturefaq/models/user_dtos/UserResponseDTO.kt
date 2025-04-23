@@ -3,7 +3,7 @@ package de.thk.gm.fddw.lecturefaq.models.user_dtos
 import de.thk.gm.fddw.lecturefaq.constants.Role
 import java.util.*
 
-data class UserResponseDTO(
+class UserResponseDTO(
     val userId: UUID,
     val email: String,
     val firstName: String,

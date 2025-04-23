@@ -4,12 +4,15 @@ import de.thk.gm.fddw.lecturefaq.constants.Role
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.UsersService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
 import kotlin.Exception
 
@@ -46,17 +49,19 @@ class UsersController(private val usersService: UsersService, private val usersR
 
     @PostMapping("/users")
     fun createUser(
-        @RequestParam email: String,
-        @RequestParam firstName: String,
-        @RequestParam lastName: String,
-        @RequestParam role: Role
+        @Valid user: CreateUserRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val user = CreateUserRequestDTO(email, firstName, lastName, role)
-            usersService.save(user)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                usersService.save(user)
+            }
             return "redirect:/app/users"
         } catch (e: java.lang.Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create user")
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -73,14 +78,16 @@ class UsersController(private val usersService: UsersService, private val usersR
     @PutMapping("/users/{id}")
     fun updateUser(
         @PathVariable id: UUID,
-        @RequestParam(required = false) email: String?,
-        @RequestParam(required = false) firstName: String?,
-        @RequestParam(required = false) lastName: String?,
-        @RequestParam(required = false) role: Role?
+        @Valid user: UpdateUserRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val updatedUser = UpdateUserRequestDTO(email, firstName, lastName, role)
-            usersService.updateById(id, updatedUser)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                usersService.updateById(id, user)
+            }
             return "redirect:/app/users"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")

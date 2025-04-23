@@ -34,14 +34,17 @@ class LecturesDTOMapper {
     }
 
     //TODO: Consider encapsulating more of the logic to get needed infos for mapping inside this method
-    fun mapToUpdatedLecture(updateLectureRequestDTO: UpdateLectureRequestDTO, lecture: Lecture, user: User): Lecture {
-        return lecture.copy(
-            title = updateLectureRequestDTO.title ?: lecture.title,
-            description = updateLectureRequestDTO.description ?: lecture.description,
-            type = updateLectureRequestDTO.type ?: lecture.type,
-            link = updateLectureRequestDTO.link ?: lecture.link,
-            user = user,
-            code = updateLectureRequestDTO.code ?: lecture.code
-        )
+    fun mapToUpdatedLecture(
+        updateLectureRequestDTO: UpdateLectureRequestDTO,
+        lecture: Lecture,
+        user: User
+    ): Lecture {
+        lecture.title = updateLectureRequestDTO.title ?: lecture.title
+        lecture.description = updateLectureRequestDTO.description ?: lecture.description
+        lecture.type = updateLectureRequestDTO.type ?: lecture.type
+        lecture.link = updateLectureRequestDTO.link ?: lecture.link
+        lecture.user = user
+        lecture.code = updateLectureRequestDTO.code ?: lecture.code
+        return lecture
     }
 }

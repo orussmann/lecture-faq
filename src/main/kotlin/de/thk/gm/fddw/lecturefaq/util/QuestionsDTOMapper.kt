@@ -39,10 +39,9 @@ class QuestionsDTOMapper {
         text: String,
         savedQuestion: Question
     ): Question {
-        return savedQuestion.copy(
-            lecture = lecture,
-            user = user,
-            text = text
-        )
+        savedQuestion.lecture = lecture
+        savedQuestion.user = user
+        savedQuestion.text = text
+        return savedQuestion
     }
 }

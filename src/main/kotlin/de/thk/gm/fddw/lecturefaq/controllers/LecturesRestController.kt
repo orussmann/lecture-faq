@@ -4,6 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.LectureResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -55,7 +56,7 @@ class LecturesRestController(private val lecturesService: LecturesService) {
     @PostMapping("/users/{userId}/lectures")
     @ResponseStatus(HttpStatus.CREATED)
     fun createLecture(
-        @RequestBody lectureDTO: CreateLectureRequestDTO
+        @Valid @RequestBody lectureDTO: CreateLectureRequestDTO
     ): LectureResponseDTO {
         try {
             return lecturesService.save(lectureDTO)
@@ -81,8 +82,8 @@ class LecturesRestController(private val lecturesService: LecturesService) {
     @ResponseStatus(HttpStatus.OK)
     fun updateLecture(
         @PathVariable userId: UUID,
-        @RequestBody updatedLectureDTO: UpdateLectureRequestDTO,
-        @PathVariable lectureId: UUID
+        @PathVariable lectureId: UUID,
+        @Valid @RequestBody updatedLectureDTO: UpdateLectureRequestDTO
     ): LectureResponseDTO {
         try {
             return lecturesService.updateById(lectureId, updatedLectureDTO)

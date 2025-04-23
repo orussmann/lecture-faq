@@ -8,19 +8,19 @@ import jakarta.persistence.ManyToOne
 import java.util.UUID
 
 @Entity
-data class Question(
+class Question(
     @Id
     @Column
     val id: UUID = UUID.randomUUID(),
 
     @ManyToOne
     @JoinColumn(name = "lecture_id", nullable = false)
-    val lecture: Lecture,
+    var lecture: Lecture,
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    val user: User,
+    var user: User,
 
     @Column(nullable = false)
-    val text: String
+    var text: String
 )

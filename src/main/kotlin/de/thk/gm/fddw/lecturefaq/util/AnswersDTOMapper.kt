@@ -6,6 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
 import org.springframework.stereotype.Component
+import java.awt.SystemColor.text
 
 @Component
 class AnswersDTOMapper {
@@ -26,10 +27,12 @@ class AnswersDTOMapper {
         )
     }
 
-    fun mapToUpdatedAnswer(updateAnswerRequestDTO: UpdateAnswerRequestDTO, answer: Answer): Answer {
-        return answer.copy(
-            text = updateAnswerRequestDTO.text ?: answer.text,
-            count = updateAnswerRequestDTO.count ?: answer.count
-        )
+    fun mapToUpdatedAnswer(
+        updateAnswerRequestDTO: UpdateAnswerRequestDTO,
+        answer: Answer
+    ): Answer {
+        answer.text = updateAnswerRequestDTO.text ?: answer.text
+        answer.count = updateAnswerRequestDTO.count ?: answer.count
+        return answer
     }
 }

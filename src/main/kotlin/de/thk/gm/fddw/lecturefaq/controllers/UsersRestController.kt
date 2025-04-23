@@ -4,6 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserResponseDTO
 import de.thk.gm.fddw.lecturefaq.services.UsersService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -39,12 +40,12 @@ class UsersRestController(private val usersService: UsersService) {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     fun createUser(
-        @RequestBody userDTO: CreateUserRequestDTO
+        @Valid @RequestBody userDTO: CreateUserRequestDTO
     ): UserResponseDTO {
         try {
             return usersService.save(userDTO)
         } catch (e: java.lang.Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create user")
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -62,7 +63,7 @@ class UsersRestController(private val usersService: UsersService) {
     @ResponseStatus(HttpStatus.OK)
     fun updateUser(
         @PathVariable id: UUID,
-        @RequestBody updatedUserDTO: UpdateUserRequestDTO
+        @Valid @RequestBody updatedUserDTO: UpdateUserRequestDTO
     ): UserResponseDTO {
         try {
             return usersService.updateById(id, updatedUserDTO)

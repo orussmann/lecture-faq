@@ -19,12 +19,21 @@
 
         <label>User e-mail</label><br>
         <input type="email"  placeholder="gamer123@mail.com" name="email" required><br>
+        <#if errors?? && errors.getFieldError("email")??>
+            ${errors.getFieldError("email")["defaultMessage"]}
+        </#if>
 
         <label>User first name</label><br>
         <input type="text" placeholder="Max" name="firstName" required><br>
+        <#if errors?? && errors.getFieldError("firstName")??>
+            ${errors.getFieldError("firstName")["defaultMessage"]}
+        </#if>
 
         <label>User last name</label><br>
         <input type="text" placeholder="Mustermann" name="lastName" required><br>
+        <#if errors?? && errors.getFieldError("lastName")??>
+            ${errors.getFieldError("lastName")["defaultMessage"]}
+        </#if>
 
         <label>
             <select name="role" required>

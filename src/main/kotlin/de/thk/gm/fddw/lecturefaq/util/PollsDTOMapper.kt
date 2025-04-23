@@ -21,7 +21,7 @@ class PollsDTOMapper {
 
     fun mapToNewPoll(poll: CreatePollRequestDTO, user: User): Poll {
         return Poll(
-            user =  user,
+            user = user,
             title = poll.title,
             description = poll.description
         )
@@ -31,9 +31,8 @@ class PollsDTOMapper {
         updatePollRequestDTO: UpdatePollRequestDTO,
         poll: Poll
     ): Poll {
-        return poll.copy(
-            title = updatePollRequestDTO.title ?: poll.title,
-            description = updatePollRequestDTO.description ?: poll.description
-        )
+        poll.title = updatePollRequestDTO.title ?: poll.title
+        poll.description = updatePollRequestDTO.description ?: poll.description
+        return poll
     }
 }

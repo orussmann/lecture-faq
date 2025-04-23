@@ -4,12 +4,15 @@ import de.thk.gm.fddw.lecturefaq.constants.Type
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
 
 @Controller
@@ -64,15 +67,16 @@ class LecturesController(private val lecturesService: LecturesService) {
     @PostMapping("/users/{userId}/lectures")
     fun createLecture(
         @PathVariable userId: UUID,
-        @RequestParam title: String,
-        @RequestParam description: String,
-        @RequestParam type: Type,
-        @RequestParam link: String,
-        @RequestParam code: Short
+        @Valid lecture: CreateLectureRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val lecture = CreateLectureRequestDTO(title, description, type, link, userId, code)
-            lecturesService.save(lecture)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                lecturesService.save(lecture)
+            }
             return "redirect:/app/users/$userId/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create lecture")
@@ -96,22 +100,16 @@ class LecturesController(private val lecturesService: LecturesService) {
     fun updateLecture(
         @PathVariable userId: UUID,
         @PathVariable lectureId: UUID,
-        @RequestParam title: String,
-        @RequestParam description: String,
-        @RequestParam type: Type,
-        @RequestParam link: String,
-        @RequestParam code: Short
+        @Valid lecture: UpdateLectureRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val lecture = UpdateLectureRequestDTO(
-                title = title,
-                description = description,
-                type = type,
-                link = link,
-                code = code,
-                userId = userId
-            )
-            lecturesService.updateById(lectureId, lecture)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                lecturesService.updateById(lectureId, lecture)
+            }
             return "redirect:/app/users/$userId/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update lecture")

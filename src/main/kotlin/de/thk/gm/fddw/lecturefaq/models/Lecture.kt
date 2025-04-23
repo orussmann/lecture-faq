@@ -5,30 +5,30 @@ import jakarta.persistence.*
 import java.util.*
 
 @Entity
-data class Lecture(
+class Lecture(
     @Id
     @Column
     val id: UUID = UUID.randomUUID(),
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false)
-    val description: String,
+    var description: String,
 
     @Column(nullable = false)
-    val type: Type,
+    var type: Type,
 
     @Column(nullable = false)
-    val link: String,
+    var link: String,
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    val user: User,
+    var user: User,
 
     @OneToMany(mappedBy = "lecture", cascade = [CascadeType.ALL], orphanRemoval = true)
     val questions: MutableList<Question> = mutableListOf(),
 
     @Column(nullable = false)
-    val code: Short
+    var code: Short
 )

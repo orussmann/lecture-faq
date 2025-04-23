@@ -8,24 +8,25 @@ import jakarta.validation.constraints.Email
 //TODO: Consider having a bidirectional 1-n-relationship
 @Entity
 @Table(name = "Lecture_User")
-data class User(
-
+class User(
+    //TODO: Consider additionally doing validation on the persistence layer
+    // -> counter errors on the service layer
     @Id
     @Column(name = "user_id", nullable = false)
     val id: UUID = UUID.randomUUID(),
 
     @field:Email
     @Column(name = "email", nullable = false)
-    val email: String,
+    var email: String = "",
 
     @Column(name = "first_name", nullable = false)
-    val firstName: String,
+    var firstName: String = "",
 
     @Column(name = "last_name", nullable = false)
-    val lastName: String,
+    var lastName: String = "",
 
     @Column
-    val role: Role,
+    var role: Role = Role.STUDENT,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val polls: MutableList<Poll> = mutableListOf(),

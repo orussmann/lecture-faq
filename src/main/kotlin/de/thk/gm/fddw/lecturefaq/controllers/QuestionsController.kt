@@ -3,12 +3,15 @@ package de.thk.gm.fddw.lecturefaq.controllers
 import de.thk.gm.fddw.lecturefaq.models.question_dto.CreateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.question_dto.UpdateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.QuestionsService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
 
 @Controller
@@ -63,16 +66,16 @@ class QuestionsController(private val questionsService: QuestionsService) {
     @PostMapping("/lectures/{lectureId}/questions")
     fun createQuestion(
         @PathVariable lectureId: UUID,
-        @RequestParam userId: UUID,
-        @RequestParam text: String
+        @Valid question: CreateQuestionRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val question = CreateQuestionRequestDTO(
-                lectureId = lectureId,
-                userId = userId,
-                text = text
-            )
-            questionsService.save(question)
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                questionsService.save(question)
+            }
             return "redirect:/app/lectures/$lectureId/questions"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create question")
@@ -96,16 +99,17 @@ class QuestionsController(private val questionsService: QuestionsService) {
     fun updateQuestion(
         @PathVariable questionId: UUID,
         @PathVariable lectureId: UUID,
-        @RequestParam userId: UUID,
-        @RequestParam text: String
+        @Valid question: UpdateQuestionRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
-            val question = UpdateQuestionRequestDTO(
-                lectureId = lectureId,
-                userId = userId,
-                text = text
-            )
-            questionsService.updateById(questionId, question)
+
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            } else {
+                questionsService.updateById(questionId, question)
+            }
             return "redirect:/app/lectures/$lectureId/questions"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update question")

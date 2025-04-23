@@ -4,6 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.question_dto.CreateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.question_dto.QuestionResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.question_dto.UpdateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.QuestionsService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -54,8 +55,8 @@ class QuestionsRestController(private val questionsService: QuestionsService) {
     @PostMapping("/lectures/{lectureId}/questions")
     @ResponseStatus(HttpStatus.CREATED)
     fun createQuestion(
-        @RequestBody questionDTO: CreateQuestionRequestDTO,
-        @PathVariable lectureId: UUID
+        @PathVariable lectureId: UUID,
+        @Valid @RequestBody questionDTO: CreateQuestionRequestDTO
     ): QuestionResponseDTO {
         try {
             return questionsService.save(questionDTO)
@@ -81,8 +82,8 @@ class QuestionsRestController(private val questionsService: QuestionsService) {
     @ResponseStatus(HttpStatus.OK)
     fun updateQuestion(
         @PathVariable questionId: UUID,
-        @RequestBody updatedQuestionDTO: UpdateQuestionRequestDTO,
-        @PathVariable lectureId: UUID
+        @PathVariable lectureId: UUID,
+        @Valid @RequestBody updatedQuestionDTO: UpdateQuestionRequestDTO
     ): QuestionResponseDTO {
         try {
             return questionsService.updateById(questionId, updatedQuestionDTO)

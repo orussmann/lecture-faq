@@ -4,6 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.AnswersService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -42,8 +43,8 @@ class AnswersRestController(
     @PostMapping("/polls/{pollId}/answers")
     @ResponseStatus(HttpStatus.CREATED)
     fun createAnswer(
-        @RequestBody answer: CreateAnswerRequestDTO,
-        @PathVariable pollId: UUID
+        @PathVariable pollId: UUID,
+        @Valid @RequestBody answer: CreateAnswerRequestDTO
     ): AnswerResponseDTO {
         try {
             if (answer.pollId == null) {
@@ -90,7 +91,7 @@ class AnswersRestController(
     fun updateAnswer(
         @PathVariable pollId: UUID,
         @PathVariable answerId: UUID,
-        @RequestBody answer: UpdateAnswerRequestDTO
+        @Valid @RequestBody answer: UpdateAnswerRequestDTO
     ): AnswerResponseDTO {
         try {
             val updatedAnswer = answersService.updateById(answerId, answer)
