@@ -96,4 +96,9 @@ class QuestionsServiceImpl(
         val savedQuestion = questionsRepository.save(updatedQuestion)
         return questionsDTOMapper.mapToQuestionResponse(savedQuestion)
     }
+
+    override fun findAllByLectureIdOrderByCreatedAt(lectureId: UUID): List<QuestionResponseDTO> {
+        val questionsOrdered = questionsRepository.findAllByLectureIdOrderByCreatedAt(lectureId)
+        return questionsOrdered.map(questionsDTOMapper::mapToQuestionResponse)
+    }
 }

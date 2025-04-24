@@ -4,6 +4,7 @@ import de.thk.gm.fddw.lecturefaq.constants.Type
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
+import de.thk.gm.fddw.lecturefaq.services.QuestionsService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -17,7 +18,10 @@ import java.util.*
 
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
-class LecturesController(private val lecturesService: LecturesService) {
+class LecturesController(
+    private val lecturesService: LecturesService,
+    private val questionsService: QuestionsService
+) {
 
     @GetMapping("/users/{userId}/lectures/{lectureId}")
     @ResponseStatus(HttpStatus.OK)
@@ -28,7 +32,9 @@ class LecturesController(private val lecturesService: LecturesService) {
     ): String {
         try {
             val lecture = lecturesService.findById(lectureId)
+            val chatMessages = questionsService.findAllByLectureIdOrderByCreatedAt(lecture.id)
             model.addAttribute("lecture", lecture)
+            model.addAttribute("chatMessages", chatMessages)
             return "lectures/showLecture"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")

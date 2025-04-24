@@ -16,7 +16,9 @@ class QuestionsDTOMapper {
             id = question.id,
             lectureId = question.lecture.id,
             userId = question.user.id,
-            text = question.text
+            text = question.text,
+            createdAt = question.createdAt,
+            chatUserName = question.chatUserName
         )
     }
 
@@ -28,7 +30,9 @@ class QuestionsDTOMapper {
         return Question(
             lecture = lecture,
             user = user,
-            text = createQuestionRequestDTO.text
+            text = createQuestionRequestDTO.text,
+            createdAt = createQuestionRequestDTO.createdAt,
+            chatUserName = createQuestionRequestDTO.chatUserName
         )
     }
 

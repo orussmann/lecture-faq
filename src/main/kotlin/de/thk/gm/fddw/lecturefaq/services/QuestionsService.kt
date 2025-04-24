@@ -14,4 +14,5 @@ interface QuestionsService {
     fun findAllByLectureId(lectureId: UUID): List<QuestionResponseDTO>
     fun removeById(questionId: UUID)
     fun updateById(questionId: UUID, questionDTO: UpdateQuestionRequestDTO): QuestionResponseDTO
+    fun findAllByLectureIdOrderByCreatedAt(lectureId: UUID): List<QuestionResponseDTO>
 }

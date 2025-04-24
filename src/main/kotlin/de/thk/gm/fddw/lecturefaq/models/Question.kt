@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import java.util.Date
 import java.util.UUID
 
 @Entity
@@ -22,5 +23,11 @@ class Question(
     var user: User,
 
     @Column(nullable = false)
-    var text: String
+    var text: String,
+
+    @Column(nullable = true)
+    var createdAt: Date = Date(),
+
+    @Column(nullable = true)
+    var chatUserName: String = ""
 )
