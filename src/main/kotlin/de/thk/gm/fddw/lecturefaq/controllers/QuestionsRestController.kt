@@ -66,7 +66,7 @@ class QuestionsRestController(private val questionsService: QuestionsService) {
     }
 
     @DeleteMapping("/lectures/{lectureId}/questions/{questionId}")   //TODO: Handln, wenn nichts gelöscht wird
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteQuestion(
         @PathVariable lectureId: UUID,
         @PathVariable questionId: UUID

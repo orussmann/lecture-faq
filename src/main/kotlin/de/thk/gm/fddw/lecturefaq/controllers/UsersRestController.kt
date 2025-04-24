@@ -50,7 +50,7 @@ class UsersRestController(private val usersService: UsersService) {
     }
 
     @DeleteMapping("/users/{id}")   //TODO: Handln, wenn nichts gelöscht wird
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteUser(@PathVariable id: UUID) {
         try {
             usersService.removeById(id)

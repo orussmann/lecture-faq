@@ -72,7 +72,7 @@ class AnswersRestController(
     }
 
     @DeleteMapping("/polls/{pollId}/answers/{answerId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteAnswer(
         @PathVariable pollId: UUID,
         @PathVariable answerId: UUID
