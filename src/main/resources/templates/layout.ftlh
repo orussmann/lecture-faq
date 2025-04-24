@@ -1,16 +1,20 @@
 <#macro layout>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lecture FAQ</title>
-</head>
-<body>
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Lecture FAQ</title>
+    </head>
+    <body>
     <header>
-        <h1>Lecture FAQ</h1>
+        <nav>
+            <a href="">Profil</a>
+            <a href="">Vorlesungen</a>
+            <a href="">Dozenten</a>
+        </nav>
     </header>
     <hr>
     <main>
@@ -22,6 +26,6 @@
         <a href="#">About us</a>
         <a href="#">Support</a>
     </footer>
-</body>
-</html>
+    </body>
+    </html>
 </#macro>
