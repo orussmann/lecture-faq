@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Chat</title>
+</head>
+<header>
+    <nav>
+        <a href="">Profil</a>
+        <a href="">Vorlesungen</a>
+        <a href="">Dozenten</a>
+    </nav>
+</header>
+<main>
+</main>
+<body>
+<h1>Frameworks, Daten und Dienste im Web</h1>
+<div id="chat"></div>
+<input type="text" id="username" placeholder="Benutzername... (optional)">
+<input type="text" id="text" placeholder="Nachricht...">
+<br>
+<button onclick="sendMessage()">Send</button>
+<script>
+    let ws = new WebSocket("/app/chat")
+    let chat = document.getElementById("chat")
+    let message = {}
+
+    function sendMessage() {
+        let username = document.getElementById("username").value
+        message.username = username.length > 0 ? username : "Anonymer Absender"
+        message.text = document.getElementById("text").value
+        ws.send(JSON.stringify(message))
+    }
+
+    ws.onmessage = function (msg) {
+        let time = new Date().toLocaleTimeString()
+        let date = new Date().toLocaleDateString()
+        message = JSON.parse(msg.data)
+        //chat.innerHTML += "<p><b>" + message.username + ":</b>" + message.text + "</p>"
+        chat.innerHTML += `<p>
+                            <b>${message.text}</b><br>
+                            ${message.username}, ${time} ${date}
+                            </p>`
+    }
+</script>
+</body>
+<footer>
+
+</footer>
+</html>
