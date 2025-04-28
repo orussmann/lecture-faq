@@ -1,4 +1,4 @@
-<#import "../layout.ftlh" as base>
+<#import "../base-layout-student.ftlh" as base>
 
 <@base.layout>
     <h2>Lectures</h2>

@@ -1,7 +1,7 @@
-<#import "../layout.ftlh" as base>
+<#import "../base-layout-student.ftlh" as base>
 
 <@base.layout>
-    <h2>Polls</h2>
+    <h1>Polls</h1>
     <ul>
         <#list polls as poll>
             <li>
@@ -22,19 +22,19 @@
         <input type="text" placeholder="Describe the ins and outs of a web server..." name="description" required><br>
 
         <label>Answer 1</label>
-        <input type="text" placeholder="It serves data to a web client.." name="answers[0].text" required><br>
+        <input type="text" placeholder="It serves data to a web client.." name="answers[0]" required><br>
 
         <label>Answer 2</label>
-        <input type="text" placeholder="Its communication is based on HTTP..." name="answers[1].text" required><br>
+        <input type="text" placeholder="Its communication is based on HTTP..." name="answers[1]" required><br>
 
         <label>Answer 3</label>
-        <input type="text" placeholder="Answer 3" name="answers[2].text"><br>
+        <input type="text" placeholder="Answer 3" name="answers[2]"><br>
 
         <label>Answer 4</label>
-        <input type="text" placeholder="Answer 4" name="answers[3].text"><br>
+        <input type="text" placeholder="Answer 4" name="answers[3]"><br>
 
         <label>Answer 5</label>
-        <input type="text" placeholder="Answer 5" name="answers[4].text"><br>
+        <input type="text" placeholder="Answer 5" name="answers[4]"><br>
 
         <button type="submit">Create poll</button>
     </form>

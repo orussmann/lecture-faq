@@ -1,7 +1,7 @@
-<#import "../layout.ftlh" as base>
+<#import "../base-layout-student.ftlh" as base>
 
 <@base.layout>
-    <h2>Answers</h2>
+    <h1>Answers</h1>
     <ul>
         <#list answers as answer>
             <li>

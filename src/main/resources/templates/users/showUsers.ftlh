@@ -1,7 +1,7 @@
-<#import "../layout.ftlh" as base>
+<#import "../base-layout-student.ftlh" as base>
 
 <@base.layout>
-    <h2>Users</h2>
+    <h1>Users</h1>
     <ul>
         <#list users as user>
             <li>
