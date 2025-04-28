@@ -1,6 +1,5 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.constants.MINIMUM_ANSWERS_COUNT
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
@@ -46,7 +45,7 @@ class PollsRestController(
     @ResponseStatus(HttpStatus.CREATED)
     fun createPoll(
         @PathVariable userId: UUID,
-        @Valid @RequestBody poll: CreatePollRequestDTO,
+        @RequestBody @Valid poll: CreatePollRequestDTO,
     ): PollResponseDTO {
         try {
             val createdPoll = pollsService.save(poll, userId)
