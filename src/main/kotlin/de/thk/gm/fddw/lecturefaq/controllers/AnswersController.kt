@@ -1,7 +1,7 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.UpdateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.AnswersService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.awt.SystemColor.text
 import java.util.*
 
 //TODO: Consider using ResponseEntity

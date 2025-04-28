@@ -1,15 +1,16 @@
 package de.thk.gm.fddw.lecturefaq.services
 
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.Answer
+import de.thk.gm.fddw.lecturefaq.models.Poll
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.AnswerResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.UpdateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.repositories.AnswersRepository
 import de.thk.gm.fddw.lecturefaq.repositories.PollsRepository
 import de.thk.gm.fddw.lecturefaq.util.AnswersDTOMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import kotlin.NoSuchElementException
 
 @Service
 class AnswersServiceImpl(

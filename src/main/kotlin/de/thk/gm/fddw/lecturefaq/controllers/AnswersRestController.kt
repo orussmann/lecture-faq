@@ -1,8 +1,8 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.AnswerResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.UpdateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.AnswersService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus

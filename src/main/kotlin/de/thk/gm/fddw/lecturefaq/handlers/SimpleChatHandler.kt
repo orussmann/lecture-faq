@@ -1,7 +1,7 @@
 package de.thk.gm.fddw.lecturefaq.handlers
 
 import com.chargebee.org.json.JSONObject
-import de.thk.gm.fddw.lecturefaq.models.question_dto.CreateQuestionRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dtos.CreateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.QuestionsService
 import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.TextMessage

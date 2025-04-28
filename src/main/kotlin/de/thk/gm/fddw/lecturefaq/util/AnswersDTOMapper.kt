@@ -2,11 +2,10 @@ package de.thk.gm.fddw.lecturefaq.util
 
 import de.thk.gm.fddw.lecturefaq.models.Answer
 import de.thk.gm.fddw.lecturefaq.models.Poll
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.AnswerResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.UpdateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.AnswerResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.UpdateAnswerRequestDTO
 import org.springframework.stereotype.Component
-import java.awt.SystemColor.text
 
 @Component
 class AnswersDTOMapper {

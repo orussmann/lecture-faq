@@ -1,6 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.services
 
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
@@ -11,7 +11,6 @@ import de.thk.gm.fddw.lecturefaq.util.PollsDTOMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import kotlin.NoSuchElementException
 
 @Service
 class PollsServiceImpl(
