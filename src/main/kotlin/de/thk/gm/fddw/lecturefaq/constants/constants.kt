@@ -1,3 +1,14 @@
 package de.thk.gm.fddw.lecturefaq.constants
 
 const val MINIMUM_ANSWERS_COUNT = 2
+const val MAXIMUM_ANSWERS_COUNT = 5
+const val MINIMUM_TITLE_LENGTH = 1
+const val MAXIMUM_TITLE_LENGTH = 100
+const val MINIMUM_DESCRIPTION_LENGTH = 1
+const val MAXIMUM_DESCRIPTION_LENGTH = 1_000
+const val MINIMUM_TEXT_LENGTH = 1
+const val MAXIMUM_TEXT_LENGTH = 1_000
+const val MINIMUM_LINK_LENGTH  = 1
+const val MAXIMUM_LINK_LENGTH  = 1_000
+const val MINIMUM_NAME_LENGTH = 1
+const val MAXIMUM_NAME_LENGTH = 100

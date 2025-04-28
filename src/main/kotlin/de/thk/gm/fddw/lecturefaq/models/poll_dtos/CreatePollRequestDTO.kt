@@ -1,28 +1,22 @@
 package de.thk.gm.fddw.lecturefaq.models.poll_dtos
 
-import de.thk.gm.fddw.lecturefaq.constants.MINIMUM_ANSWERS_COUNT
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
-import jakarta.validation.Valid
+import de.thk.gm.fddw.lecturefaq.constants.*
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
-import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.RequestParam
-import java.util.*
 
-class CreatePollRequestDTO(
-    @field:NotNull
+class CreatePollRequestDTO {
     @field:NotBlank
-    @field:Size(min = 1, max = 100)
-    val title: String,
+    @field:Size(min = MINIMUM_TITLE_LENGTH, max = MAXIMUM_TITLE_LENGTH)
+    val title: String = ""
 
-    @field:NotNull
+
     @field:NotBlank
-    @field:Size(min = 1, max = 1_000)
-    val description: String,
+    @field:Size(min = MINIMUM_DESCRIPTION_LENGTH, max = MAXIMUM_DESCRIPTION_LENGTH)
+    val description: String = ""
 
-    //@field:Valid
-    @field:NotNull
-    @field:Size(min = MINIMUM_ANSWERS_COUNT, max = 5)
-    var answers: MutableList< /*@Valid*/ /*@NotBlank @Size(max = 10)*/ CreateAnswerRequestDTO> = mutableListOf()
-)
+    @field:NotEmpty(message = "answers must not be empty")
+    @field:Size(min = MINIMUM_ANSWERS_COUNT, max = MAXIMUM_ANSWERS_COUNT)
+    var answers: MutableList<CreateAnswerRequestDTO> = mutableListOf()
+}
