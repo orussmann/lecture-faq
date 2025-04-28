@@ -1,6 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models.lecture_dtos
 
-import de.thk.gm.fddw.lecturefaq.constants.Type
+import de.thk.gm.fddw.lecturefaq.models.enums.Type
 import java.util.*
 
 class LectureResponseDTO(

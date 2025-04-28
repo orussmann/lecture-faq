@@ -1,6 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models
 
-import de.thk.gm.fddw.lecturefaq.constants.Role
+import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import jakarta.persistence.*
 import java.util.*
 import jakarta.validation.constraints.Email

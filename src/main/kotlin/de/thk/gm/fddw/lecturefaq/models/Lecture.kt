@@ -1,6 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models
 
-import de.thk.gm.fddw.lecturefaq.constants.Type
+import de.thk.gm.fddw.lecturefaq.models.enums.Type
 import jakarta.persistence.*
 import java.util.*
 

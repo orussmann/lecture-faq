@@ -1,6 +1,5 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.constants.Role
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.UsersService

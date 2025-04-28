@@ -1,6 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models.user_dtos
 
-import de.thk.gm.fddw.lecturefaq.constants.Role
+import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import java.util.*
 
 class UserResponseDTO(
