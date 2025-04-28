@@ -11,21 +11,21 @@
         <#if errors?? && errors.getFieldError("description")??>
             ${errors.getFieldError("description")["defaultMessage"]}
         </#if>
-        <input type="text" name="answers[0]" placeholder="Antwort A">
-        <#if errors?? && errors.getFieldError("answers[0]")??>
-            ${errors.getFieldError("answers[0]")["defaultMessage"]}
+        <input type="text" name="answers[0].text" placeholder="Antwort A">
+        <#if errors?? && errors.getFieldError("answers[0].text")??>
+            ${errors.getFieldError("answers[0].text")["defaultMessage"]}
         </#if>
-        <input type="text" name="answers[1]" placeholder="Antwort B">
-        <#if errors?? && errors.getFieldError("answers[1]")??>
-            ${errors.getFieldError("answers[1]")["defaultMessage"]}
+        <input type="text" name="answers[1].text" placeholder="Antwort B">
+        <#if errors?? && errors.getFieldError("answers[1].text")??>
+            ${errors.getFieldError("answers[1].text")["defaultMessage"]}
         </#if>
-        <input type="text" name="answers[2]" placeholder="Antwort C">
-        <#if errors?? && errors.getFieldError("answers[2]")??>
-            ${errors.getFieldError("answers[2]")["defaultMessage"]}
+        <input type="text" name="answers[2].text" placeholder="Antwort C">
+        <#if errors?? && errors.getFieldError("answers[2].text")??>
+            ${errors.getFieldError("answers[2].text")["defaultMessage"]}
         </#if>
-        <input type="text" name="answers[3]" placeholder="Antwort D">
-        <#if errors?? && errors.getFieldError("answers[3]")??>
-            ${errors.getFieldError("answers[3]")["defaultMessage"]}
+        <input type="text" name="answers[3].text" placeholder="Antwort D">
+        <#if errors?? && errors.getFieldError("answers[3].text")??>
+            ${errors.getFieldError("answers[3].text")["defaultMessage"]}
         </#if>
         <button type="submit">Abschicken</button>
     </form>
