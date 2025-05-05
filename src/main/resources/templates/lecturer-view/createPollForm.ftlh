@@ -2,7 +2,7 @@
 
 <@base.layout>
     <h1>Multiple-Choice Fragen stellen</h1>
-    <form action="/app/users/${userId}/polls/create-form" method="post">
+    <form action="/app/users/${userId}/polls/poll-form" method="post">
         <input type="text" name="title" placeholder="Titel">
         <#if errors?? && errors.getFieldError("title")??>
             ${errors.getFieldError("title")["defaultMessage"]}
