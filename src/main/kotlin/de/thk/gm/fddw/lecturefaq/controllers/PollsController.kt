@@ -76,7 +76,8 @@ class PollsController(
             } else {
                 logger.info("There are no >>Errors.")
                 println("There are no >>Errors.")
-                pollsService.save(poll, userId)
+                val filteredPoll = poll.apply { answers = answers.filter { it.text.isNotBlank() }.toMutableList() }
+                pollsService.save(filteredPoll, userId)
                 return "redirect:/app/users/${userId}/polls"
             }
         } catch (e: ResponseStatusException) {
