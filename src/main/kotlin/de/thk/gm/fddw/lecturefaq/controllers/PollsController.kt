@@ -1,32 +1,22 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.constants.MINIMUM_ANSWERS_COUNT
-import de.thk.gm.fddw.lecturefaq.models.answer_dto.CreateAnswerRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.PollsService
 import de.thk.gm.fddw.lecturefaq.services.UsersServiceImpl
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.UUID
+import java.util.*
+
 
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
@@ -34,6 +24,8 @@ class PollsController(
     private val pollsService: PollsService,
     private val usersService: UsersServiceImpl
 ) {
+
+    private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
     @GetMapping("/users/{userId}/polls")
     @ResponseStatus(HttpStatus.OK)
@@ -66,17 +58,27 @@ class PollsController(
     @PostMapping("/users/{userId}/polls")
     fun createPoll(
         @PathVariable userId: UUID,
-        @Valid @ModelAttribute poll: CreatePollRequestDTO,
+        @Validated @ModelAttribute poll: CreatePollRequestDTO,
         bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes
+        model: Model
     ): String {
         try {
             if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute("errors", bindingResult)
+                val polls = pollsService.findAllByUserId(userId)
+                model.addAttribute("errors", bindingResult)
+                model.addAttribute("userId", userId)
+                model.addAttribute("polls", polls)
+                logger.info("There are >>Errors: " + bindingResult.hasErrors())
+                println("There are >>Errors: " + bindingResult.hasErrors())
+                logger.info(">>Errors: " + bindingResult.allErrors.toString())
+                println(">>Errors: " + bindingResult.allErrors.toString())
+                return "polls/showPolls"
             } else {
+                logger.info("There are no >>Errors.")
+                println("There are no >>Errors.")
                 pollsService.save(poll, userId)
+                return "redirect:/app/users/${userId}/polls"
             }
-            return "redirect:/app/users/${userId}/polls"
         } catch (e: ResponseStatusException) {
             throw e
         } catch (e: Exception) {

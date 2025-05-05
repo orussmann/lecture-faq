@@ -6,6 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.PollsService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
@@ -45,7 +46,7 @@ class PollsRestController(
     @ResponseStatus(HttpStatus.CREATED)
     fun createPoll(
         @PathVariable userId: UUID,
-        @RequestBody @Valid poll: CreatePollRequestDTO,
+        @Validated @RequestBody poll: CreatePollRequestDTO,
     ): PollResponseDTO {
         try {
             val createdPoll = pollsService.save(poll, userId)
