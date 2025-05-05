@@ -32,7 +32,7 @@
         <button onclick="updateUserRestAPI()" type="button">Update via AJAX! Let's Go!!!</button>
     </form>
 
-    <<form> action="/app/users/${user.userId}" method="post">
+    <form> action="/app/users/${user.userId}" method="post">
 
         <#--<input type="hidden" name="_method" value="DELETE"/>
         <button>Delete</button>
