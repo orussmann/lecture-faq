@@ -1,4 +1,4 @@
-<#import "../base-layout-lecturer.ftlh" as base>
+<#import "../base-layout-student.ftlh" as base>
 <@base.layout>
     <h1>${poll.title}</h1>
     <ul>
@@ -11,7 +11,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             console.log("DOM content loaded");
-            const ws = new WebSocket("/app/poll-completion?pollId=${poll.id}&role=LECTURER")
+            const ws = new WebSocket("/app/poll-completion?pollId=${poll.id}&role=STUDENT")
 
             const answers = document.querySelectorAll("li");
             const link = document.createElement("a");

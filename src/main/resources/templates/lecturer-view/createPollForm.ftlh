@@ -29,4 +29,15 @@
         </#if>
         <button type="submit">Abschicken</button>
     </form>
+    <h2>Polls</h2>
+    <ul>
+        <#list polls as poll>
+            <li>
+                <a href="/app/users/${poll.userId}/polls/${poll.id}">
+                    Poll ID: ${poll.id}, User: ${poll.userId}, Title: ${poll.title},
+                    Description: ${poll.description}
+                </a>
+            </li>
+        </#list>
+    </ul>
 </@base.layout>

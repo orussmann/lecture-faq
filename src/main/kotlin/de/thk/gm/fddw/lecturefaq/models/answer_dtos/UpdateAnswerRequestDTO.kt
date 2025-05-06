@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size
 class UpdateAnswerRequestDTO(
     @field:NotBlank
     @field:Size(min = MINIMUM_TEXT_LENGTH, max = MAXIMUM_TEXT_LENGTH)
-    val text: String?,
+    val text: String? = null,
     @field:PositiveOrZero
-    val count: Short?
+    val count: Short? = null
 )

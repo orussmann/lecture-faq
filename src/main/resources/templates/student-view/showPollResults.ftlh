@@ -1,4 +1,4 @@
-<#import "../base-layout-lecturer.ftlh" as base>
+<#import "../base-layout-student.ftlh" as base>
 <@base.layout>
     <h1>${title}</h1>
 <#--    <div id="answers"></div>-->
@@ -30,7 +30,7 @@
                 }
             });
 
-            const ws = new WebSocket("/app/poll-completion?pollId=${pollId}&role=LECTURER") //TODO: First draft, change later (also the other ws endpoints)...
+            const ws = new WebSocket("/app/poll-completion?pollId=${pollId}&role=STUDENT") //TODO: First draft, change later (also the other ws endpoints)...
             const answersArray = [
                 <#list answers as answer>
                 {
@@ -66,5 +66,6 @@
             chart.data.datasets[0].data = [...(jsonResponse.map(obj => obj.count))];
             chart.update();
         }
+
     </script>
 </@base.layout>
