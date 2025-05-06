@@ -15,7 +15,8 @@ class UsersDTOMapper {  //TODO: Find better name
             email = user.email,
             firstName = user.firstName,
             lastName = user.lastName,
-            role = user.role
+            role = user.role,
+            subscriptions = user.subscriptions
         )
     }
 
@@ -38,6 +39,7 @@ class UsersDTOMapper {  //TODO: Find better name
         user.firstName = updateUserRequestDTO.firstName ?: user.firstName
         user.lastName = updateUserRequestDTO.lastName ?: user.lastName
         user.role = updateUserRequestDTO.role ?: user.role
+        user.subscriptions = updateUserRequestDTO.subscriptions ?: user.subscriptions
         return user
     }
 }

@@ -1,9 +1,11 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
+import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
-import kotlin.Exception
 
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
 class UsersController(private val usersService: UsersService, private val usersRestController: UsersRestController) {
+
+    private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -90,6 +93,41 @@ class UsersController(private val usersService: UsersService, private val usersR
             return "redirect:/app/users"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
+        }
+    }
+
+    @GetMapping("/users/students/{studentId}")
+    fun getAllLecturers(
+        @PathVariable studentId: UUID,
+        model: Model
+    ): String {
+        try {
+            val student = usersService.findById(studentId)
+            val lecturers = usersService.findAll()
+                .filter { it.role == Role.LECTURER }
+
+            // Mapping: UserResponseDTO mit zusätzlichem Feld "subscribed"
+            data class UserSubscriptionResponse(
+                var userId: UUID,
+                var firstName: String,
+                var lastName: String,
+                var subscribed: Boolean
+            )
+
+            val lecturersWithSubscriptionInfo = lecturers.map { lecturer ->
+                UserSubscriptionResponse(
+                    lecturer.userId,
+                    lecturer.firstName,
+                    lecturer.lastName,
+                    lecturer.subscriptions.contains(studentId)
+                )
+            }
+
+            model.addAttribute("lecturers", lecturersWithSubscriptionInfo)
+            model.addAttribute("studentId", studentId)
+            return "student-view/showLecturers"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 }

@@ -8,5 +8,6 @@ class UserResponseDTO(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val role: Role
+    val role: Role,
+    val subscriptions: MutableList<UUID>
 )

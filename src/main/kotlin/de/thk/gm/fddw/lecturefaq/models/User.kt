@@ -2,8 +2,8 @@ package de.thk.gm.fddw.lecturefaq.models
 
 import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import jakarta.persistence.*
-import java.util.*
 import jakarta.validation.constraints.Email
+import java.util.*
 
 //TODO: Consider having a bidirectional 1-n-relationship
 @Entity
@@ -32,5 +32,8 @@ class User(
     val polls: MutableList<Poll> = mutableListOf(),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val lectures: MutableList<Lecture> = mutableListOf()
+    val lectures: MutableList<Lecture> = mutableListOf(),
+
+    @ElementCollection
+    var subscriptions: MutableList<UUID> = mutableListOf()
 )

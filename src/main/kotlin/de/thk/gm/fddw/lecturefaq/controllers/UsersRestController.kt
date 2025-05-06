@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
-import kotlin.Exception
 
 @RestController
 @RequestMapping("/api/v1")
@@ -69,6 +68,26 @@ class UsersRestController(private val usersService: UsersService) {
             return usersService.updateById(id, updatedUserDTO)
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
+        }
+    }
+
+    @PutMapping("/users/lecturers/{lecturerId}/subscriptions/{studentId}")
+    fun updateLecturersSubscriptions(
+        @PathVariable lecturerId: UUID,
+        @PathVariable studentId: UUID,
+        @RequestBody updateUserRequestDTO: UpdateUserRequestDTO
+    ) {
+        try {
+            val subscriptions = usersService.findById(lecturerId).subscriptions
+            val studentSubscribed = subscriptions.contains(studentId)
+            if (studentSubscribed) {
+                subscriptions.remove(studentId)
+            } else {
+                subscriptions.add(studentId)
+            }
+            usersService.updateById(lecturerId, UpdateUserRequestDTO(subscriptions = subscriptions)) //TODO: Redundancy -> see @RequestBody
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 }

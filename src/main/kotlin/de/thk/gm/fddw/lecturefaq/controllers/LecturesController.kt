@@ -4,6 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
 import de.thk.gm.fddw.lecturefaq.services.QuestionsService
+import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -19,7 +20,8 @@ import java.util.*
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
 class LecturesController(
     private val lecturesService: LecturesService,
-    private val questionsService: QuestionsService
+    private val questionsService: QuestionsService,
+    private val usersService: UsersService
 ) {
 
     @GetMapping("/users/{userId}/lectures/{lectureId}")
@@ -40,6 +42,19 @@ class LecturesController(
         }
     }
 
+    @GetMapping("/users/{userId}/notification")
+    fun showNotification(
+        @PathVariable userId: UUID,
+        model: Model
+    ): String {
+        try {
+            model.addAttribute("studentId", userId)
+            return "student-view/showNotification"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
     /*
     @GetMapping("/lectures")
     @ResponseStatus(HttpStatus.OK)
@@ -53,7 +68,7 @@ class LecturesController(
     }
      */
 
-    @GetMapping("/users/{userId}/lectures")
+    /*@GetMapping("/users/{userId}/lectures")
     @ResponseStatus(HttpStatus.OK)
     fun getAllLecturesFromUser(
         @PathVariable userId: UUID,
@@ -67,7 +82,28 @@ class LecturesController(
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
         }
+    }*/
+
+
+
+    @GetMapping("/users/{userId}/lectures")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllLecturesFromUser(
+        @PathVariable userId: UUID,
+        model: Model
+    ): String {
+        try {
+            val lectures = lecturesService.findAllByUserId(userId)
+//            val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }.map { it.userId }
+//            val lecturersForResponse = lectures.filter { it.userId in lecturers }
+            model.addAttribute("lectures", lectures)
+            model.addAttribute("userId", userId)
+            return "lecturer-view/showLectures"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
+        }
     }
+
 
     @PostMapping("/users/{userId}/lectures")
     fun createLecture(
