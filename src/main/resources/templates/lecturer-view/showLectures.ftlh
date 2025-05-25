@@ -1,4 +1,4 @@
-<#import "../base-layout-student.ftlh" as base>
+<#import "../base-layout-lecturer.ftlh" as base>
 
 <@base.layout>
     <h2>Lectures</h2>
@@ -23,7 +23,8 @@
         <input type="text" placeholder="FDDW" name="title" id="title" required><br>
 
         <label>Lecture description</label>
-        <input type="text" placeholder="A course that focuses on web services" name="description" id="description" required><br>
+        <input type="text" placeholder="A course that focuses on web services" name="description" id="description"
+               required><br>
 
         <label>
             <select name="type" id="type" required>
@@ -53,15 +54,18 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelector("#main-button").addEventListener("click", () => {
-                const ws = new WebSocket("/app/new-lecture?lecturerId=${userId}&studentId=null");
-                ws.send(JSON.stringify({lecturerId: "${userId}"}));
+                const ws = new WebSocket("/app/new-lecture?lecturerId=${userId}");
+                ws.onopen = () => {
+                    ws.send(JSON.stringify({lecturerId: "${userId}"}));
+                };
                 const lecture = {};
                 const xhr = new XMLHttpRequest();
-                xhr.open("POST", "/app/users/${userId}/lectures");
+                xhr.open("POST", "/app/api/v1/users/${userId}/lectures");
                 lecture.title = document.getElementById("title").value;
                 lecture.description = document.getElementById("description").value;
                 lecture.type = document.getElementById("type").value;
                 lecture.link = document.getElementById("link").value;
+                lecture.userId = "${userId}";
                 lecture.code = document.getElementById("code").value;
                 xhr.setRequestHeader("Content-Type", "application/json")
                 xhr.send(JSON.stringify(lecture));

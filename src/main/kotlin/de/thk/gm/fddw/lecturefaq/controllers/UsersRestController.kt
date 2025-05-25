@@ -5,6 +5,7 @@ import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserResponseDTO
 import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -13,6 +14,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/v1")
 class UsersRestController(private val usersService: UsersService) {
+
+    private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -71,21 +74,29 @@ class UsersRestController(private val usersService: UsersService) {
         }
     }
 
-    @PutMapping("/users/lecturers/{lecturerId}/subscriptions/{studentId}")
+    //TODO: Check if all endpoints follow best practices
+    @PutMapping("/users/students/{studentId}/subscriptions/{lecturerId}")
+    @ResponseStatus(HttpStatus.OK)
     fun updateLecturersSubscriptions(
-        @PathVariable lecturerId: UUID,
         @PathVariable studentId: UUID,
+        @PathVariable lecturerId: UUID,
         @RequestBody updateUserRequestDTO: UpdateUserRequestDTO
     ) {
         try {
-            val subscriptions = usersService.findById(lecturerId).subscriptions
-            val studentSubscribed = subscriptions.contains(studentId)
+            logger.debug("UserRestController, studentId: {}", studentId)
+            logger.debug("UserRestController, lectureId: {}", lecturerId)
+            val subscriptions = usersService.findById(studentId).subscriptions
+            val studentSubscribed = subscriptions.contains(lecturerId)
+            logger.debug("UserRestController, studentSubscribed: {}", studentSubscribed)
             if (studentSubscribed) {
-                subscriptions.remove(studentId)
+                subscriptions.remove(lecturerId)
             } else {
-                subscriptions.add(studentId)
+                subscriptions.add(lecturerId)
             }
-            usersService.updateById(lecturerId, UpdateUserRequestDTO(subscriptions = subscriptions)) //TODO: Redundancy -> see @RequestBody
+            usersService.updateById(
+                studentId,
+                UpdateUserRequestDTO(subscriptions = subscriptions)
+            ) //TODO: Redundancy -> see @RequestBody.. and here all values are updated with default values (null) -> Wrong!
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }

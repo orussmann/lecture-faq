@@ -96,15 +96,15 @@ class UsersController(private val usersService: UsersService, private val usersR
         }
     }
 
-    @GetMapping("/users/students/{studentId}")
+    @GetMapping("/users/students/{studentId}/subscriptions")
     fun getAllLecturers(
         @PathVariable studentId: UUID,
         model: Model
     ): String {
         try {
-            val student = usersService.findById(studentId)
-            val lecturers = usersService.findAll()
-                .filter { it.role == Role.LECTURER }
+            val studentsSubscriptions = usersService.findById(studentId).subscriptions
+            val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }
+
 
             // Mapping: UserResponseDTO mit zusätzlichem Feld "subscribed"
             data class UserSubscriptionResponse(
@@ -119,7 +119,7 @@ class UsersController(private val usersService: UsersService, private val usersR
                     lecturer.userId,
                     lecturer.firstName,
                     lecturer.lastName,
-                    lecturer.subscriptions.contains(studentId)
+                    studentsSubscriptions.contains(lecturer.userId)
                 )
             }
 

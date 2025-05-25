@@ -30,5 +30,5 @@ class UpdateUserRequestDTO(
 
     val role: Role? = null,
 
-    val subscriptions: MutableList<UUID>? = null
+    var subscriptions: MutableList<UUID>? = null
 )
