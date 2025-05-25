@@ -30,7 +30,7 @@ class CreateLectureRequestDTO(
 
     @field:NotNull
     @field:NotBlank
-    @field:Size(min = MINIMUM_LINK_LENGTH, max = MAXIMUM_LINK_LENGTH)
+    @field:Size(min = MINIMUM_LINK_LENGTH, max = MAXIMUM_LINK_LENGTH)   //TODO: Protocol can be optional(?)
     @field:Pattern(regexp = "^https?://(?:www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b[-a-zA-Z0-9()@:%_+.~#?&/=]*$")
     val link: String,
 

@@ -41,7 +41,7 @@ class SimplePollHandler(private val answersService: AnswersService) : TextWebSoc
         }
     }
 
-    //TODO: Persist answer count
+    //TODO: FIX -> Reloading the page and being able to answer multiple times
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
         logger.info("SimplePollHandler: Handling message")
         val uri: UriComponents = UriComponentsBuilder.fromUri(session.uri!!).build()
