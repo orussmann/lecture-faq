@@ -49,7 +49,6 @@
         <button type="button" id="main-button">Create lecture</button>
     </form>
     <br>
-    <a href="">Back</a>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
