@@ -150,6 +150,7 @@ class PollsController(
             //TODO: Should a user see all polls from all lectures, from all lectures he is attending or from one selected lecture?
             val polls = pollsService.findAll() // TODO: Replace
             model.addAttribute("polls", polls)
+            model.addAttribute("userId", userId)
             return "student-view/showPollsOverview"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -182,6 +183,7 @@ class PollsController(
         try {
             val poll = pollsService.findById(pollId)    //TODO: View only needs title
             model.addAttribute("poll", poll)
+            model.addAttribute("userId", userId)
             val answers = answersService.findAllByPollId(pollId)
             model.addAttribute("answers", answers)
             val user = usersService.findById(userId)
