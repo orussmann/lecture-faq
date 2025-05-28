@@ -22,7 +22,7 @@ class UsersController(private val usersService: UsersService, private val usersR
 
     private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
-    @GetMapping("/users/{id}")
+    /*@GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getUser(
         @PathVariable id: UUID,
@@ -32,6 +32,25 @@ class UsersController(private val usersService: UsersService, private val usersR
             val user = usersService.findById(id)
             model.addAttribute("user", user)
             return "users/showUser"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
+        }
+    }*/
+    @GetMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getUser(
+        @PathVariable id: UUID,
+        model: Model
+    ): String {
+        try {
+            val user = usersService.findById(id)
+            model.addAttribute("user", user)
+            model.addAttribute("userId", user.userId)
+            return if (user.role == Role.STUDENT) {
+                "student-view/showProfile"
+            } else {
+                "lecturer-view/showProfile"
+            }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
         }
@@ -95,7 +114,8 @@ class UsersController(private val usersService: UsersService, private val usersR
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
         }
     }
-
+    // TODO: Should have its own Controller (?)
+    // TODO: Wouldn't that make more sense? -> /users/{studentId}/subscriptions
     @GetMapping("/users/students/{studentId}/subscriptions")
     fun getAllLecturers(
         @PathVariable studentId: UUID,
@@ -113,7 +133,7 @@ class UsersController(private val usersService: UsersService, private val usersR
                 var lastName: String,
                 var subscribed: Boolean
             )
-
+            // TODO: Move logic out of controller
             val lecturersWithSubscriptionInfo = lecturers.map { lecturer ->
                 UserSubscriptionResponse(
                     lecturer.userId,
@@ -124,7 +144,8 @@ class UsersController(private val usersService: UsersService, private val usersR
             }
 
             model.addAttribute("lecturers", lecturersWithSubscriptionInfo)
-            model.addAttribute("studentId", studentId)
+            model.addAttribute("studentId", studentId) // TODO: Should be unified to userId
+            model.addAttribute("userId", studentId)
             return "student-view/showLecturers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -180,19 +180,15 @@ class PollsController(
         model: Model
     ): String {
         try {
-            val isLecturer = usersService.findById(userId).role == Role.LECTURER
-            if (isLecturer) {
-                val poll = pollsService.findById(pollId)    //TODO: View only needs title
-                model.addAttribute("poll", poll)
-                val answers = answersService.findAllByPollId(pollId)
-                model.addAttribute("answers", answers)
-                return "lecturer-view/showPoll"
+            val poll = pollsService.findById(pollId)    //TODO: View only needs title
+            model.addAttribute("poll", poll)
+            val answers = answersService.findAllByPollId(pollId)
+            model.addAttribute("answers", answers)
+            val user = usersService.findById(userId)
+            return if (user.role == Role.LECTURER) {
+                "lecturer-view/showPoll"
             } else {
-                val poll = pollsService.findById(pollId)    //TODO: View only needs title
-                model.addAttribute("poll", poll)
-                val answers = answersService.findAllByPollId(pollId)
-                model.addAttribute("answers", answers)
-                return "student-view/showPoll"
+                "student-view/showPoll"
             }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch poll")

@@ -12,9 +12,9 @@
     <body>
     <header>
         <nav>
-            <a href="">Profil</a>
-            <a href="">Meine Vorlesungen</a>
-            <a href="">Multiple-Choice-Fragen</a>
+            <a href="/app/users/${userId}">Profil</a>
+            <a href="/app/users/${userId}/lectures">Meine Vorlesungen</a>
+            <a href="/app/users/${userId}/polls/poll-form">Multiple-Choice-Fragen</a>
         </nav>
     </header>
     <hr>

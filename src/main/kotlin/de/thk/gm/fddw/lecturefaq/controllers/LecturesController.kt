@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
+import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
@@ -85,7 +86,6 @@ class LecturesController(
     }*/
 
 
-
     @GetMapping("/users/{userId}/lectures")
     @ResponseStatus(HttpStatus.OK)
     fun getAllLecturesFromUser(
@@ -98,7 +98,12 @@ class LecturesController(
 //            val lecturersForResponse = lectures.filter { it.userId in lecturers }
             model.addAttribute("lectures", lectures)
             model.addAttribute("userId", userId)
-            return "lecturer-view/showLectures"
+            val user = usersService.findById(userId)
+            return if (user.role == Role.LECTURER) {
+                "lecturer-view/showLectures"
+            } else {
+                "student-view/showLectures"
+            }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
         }
