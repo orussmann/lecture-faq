@@ -75,6 +75,7 @@ class UsersRestController(private val usersService: UsersService) {
     }
 
     //TODO: Check if all endpoints follow best practices
+    // TODO: Should there be a @Controller method as well?
     @PutMapping("/users/students/{studentId}/subscriptions/{lecturerId}")
     @ResponseStatus(HttpStatus.OK)
     fun updateLecturersSubscriptions(
