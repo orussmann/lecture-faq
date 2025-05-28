@@ -37,6 +37,7 @@
                     Poll ID: ${poll.id}, User: ${poll.userId}, Title: ${poll.title},
                     Description: ${poll.description}
                 </a>
+                <a href="/app/users/${poll.userId}/polls/${poll.id}/results">See results</a>
             </li>
         </#list>
     </ul>
