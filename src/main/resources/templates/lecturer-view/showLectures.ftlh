@@ -52,10 +52,12 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            document.querySelector("#main-button").addEventListener("click", () => {
+            document.querySelector("#main-button").addEventListener("click", (event) => {
                 const ws = new WebSocket("/app/new-lecture?lecturerId=${userId}");
                 ws.onopen = () => {
-                    ws.send(JSON.stringify({lecturerId: "${userId}"}));
+                    const title = document.querySelector("#title").value;
+                    console.log("Title of subscribed lecture: ", title);
+                    ws.send(title);
                 };
                 const lecture = {};
                 const xhr = new XMLHttpRequest();

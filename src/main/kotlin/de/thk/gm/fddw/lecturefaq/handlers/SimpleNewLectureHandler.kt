@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.handlers
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import de.thk.gm.fddw.lecturefaq.controllers.PollsController
 import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.services.UsersService
@@ -38,15 +39,27 @@ class SimpleNewLectureHandler(private val usersService: UsersService) : TextWebS
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
         val uri: UriComponents = UriComponentsBuilder.fromUri(session.uri!!).build()
         val lecturerId: UUID = UUID.fromString(uri.queryParams.getFirst("lecturerId"))
+        val objectMapper = ObjectMapper()
+        logger.info("SimpleNewLectureHandler, payload: {}", message)
+        logger.info("SimpleNewLectureHandler, query param: {}", lecturerId)
         val sessions: ArrayList<WebSocketSession>? = hashMapOfSessions[lecturerId]
+        val lecturer = usersService.findById(lecturerId)
+        val lectureName = message.payload
+        val newLectureInfo = NewLectureInfo(
+            lecturer.userId,
+            lecturer.firstName,
+            lecturer.lastName,
+            lectureName
+        )
+        val newLectureStringified = objectMapper.writeValueAsString(newLectureInfo)
+        val newLectureInfoTM = TextMessage(newLectureStringified)
         if (sessions != null) {
-            logger.debug("SimpleNewLectureHandler, Anzahl sessions : {}{}", sessions.size, " test")
+            logger.info("SimpleNewLectureHandler, Anzahl sessions : {}{}", sessions.size, " test")
             for (chatSession in sessions) {
-                chatSession.sendMessage(message)
+                chatSession.sendMessage(newLectureInfoTM)
             }
         }
     }
-
 
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
         val uri: UriComponents = UriComponentsBuilder.fromUri(session.uri!!).build()
@@ -58,3 +71,11 @@ class SimpleNewLectureHandler(private val usersService: UsersService) : TextWebS
         }
     }
 }
+
+class Lecture(val lectureName: String)
+class NewLectureInfo(
+    val lecturerId: UUID,
+    val lecturerSurName: String,
+    val lecturerLastName: String,
+    val lectureName: String
+)

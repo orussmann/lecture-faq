@@ -151,6 +151,8 @@ class PollsController(
             val polls = pollsService.findAll() // TODO: Replace
             model.addAttribute("polls", polls)
             model.addAttribute("userId", userId)
+            val lecturerIds = usersService.findById(userId).subscriptions
+            model.addAttribute("lecturerIds", lecturerIds)
             return "student-view/showPollsOverview"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -47,6 +47,8 @@ class UsersController(private val usersService: UsersService, private val usersR
             model.addAttribute("user", user)
             model.addAttribute("userId", user.userId)
             return if (user.role == Role.STUDENT) {
+                val lecturerIds = usersService.findById(user.userId).subscriptions
+                model.addAttribute("lecturerIds", lecturerIds)
                 "student-view/showProfile"
             } else {
                 "lecturer-view/showProfile"
@@ -146,6 +148,8 @@ class UsersController(private val usersService: UsersService, private val usersR
             model.addAttribute("lecturers", lecturersWithSubscriptionInfo)
             model.addAttribute("studentId", studentId) // TODO: Should be unified to userId
             model.addAttribute("userId", studentId)
+            val lecturerIds = usersService.findById(studentId).subscriptions
+            model.addAttribute("lecturerIds", lecturerIds)
             return "student-view/showLecturers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)

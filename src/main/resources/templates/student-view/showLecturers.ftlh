@@ -22,23 +22,19 @@
     </ul>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const lecturerIds = [<#list lecturerIds as l>"${l}"<#if l_has_next>, </#if></#list>];
+            for (let lecturerId of lecturerIds) {
+                console.log(lecturerId);
+                const ws = new WebSocket("/app/new-lecture?studentId=${userId}&lecturerId=" + lecturerId + "&role=STUDENT");
+                ws.onmessage = (msg) => {
+                    const lectureInfo = JSON.parse(msg.data);
+                    const lecturerFullName = lectureInfo.lecturerSurName + " " + lectureInfo.lecturerLastName;
+                    const lectureName = lectureInfo.lectureName;
+                    window.confirm(lecturerFullName + " hat eine neue Vorlesung  erstellt: \"" + lectureName + "\"");
+                };
+            }
+
             const buttons = document.querySelectorAll(".subscription");
-            const subscriptions = new Map();
-            buttons.forEach(btn => {
-                const isSubscribed = btn.getAttribute("data-subscription") === "true";
-                const lecturerId = btn.id;
-                if (isSubscribed) {
-                    const ws = new WebSocket("/app/new-lecture?studentId=${studentId}&lecturerId=" + lecturerId + "&role=STUDENT");
-                    ws.id = lecturerId;
-                    console.log("Subscribed WS ID: ", ws.id);
-                    console.log("Subscribed WS: ", ws);
-                    ws.onmessage = function (msg) {
-                        window.confirm("A new lecture was created!");
-                        console.log("Message: " + msg);
-                    };
-                    subscriptions.set(lecturerId, ws);
-                }
-            });
 
             buttons.forEach(btn => btn.addEventListener("click", () => {
                 const xhr = new XMLHttpRequest();
@@ -46,12 +42,14 @@
                 xhr.open("PUT", "/app/api/v1/users/students/${studentId}/subscriptions/" + lecturerId);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.send(JSON.stringify({subscription: lecturerId}));
-
+                // TODO: Now a page reload is needed to load updated subscriptions state -> SSE would be a better solution,
+                //  but for practicing websockets this solution is fine
                 xhr.onload = function () {
                     if (xhr.status >= 200 && xhr.status < 300) {
                         /*const response = JSON.parse(xhr.response);
                         console.log("Server-Antwort:", response);*/
                         console.log("Server response is probably 'OK'");
+                        btn.innerText = btn.innerText === "Deabonnieren" ? "Abonnieren" : "Deabonnieren";
                     } else {
                         console.error("Fehler bei der Anfrage:", xhr.status, xhr.responseText);
                     }
@@ -59,28 +57,6 @@
                 xhr.onerror = function () {
                     console.error("Netzwerkfehler oder Server nicht erreichbar");
                 };
-                console.log("Button pushed with lecturer: " + btn.innerText);
-                const isSubscribed = btn.getAttribute("data-subscription") === "true";
-                if (!isSubscribed) {
-                    const wsConnectionEstablished = subscriptions.has(lecturerId);
-                    if (!wsConnectionEstablished) {
-                        const ws = new WebSocket("/app/new-lecture?studentId=${studentId}&lecturerId=" + lecturerId + "&role=STUDENT");
-                        ws.onmessage = function (msg) {
-                            window.confirm("A new lecture was created!");
-                            console.log("Message: " + msg);
-                        };
-                        subscriptions.set(lecturerId, ws);
-                    }
-                    btn.setAttribute("data-subscription", "true");
-                    btn.innerText = "Deabonnieren";
-                } else {
-                    const ws = subscriptions.get(lecturerId);
-                    ws.close();
-                    subscriptions.delete(lecturerId);
-                    btn.setAttribute("data-subscription", "false");
-                    //TODO: Validate state of subscription on the backend -> Overall better solution: SSE
-                    btn.innerText = "Abonnieren";
-                }
             }));
         });
     </script>

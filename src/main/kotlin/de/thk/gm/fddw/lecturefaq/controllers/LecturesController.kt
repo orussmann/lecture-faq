@@ -102,6 +102,8 @@ class LecturesController(
             return if (user.role == Role.LECTURER) {
                 "lecturer-view/showLectures"
             } else {
+                val lecturerIds = usersService.findById(userId).subscriptions
+                model.addAttribute("lecturerIds", lecturerIds)
                 "student-view/showLectures"
             }
         } catch (e: Exception) {
