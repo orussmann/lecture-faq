@@ -1,4 +1,4 @@
-<#import "../base-layout-student.ftlh" as base>
+<#import "../base-layout-lecturer.ftlh" as base>
 <@base.layout>
     <h1>"${lecture.title}"</h1>
     <div id="chat">
@@ -16,7 +16,7 @@
 
         function sendMessage() {
             message.lectureId = "${lecture.id}"
-            message.userId = "${lecture.userId}"
+            message.userId = "${userId}"
             let username = document.getElementById("username").value
             message.chatUserName = username.length > 0 ? username : "Anonymer Absender"
             message.text = document.getElementById("text").value
@@ -29,13 +29,13 @@
             let chat = document.getElementById("chat")
 
             ws.onmessage = function (msg) {
-                message = JSON.parse(msg.data)
+                message = JSON.parse(msg.data)  // TODO: Fix time formatting -> different format when reloading the page and when receiving new message (also for student view)
                 chat.innerHTML += "<p><b>" + message.chatUserName + "</b><br>" + message.text + ", " + message.createdAt + "</p>"
             }
         })
     </script>
 <#--Lower section is only for the lecturer/ admin view-->
-    <form action="/app/users/${lecture.userId}/lectures/${lecture.id}" method="post">
+    <form action="/app/users/${userId}/lectures/${lecture.id}" method="post">
 
         <p>Lecture ID: ${lecture.id}</p>
 
@@ -69,7 +69,7 @@
 
         <label>User ID</label>
         <input type="text"
-               value="${lecture.userId}"
+               value="${userId}"
                placeholder="12345678-abcd-efgh-1234-12aB34Cd56eF"
                name="userId"
                id="userId"
@@ -87,7 +87,7 @@
         <button onclick="updateLectureRestAPI()" type="button">Update via AJAX</button>
     </form>
 
-    <form action="/app/users/${lecture.userId}/lectures/${lecture.id}" method="post">
+    <form action="/app/users/${userId}/lectures/${lecture.id}" method="post">
 
         <#--<input type="hidden" name="_method" value="DELETE"/>
         <button>Delete</button>-->
@@ -106,8 +106,8 @@
             lecture.userId = document.getElementById("userId").value
             lecture.code = document.getElementById("code").value
             console.log(lecture)
-            xhr.open("PUT", "/app/api/v1/users/${lecture.userId}/lectures/${lecture.id}")
-            console.log("${lecture.userId}")
+            xhr.open("PUT", "/app/api/v1/users/${userId}/lectures/${lecture.id}")
+            console.log("${userId}")
             console.log("${lecture.id}")
             xhr.setRequestHeader("Content-Type", "application/json")
             xhr.send(JSON.stringify(lecture))
@@ -116,11 +116,11 @@
 
         function deleteLecture() {
             const xhr = new XMLHttpRequest()
-            xhr.open("DELETE", "/app/api/v1/users/${lecture.userId}/lectures/${lecture.id}")
+            xhr.open("DELETE", "/app/api/v1/users/${userId}/lectures/${lecture.id}")
             xhr.send()
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 204) {
-                    location.href = "/app/users/${lecture.userId}/lectures"
+                    location.href = "/app/users/${userId}/lectures"
                 }
             }
         }

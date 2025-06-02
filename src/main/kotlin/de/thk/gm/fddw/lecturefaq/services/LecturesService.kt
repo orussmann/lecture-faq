@@ -10,6 +10,6 @@ interface LecturesService {
     fun findAll(): MutableIterable<LectureResponseDTO>
     fun findById(lectureId: UUID): LectureResponseDTO
     fun findAllByUserId(userId: UUID): List<LectureResponseDTO>
-    fun removeById(lectureId: UUID)
-    fun updateById(lectureId: UUID, lectureDTO: UpdateLectureRequestDTO): LectureResponseDTO
+    fun removeById(lectureId: UUID, userId: UUID)
+    fun updateById(lectureId: UUID, userId: UUID, lectureDTO: UpdateLectureRequestDTO): LectureResponseDTO
 }

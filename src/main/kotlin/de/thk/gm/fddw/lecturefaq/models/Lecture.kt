@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import de.thk.gm.fddw.lecturefaq.models.enums.Type
 import jakarta.persistence.*
 import java.util.*
@@ -22,13 +23,23 @@ class Lecture(
     @Column(nullable = false)
     var link: String,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    var user: User,
+    @ManyToMany(mappedBy = "lectures")
+    @JsonIgnoreProperties("lectures")
+    var users: MutableList<User> = mutableListOf(),
 
     @OneToMany(mappedBy = "lecture", cascade = [CascadeType.ALL], orphanRemoval = true)
     val questions: MutableList<Question> = mutableListOf(),
 
     @Column(nullable = false)
     var code: Short
-)
+) {
+    fun addUser(user: User) {
+        users.add(user)
+        user.lectures.add(this)
+    }
+
+    fun removeUser(user: User) {
+        users.remove(user)
+        user.lectures.remove(this)
+    }
+}

@@ -3,12 +3,21 @@
 <@base.layout>
     <h2>My Lectures</h2>
     <ul>
-        <#list lectures as lecture>
+        <#list allLectures as lecture>
             <li>
-                <h3>${lecture.title}</h3>
-                <h3>Typ</h3>: ${lecture.type}<br>
-                <h3>Beschreibung</h3>: ${lecture.description}
-                <button type="button">Beitreten</button>
+                <a href="/app/users/${userId}/lectures/${lecture.id}">
+                    <h3>Name:</h3>
+                    <p>${lecture.title}</p>
+                    <h3>Typ:</h3>
+                    <p>${lecture.type}</p><br>
+                    <h3>Beschreibung:</h3>
+                    <p>${lecture.description}</p><br>
+                    <h3>Link:</h3>
+                    <p>${lecture.link}</p>
+                    <h3>Vorlesungscode:</h3>
+                    <p>Lecture code</p>: ${lecture.code?c}
+                </a>
+                <button type="button" data-lecture-id="${lecture.id}">Beitreten</button>
             </li>
         </#list>
     </ul>
@@ -27,10 +36,11 @@
             }
             document.querySelectorAll("button").forEach(btn => {
                 btn.addEventListener("click", () => {
-                    const link = document.createElement("a");
-                    link.href = "/app/users/${userId}/lectures";
-                    document.body.append(link);
-                    link.click();
+                    const lectureId = btn.id;
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("PUT", "/app/api/v1/users/${userId}/lectures/" + lectureId);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(JSON.stringify(""));   // TODO
                 });
             });
         });

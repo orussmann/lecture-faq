@@ -1,11 +1,13 @@
 package de.thk.gm.fddw.lecturefaq.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import java.util.*
 
 //TODO: Consider having a bidirectional 1-n-relationship
+// TODO: Utility methods for add() and remove(), for Users and Lectures
 @Entity
 @Table(name = "Lecture_User")
 class User(
@@ -31,9 +33,26 @@ class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val polls: MutableList<Poll> = mutableListOf(),
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+        name = "user_attends_lecture",
+        joinColumns = [JoinColumn(name = "user_id_fk")],
+        inverseJoinColumns = [JoinColumn(name = "lecture_id_fk")]
+    )
+    //TODO: Change to Set (likewise for User) (https://thorben-janssen.com/ultimate-guide-association-mappings-jpa-hibernate/#manyToMany)
+    @JsonIgnoreProperties("users")
     val lectures: MutableList<Lecture> = mutableListOf(),
 
     @ElementCollection
     var subscriptions: MutableList<UUID> = mutableListOf()
-)
+) {
+    fun addLecture(lecture: Lecture) {
+        lectures.add(lecture)
+        lecture.users.add(this)
+    }
+
+    fun removeLecture(lecture: Lecture) {
+        lectures.remove(lecture)
+        lecture.users.remove(this)
+    }
+}

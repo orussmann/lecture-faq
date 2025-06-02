@@ -6,6 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.LectureResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class LecturesDTOMapper {
@@ -17,7 +18,7 @@ class LecturesDTOMapper {
             description = lecture.description,
             type = lecture.type,
             link = lecture.link,
-            userId = lecture.user.id,
+            users = lecture.users,
             code = lecture.code
         )
     }
@@ -29,7 +30,7 @@ class LecturesDTOMapper {
             type = lecture.type,
             link = lecture.link,
             code = lecture.code,
-            user = user
+            users = mutableListOf(user)
         )
     }
 
@@ -37,13 +38,13 @@ class LecturesDTOMapper {
     fun mapToUpdatedLecture(
         updateLectureRequestDTO: UpdateLectureRequestDTO,
         lecture: Lecture,
-        user: User
+        users: MutableList<User>
     ): Lecture {
         lecture.title = updateLectureRequestDTO.title ?: lecture.title
         lecture.description = updateLectureRequestDTO.description ?: lecture.description
         lecture.type = updateLectureRequestDTO.type ?: lecture.type
         lecture.link = updateLectureRequestDTO.link ?: lecture.link
-        lecture.user = user
+        lecture.users = users
         lecture.code = updateLectureRequestDTO.code ?: lecture.code
         return lecture
     }

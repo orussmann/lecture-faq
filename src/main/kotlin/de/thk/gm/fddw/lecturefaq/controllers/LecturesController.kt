@@ -36,8 +36,14 @@ class LecturesController(
             val lecture = lecturesService.findById(lectureId)
             val chatMessages = questionsService.findAllByLectureIdOrderByCreatedAt(lecture.id)
             model.addAttribute("lecture", lecture)
+            model.addAttribute("userId", userId)
             model.addAttribute("chatMessages", chatMessages)
-            return "lectures/showLecture"
+            val isStudent = usersService.findById(userId).role == Role.STUDENT
+            return if (isStudent) {
+                "student-view/showLecture"
+            } else {
+                "lecturer-view/showLecture"
+            }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")
         }
@@ -93,10 +99,10 @@ class LecturesController(
         model: Model
     ): String {
         try {
-            val lectures = lecturesService.findAllByUserId(userId)
 //            val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }.map { it.userId }
 //            val lecturersForResponse = lectures.filter { it.userId in lecturers }
-            model.addAttribute("lectures", lectures)
+            val allLectures = lecturesService.findAll()
+            model.addAttribute("allLectures", allLectures)
             model.addAttribute("userId", userId)
             val user = usersService.findById(userId)
             return if (user.role == Role.LECTURER) {
@@ -134,10 +140,10 @@ class LecturesController(
     @DeleteMapping("/users/{userId}/lectures/{lectureId}")   //TODO: Handln, wenn nichts gelöscht wird
     fun deleteLecture(
         @PathVariable lectureId: UUID,
-        @PathVariable userId: String
+        @PathVariable userId: UUID
     ): String {
         try {
-            lecturesService.removeById(lectureId)
+            lecturesService.removeById(lectureId, userId)
             return "redirect:/app/users/$userId/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete lecture")
@@ -156,7 +162,7 @@ class LecturesController(
             if (bindingResult.hasErrors()) {
                 redirectAttributes.addFlashAttribute("errors", bindingResult)
             } else {
-                lecturesService.updateById(lectureId, lecture)
+                lecturesService.updateById(lectureId, userId, lecture)
             }
             return "redirect:/app/users/$userId/lectures"
         } catch (e: Exception) {

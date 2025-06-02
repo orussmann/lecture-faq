@@ -70,10 +70,10 @@ class LecturesRestController(private val lecturesService: LecturesService) {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteLecture(
         @PathVariable lectureId: UUID,
-        @PathVariable userId: String
+        @PathVariable userId: UUID
     ) {
         try {
-            lecturesService.removeById(lectureId)
+            lecturesService.removeById(lectureId, userId)
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete lecture")
         }
@@ -87,7 +87,7 @@ class LecturesRestController(private val lecturesService: LecturesService) {
         @Valid @RequestBody updatedLectureDTO: UpdateLectureRequestDTO
     ): LectureResponseDTO {
         try {
-            return lecturesService.updateById(lectureId, updatedLectureDTO)
+            return lecturesService.updateById(lectureId, userId, updatedLectureDTO)
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update lecture")
         }

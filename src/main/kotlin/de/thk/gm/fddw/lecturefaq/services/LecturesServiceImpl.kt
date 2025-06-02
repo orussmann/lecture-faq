@@ -29,7 +29,9 @@ class LecturesServiceImpl(
             .orElseThrow { NoSuchElementException("User for this lecture not found") }
         logger.debug(MarkerFactory.getMarker("LecturesServiceImpl"), "User: {}", user)
         val newLecture = lecturesDTOMapper.mapToNewLecture(lecture, user)
+        user.addLecture(newLecture)
         val savedLecture = lecturesRepository.save(newLecture)
+        usersRepository.save(user)
         return lecturesDTOMapper.mapToLecturesResponse(savedLecture)
     }
 
@@ -48,26 +50,44 @@ class LecturesServiceImpl(
     }
 
     override fun findAllByUserId(userId: UUID): List<LectureResponseDTO> {
-        val usersLectures = lecturesRepository.findAllByUserId(userId)
+        val usersLectures = usersRepository.findById(userId).get().lectures
         return usersLectures.map(lecturesDTOMapper::mapToLecturesResponse)
     }
 
-    override fun removeById(lectureId: UUID) {
+    override fun removeById(lectureId: UUID, userId: UUID) {
+        val user = usersRepository
+            .findById(userId)
+            .orElseThrow {
+            NoSuchElementException("User not found")
+        }
+        val lecture = lecturesRepository
+            .findById(lectureId)
+            .orElseThrow{
+                NoSuchElementException("Lecture not found")
+            }
+        user.removeLecture(lecture)
         lecturesRepository.deleteById(lectureId)
+        usersRepository.save(user)
     }
 
     @Transactional
-    override fun updateById(lectureId: UUID, lectureDTO: UpdateLectureRequestDTO): LectureResponseDTO {
+    override fun updateById(lectureId: UUID, userId: UUID, lectureDTO: UpdateLectureRequestDTO): LectureResponseDTO {
         val existingLecture = lecturesRepository
             .findById(lectureId)
             .orElseThrow { NoSuchElementException("Lecture not found") }
-        var updatedUser = existingLecture.user
+        val existingUser = usersRepository
+            .findById(userId)
+            .orElseThrow { NoSuchElementException("User doesn't exist") }
+        var updatedUsers = existingLecture
+            .users
+            .map { if (it.id == userId) existingUser else it }
+            .toMutableList()
         if (lectureDTO.userId != null) {
-            updatedUser = usersRepository
+            usersRepository
                 .findById(lectureDTO.userId)
                 .orElseThrow { NoSuchElementException("User for this update not found") }
         }
-        val updatedLecture = lecturesDTOMapper.mapToUpdatedLecture(lectureDTO, existingLecture, updatedUser)
+        val updatedLecture = lecturesDTOMapper.mapToUpdatedLecture(lectureDTO, existingLecture, updatedUsers)
         val savedLecture = lecturesRepository.save(updatedLecture)
         return lecturesDTOMapper.mapToLecturesResponse(savedLecture)
     }

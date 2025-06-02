@@ -4,15 +4,21 @@
     <h2>Lectures</h2>
 <#-- TODO: <form> entfernen   -->
     <ul>
-        <#list lectures as lecture>
+        <#list allLectures as lecture>
             <li>
-                <a href="/app/users/${lecture.userId}/lectures/${lecture.id}">
-                    Lecture title: ${lecture.title},
-                    Lecture description: ${lecture.description},
-                    Lecture type: ${lecture.type},
-                    Lecture link: ${lecture.link},
-                    User ID: ${lecture.userId},
-                    Lecture code: ${lecture.code?c}
+                <a href="/app/users/${userId}/lectures/${lecture.id}">
+                    <h3>Name:</h3>
+                    <p>${lecture.title}</p>
+                    <h3>Typ:</h3>
+                    <p>${lecture.type}</p><br>
+                    <h3>Beschreibung:</h3>
+                    <p>${lecture.description}</p><br>
+                    <h3>Link:</h3>
+                    <p>${lecture.link}</p>
+                    <h3>Nutzer ID:</h3>
+                    <p>${userId}</p>
+                    <h3>Vorlesungscode:</h3>
+                    <p>Lecture code</p>: ${lecture.code?c}
                 </a>
             </li>
         </#list>
