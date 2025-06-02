@@ -25,7 +25,6 @@
             user.email = document.getElementById("email").value
             user.firstName = document.getElementById("firstName").value
             user.lastName = document.getElementById("lastName").value
-            user.role = document.getElementById("role").value
             console.log(user)
             xhr.open("PUT", "/app/api/v1/users/${user.userId}")
             console.log("${user.userId}")
