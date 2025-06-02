@@ -63,12 +63,8 @@ class SimpleChatHandler(private val questionsService: QuestionsService) : TextWe
         val roomId: UUID? = UUID.fromString(uri.queryParams.getFirst("roomId"))
         val sessions: ArrayList<WebSocketSession>? = hashMapOfSessions[roomId]
         if (sessions != null && roomId != null) {
-            for (chatSession in sessions) {
-                if (chatSession.id == session.id) {
-                    sessions.remove(chatSession)
-                    hashMapOfSessions[roomId] = sessions
-                }
-            }
+            sessions.removeIf { it.id == session.id }
+            hashMapOfSessions[roomId] = sessions
         }
     }
 
