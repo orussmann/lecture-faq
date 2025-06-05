@@ -28,11 +28,11 @@ class SecurityConfig(private val loginSuccessHandler: LoginSuccessHandler) {
                 // TODO: Adjust to security constraints
                 // TODO: Implement logout
                 authorize("/app/", permitAll)
+                authorize("/app/login", permitAll)
+                authorize("/app/register", permitAll)
                 authorize("/app/chat", permitAll)
                 authorize("/chat", permitAll)
                 authorize("/public-lectures/**", permitAll)
-                authorize("/app/login", permitAll)
-                authorize("/app/register", permitAll)
                 authorize("/app/poll-completion", permitAll)
                 authorize("/public-polls/**", permitAll)
                 // TODO: If POST is not allowed, then PUT shouldn't be either
@@ -48,7 +48,7 @@ class SecurityConfig(private val loginSuccessHandler: LoginSuccessHandler) {
                 permitAll()
                 loginPage = "/"
                 loginProcessingUrl = "/login"   //TODO: Implement logout
-                //defaultSuccessUrl("/app/user/profile", true)
+                defaultSuccessUrl("/app/user/profile", true)
                 authenticationSuccessHandler = loginSuccessHandler
             }
             httpBasic { }
