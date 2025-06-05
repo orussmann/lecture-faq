@@ -35,7 +35,7 @@
         })
     </script>
 <#--Lower section is only for the lecturer/ admin view-->
-    <form action="/app/users/${userId}/lectures/${lecture.id}" method="post">
+    <form action="/app/user/lectures/${lecture.id}" method="post">
 
         <p>Lecture ID: ${lecture.id}</p>
 
@@ -87,7 +87,7 @@
         <button onclick="updateLectureRestAPI()" type="button">Update via AJAX</button>
     </form>
 
-    <form action="/app/users/${userId}/lectures/${lecture.id}" method="post">
+    <form action="/app/user/lectures/${lecture.id}" method="post">
 
         <#--<input type="hidden" name="_method" value="DELETE"/>
         <button>Delete</button>-->
@@ -120,7 +120,7 @@
             xhr.send()
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 204) {
-                    location.href = "/app/users/${userId}/lectures"
+                    location.href = "/app/user/lectures"
                 }
             }
         }

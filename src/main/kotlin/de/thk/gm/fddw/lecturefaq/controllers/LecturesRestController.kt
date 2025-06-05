@@ -53,7 +53,7 @@ class LecturesRestController(private val lecturesService: LecturesService) {
         }
     }
 
-    @PostMapping("/users/{userId}/lectures")
+    @PostMapping("/users/lecturers/{userId}/lectures")
     @ResponseStatus(HttpStatus.CREATED)
     fun createLecture(
         @PathVariable userId: UUID,

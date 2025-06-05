@@ -4,7 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.AnswersService
 import de.thk.gm.fddw.lecturefaq.services.PollsService
-import de.thk.gm.fddw.lecturefaq.services.UsersServiceImpl
+import de.thk.gm.fddw.lecturefaq.services.UsersService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -14,14 +14,16 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import java.security.Principal
 import java.util.*
 
+// TODO: Decision for
 
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
 class PollsController(
     private val pollsService: PollsService,
-    private val usersService: UsersServiceImpl,
+    private val usersService: UsersService,
     private val answersService: AnswersService
 ) {
 
@@ -44,12 +46,14 @@ class PollsController(
     }*/
 
     //TODO: Fix -> Refreshing the page causes a form resubmit
-    @GetMapping("/users/{userId}/polls/poll-form")
+    // TODO: Redesign URIs
+    @GetMapping("/user/polls/poll-form")
     fun getPollForm(
-        @PathVariable userId: UUID,
+        principal: Principal,
         model: Model
     ): String {
         try {
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             val isAuthorizedToViewPollForm = usersService.findById(userId).role == Role.LECTURER
             if (isAuthorizedToViewPollForm) {
                 model.addAttribute("userId", userId)
@@ -57,7 +61,7 @@ class PollsController(
                 model.addAttribute("polls", polls)
                 return "lecturer-view/createPollForm"
             } else {
-                return "redirect:/app/users/${userId}/polls"
+                return "redirect:/app/user/polls"
             }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch polls")
@@ -110,14 +114,15 @@ class PollsController(
         }
     }*/
 
-    @PostMapping("/users/{userId}/polls/poll-form")
+    @PostMapping("/user/polls/poll-form")
     fun createPoll(
-        @PathVariable userId: UUID,
+        principal: Principal,
         @Validated @ModelAttribute poll: CreatePollRequestDTO,
         bindingResult: BindingResult,
         model: Model
     ): String {
         try {
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             if (bindingResult.hasErrors()) {
                 model.addAttribute("errors", bindingResult)
                 logger.info("There are >>Errors: " + bindingResult.hasErrors())
@@ -141,14 +146,15 @@ class PollsController(
         }
     }
 
-    @GetMapping("/users/{userId}/polls")
+    @GetMapping("/user/polls")
     fun getAllPolls(
-        @PathVariable userId: UUID,
+        principal: Principal,
         model: Model
     ): String {
         try {
             //TODO: Should a user see all polls from all lectures, from all lectures he is attending or from one selected lecture?
             val polls = pollsService.findAll() // TODO: Replace
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             model.addAttribute("polls", polls)
             model.addAttribute("userId", userId)
             val lecturerIds = usersService.findById(userId).subscriptions
@@ -158,6 +164,21 @@ class PollsController(
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
+
+    @GetMapping("/public-polls")
+    fun getAllPublicPolls(
+        model: Model
+    ): String {
+        try {
+            //TODO: Should a user see all polls from all lectures, from all lectures he is attending or from one selected lecture?
+            val polls = pollsService.findAll() // TODO: Replace
+            model.addAttribute("polls", polls)
+            return "public-view/showPublicPollsOverview"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
 
     //TODO: Get mapping for one poll
     /*@GetMapping("/users/{userId}/polls/{pollId}")
@@ -176,14 +197,15 @@ class PollsController(
     }*/
 
     //TODO: One endpoint serves multiple different views (lecturer, student, ..)?
-    @GetMapping("/users/{userId}/polls/{pollId}")
+    @GetMapping("/user/polls/{pollId}")
     fun getPollById(
         @PathVariable pollId: UUID,
-        @PathVariable userId: UUID,
+        principal: Principal,
         model: Model
     ): String {
         try {
             val poll = pollsService.findById(pollId)    //TODO: View only needs title
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             model.addAttribute("poll", poll)
             model.addAttribute("userId", userId)
             val answers = answersService.findAllByPollId(pollId)
@@ -199,13 +221,30 @@ class PollsController(
         }
     }
 
-    @GetMapping("/users/{userId}/polls/{pollId}/results")
-    fun getPollResults(
-        @PathVariable userId: UUID,
+    @GetMapping("/public-polls/{pollId}")
+    fun getPublicPollById(
         @PathVariable pollId: UUID,
         model: Model
     ): String {
         try {
+            val poll = pollsService.findById(pollId)    //TODO: View only needs title
+            model.addAttribute("poll", poll)
+            val answers = answersService.findAllByPollId(pollId)
+            model.addAttribute("answers", answers)
+            return "public-view/showPublicPoll"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch poll")
+        }
+    }
+
+    @GetMapping("/user/polls/{pollId}/results")
+    fun getPollResults(
+        principal: Principal,
+        @PathVariable pollId: UUID,
+        model: Model
+    ): String {
+        try {
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             val isLecturer = usersService.findById(userId).role == Role.LECTURER
             if (isLecturer) {
                 val title = pollsService.findById(pollId).title
@@ -222,6 +261,23 @@ class PollsController(
                 model.addAttribute("answers", answers)
                 return "student-view/showPollResults"
             }
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @GetMapping("/public-polls/{pollId}/results")
+    fun getPublicPollResults(
+        @PathVariable pollId: UUID,
+        model: Model
+    ): String {
+        try {
+            val title = pollsService.findById(pollId).title
+            model.addAttribute("title", title)  //TODO: Refactor, if views stay identical
+            model.addAttribute("pollId", pollId)
+            val answers = answersService.findAllByPollId(pollId)
+            model.addAttribute("answers", answers)
+            return "public-view/showPublicPollResults"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }

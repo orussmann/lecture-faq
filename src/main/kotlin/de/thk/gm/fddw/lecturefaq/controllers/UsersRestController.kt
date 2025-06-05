@@ -45,6 +45,9 @@ class UsersRestController(private val usersService: UsersService) {
         @Valid @RequestBody userDTO: CreateUserRequestDTO
     ): UserResponseDTO {
         try {
+            if (userDTO.password != userDTO.passwordConfirmation) {
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match")
+            }
             return usersService.save(userDTO)
         } catch (e: java.lang.Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)

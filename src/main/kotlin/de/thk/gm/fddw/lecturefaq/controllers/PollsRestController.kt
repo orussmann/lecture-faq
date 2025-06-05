@@ -42,7 +42,7 @@ class PollsRestController(
         }
     }
 
-    @PostMapping("/users/{userId}/polls")
+    @PostMapping("/users/lecturers/{userId}/polls")
     @ResponseStatus(HttpStatus.CREATED)
     fun createPoll(
         @PathVariable userId: UUID,

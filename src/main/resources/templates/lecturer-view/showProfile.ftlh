@@ -1,6 +1,6 @@
 <#import "../base-layout-lecturer.ftlh" as base>
 <@base.layout>
-    <form action="/app/users/${user.userId}" method="post">
+    <form action="/app/user/profile" method="post">
 
         <label>User e-mail</label><br>
         <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" required><br>
@@ -11,10 +11,10 @@
         <label>User last name</label><br>
         <input type="text" value="${user.lastName}" placeholder="Mustermann" name="lastName" id="lastName" required><br>
 
-        <!--Used before AJAX-->
+        <#--Used before AJAX-->
         <#--<input type="hidden" name="_method" value="PUT"/>
-        <button>Update</button>
--->
+        <button>Update</button>-->
+        <#--Solution with AJAX-->
         <button onclick="updateCredentials()" type="button">Update</button>
     </form>
 
@@ -26,8 +26,8 @@
             user.firstName = document.getElementById("firstName").value
             user.lastName = document.getElementById("lastName").value
             console.log(user)
-            xhr.open("PUT", "/app/api/v1/users/${user.userId}")
-            console.log("${user.userId}")
+            xhr.open("PUT", "/app/api/v1/users/${user.id}")
+            console.log("${user.id}")
             xhr.setRequestHeader("Content-Type", "application/json")
             xhr.send(JSON.stringify(user))
         }

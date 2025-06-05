@@ -1,6 +1,6 @@
 <#import "../base-layout-student.ftlh" as base>
 <@base.layout>
-    <form action="/app/users/${user.userId}" method="post">
+    <form action="/app/users/${user.id}" method="post">
 
         <label>User e-mail</label><br>
         <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" required><br>
@@ -22,7 +22,7 @@
                 const lecturerIds = [<#list lecturerIds as l>"${l}"<#if l_has_next>, </#if></#list>];
                 for (let lecturerId of lecturerIds) {
                     console.log(lecturerId);
-                    const ws = new WebSocket("/app/new-lecture?studentId=${userId}&lecturerId=" + lecturerId + "&role=STUDENT");
+                    const ws = new WebSocket("/app/new-lecture?studentId=${user.id}&lecturerId=" + lecturerId + "&role=STUDENT");
                     ws.onmessage = (msg) => {
                         const lectureInfo = JSON.parse(msg.data);
                         const lecturerFullName = lectureInfo.lecturerSurName + " " + lectureInfo.lecturerLastName;
@@ -42,8 +42,8 @@
             user.firstName = document.getElementById("firstName").value
             user.lastName = document.getElementById("lastName").value
             console.log(user)
-            xhr.open("PUT", "/app/api/v1/users/${user.userId}")
-            console.log("${user.userId}")
+            xhr.open("PUT", "/app/api/v1/users/${user.id}")
+            console.log("${user.id}")
             xhr.setRequestHeader("Content-Type", "application/json")
             xhr.send(JSON.stringify(user))
         }

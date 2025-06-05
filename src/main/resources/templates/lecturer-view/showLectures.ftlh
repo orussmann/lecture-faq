@@ -6,7 +6,7 @@
     <ul>
         <#list allLectures as lecture>
             <li>
-                <a href="/app/users/${userId}/lectures/${lecture.id}">
+                <a href="/app/user/lectures/${lecture.id}">
                     <h3>Name:</h3>
                     <p>${lecture.title}</p>
                     <h3>Typ:</h3>
@@ -23,7 +23,7 @@
             </li>
         </#list>
     </ul>
-    <form action="/app/users/${userId}/lectures" method="post">
+    <form action="/app/user/lectures" method="post">
 
         <label>Lecture title</label><br>
         <input type="text" placeholder="FDDW" name="title" id="title" required><br>
@@ -67,7 +67,7 @@
                 };
                 const lecture = {};
                 const xhr = new XMLHttpRequest();
-                xhr.open("POST", "/app/api/v1/users/${userId}/lectures");
+                xhr.open("POST", "/app/api/v1/users/lecturers/${userId}/lectures");
                 lecture.title = document.getElementById("title").value;
                 lecture.description = document.getElementById("description").value;
                 lecture.type = document.getElementById("type").value;

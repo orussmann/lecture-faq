@@ -5,7 +5,7 @@
     <ul>
         <#list polls as poll>
             <li>
-                <a href="/app/users/${userId}/polls/${poll.id}">
+                <a href="/app/user/polls/${poll.id}">
                     Poll ID: ${poll.id}, User: ${poll.userId}, Title: ${poll.title},
                     Description: ${poll.description}
                 </a>

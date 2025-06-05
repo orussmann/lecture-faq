@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UsersRepository: CrudRepository<User, java.util.UUID> {
-
+    fun findByEmail(email: String): User?
 }

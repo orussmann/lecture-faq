@@ -6,6 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
@@ -14,8 +15,11 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.security.Principal
 import java.util.*
+import kotlin.NoSuchElementException
 
+//TODO: Redesign URIs -> /app/user/lectures (decouple user from lectures, because the URi doesn't contain User ID anymore)
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
 class UsersController(private val usersService: UsersService, private val usersRestController: UsersRestController) {
@@ -35,7 +39,7 @@ class UsersController(private val usersService: UsersService, private val usersR
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
         }
-    }*/
+    }
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getUser(
@@ -57,20 +61,53 @@ class UsersController(private val usersService: UsersService, private val usersR
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
         }
     }
-
-    @GetMapping("/users")
+     */
+    @GetMapping("/user/student/profile")
     @ResponseStatus(HttpStatus.OK)
-    fun getAllUsers(model: Model): String {
+    fun showStudentProfile(
+        principal: Principal,
+        model: Model
+    ): String {
         try {
-            val users = usersService.findAll()
-            model.addAttribute("users", users)
-            return "users/showUsers"
+            val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            model.addAttribute("user", user)
+            val lecturerIds = usersService.findById(user.id).subscriptions
+            model.addAttribute("lecturerIds", lecturerIds)
+            return "student-view/showProfile"
         } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch users")
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
         }
     }
 
-    @PostMapping("/users")
+    @GetMapping("/user/lecturer/profile")
+    @ResponseStatus(HttpStatus.OK)
+    fun showLecturerProfile(
+        principal: Principal,
+        model: Model
+    ): String {
+        try {
+            val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            model.addAttribute("user", user)
+            return "lecturer-view/showProfile"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
+        }
+    }
+
+    // TODO: Not needed for now
+    /* @GetMapping("/users")
+     @ResponseStatus(HttpStatus.OK)
+     fun getAllUsers(model: Model): String {
+         try {
+             val users = usersService.findAll()
+             model.addAttribute("users", users)
+             return "users/showUsers"
+         } catch (e: Exception) {
+             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch users")
+         }
+     }*/
+
+    /*@PostMapping("/users")
     fun createUser(
         @Valid user: CreateUserRequestDTO,
         bindingResult: BindingResult,
@@ -86,8 +123,40 @@ class UsersController(private val usersService: UsersService, private val usersR
         } catch (e: java.lang.Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }*/
+
+    @PostMapping("/register")
+    fun registerUser(
+        @Valid user: CreateUserRequestDTO,
+        bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes,
+        model: Model
+    ): String {
+        try {   // TODO: Fix redirect not showing any flash attributes. Current solution, not following the PRG pattern causes duplicate POST on page reload
+            if (bindingResult.hasErrors()) {
+//                redirectAttributes.addFlashAttribute("errors", bindingResult)
+                logger.info("UsersController hasErrors()")
+                model.addAttribute("errors", bindingResult)
+            } else if (user.password != user.passwordConfirmation) {
+//                redirectAttributes.addFlashAttribute("error", "Passwords do not match")
+                logger.info("UsersController error")
+                model.addAttribute("error", "Passwords do not match")
+            } else {
+//                redirectAttributes.addFlashAttribute("success", "User registered successfully")
+                logger.info("UsersController success")
+                model.addAttribute("success", "User registered successfully")
+                usersService.save(user)
+            }
+//            return "redirect:/app/"
+            return "index"
+        } catch (e: DataIntegrityViolationException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        } catch (e: java.lang.Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 
+    // INFO: Not needed now
     @DeleteMapping("/users/{id}")   //TODO: Handln, wenn nichts gelöscht wird
     fun deleteUser(@PathVariable id: UUID): String {
         try {
@@ -98,9 +167,9 @@ class UsersController(private val usersService: UsersService, private val usersR
         }
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user")
     fun updateUser(
-        @PathVariable id: UUID,
+        principal: Principal,
         @Valid user: UpdateUserRequestDTO,
         bindingResult: BindingResult,
         redirectAttributes: RedirectAttributes
@@ -109,22 +178,28 @@ class UsersController(private val usersService: UsersService, private val usersR
             if (bindingResult.hasErrors()) {
                 redirectAttributes.addFlashAttribute("errors", bindingResult)
             } else {
-                usersService.updateById(id, user)
+                val userId =
+                    usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
+                usersService.updateById(userId, user)
             }
-            return "redirect:/app/users"
+            return "redirect:/app/user/profile"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
         }
     }
+
     // TODO: Should have its own Controller (?)
     // TODO: Wouldn't that make more sense? -> /users/{studentId}/subscriptions
-    @GetMapping("/users/students/{studentId}/subscriptions")
+    @GetMapping("/user/students/subscriptions")
     fun getAllLecturers(
-        @PathVariable studentId: UUID,
+        principal: Principal,
         model: Model
     ): String {
         try {
-            val studentsSubscriptions = usersService.findById(studentId).subscriptions
+            val student = usersService.findByEmail(principal.name)
+                ?: throw NoSuchElementException("User not found")
+            val studentsSubscriptions = student.subscriptions
+            val studentId = student.id
             val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }
 
 

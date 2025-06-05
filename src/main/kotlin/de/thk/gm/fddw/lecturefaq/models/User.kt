@@ -17,8 +17,8 @@ class User(
     @Column(name = "user_id", nullable = false)
     val id: UUID = UUID.randomUUID(),
 
-    @field:Email
-    @Column(name = "email", nullable = false)
+    @field:Email    // TODO: Should be unique?
+    @Column(name = "email", nullable = false, unique = true)
     var email: String = "",
 
     @Column(name = "first_name", nullable = false)
@@ -29,6 +29,9 @@ class User(
 
     @Column
     var role: Role = Role.STUDENT,
+
+    @Column
+    var password: String = "",
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val polls: MutableList<Poll> = mutableListOf(),

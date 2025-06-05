@@ -16,7 +16,7 @@
             </li>
         </#list>
     </ul>
-    <form action="/app/users/${userId}/lectures" method="post">
+    <form action="/app/user/lectures" method="post">
 
         <label>Lecture title</label><br>
         <input type="text" placeholder="FDDW" name="title" required><br>

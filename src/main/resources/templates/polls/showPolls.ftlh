@@ -13,7 +13,7 @@
         </#list>
     </ul>
     <p>Please provide at least <b>two</b> answers</p>
-    <form action="/app/users/${userId}/polls" method="post">
+    <form action="/app/user/polls" method="post">
 
         <label>Poll title</label><br>
         <input type="text" placeholder="What is a web server?" name="title" required><br>

@@ -12,10 +12,10 @@
     <body>
     <header>
         <nav>
-            <a href="/app/users/${userId}">Profil</a>
-            <a href="/app/users/${userId}/lectures">Vorlesungen</a>
-            <a href="/app/users/students/${userId}/subscriptions">Dozenten</a>
-            <a href="/app/users/${userId}/polls">Multiple-Choice-Fragen</a>
+            <a href="/app/user/student/profile">Profil</a>
+            <a href="/app/user/lectures">Vorlesungen</a>
+            <a href="/app/user/students/subscriptions">Dozenten</a>
+            <a href="/app/user/polls">Multiple-Choice-Fragen</a>
         </nav>
     </header>
     <hr>

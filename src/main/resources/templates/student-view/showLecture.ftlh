@@ -5,8 +5,7 @@
         <#list chatMessages as chatMessage>
             <p><b>${chatMessage.chatUserName}</b><br>${chatMessage.text}, ${chatMessage.createdAt}</p>
         </#list>
-    </div>
-    <input type="text" id="username" placeholder="Benutzername... (optional)">
+    </div>Z
     <input type="text" id="text" placeholder="Nachricht...">
     <br>
     <button onclick="sendMessage()">Send</button>
@@ -17,8 +16,7 @@
         function sendMessage() {
             message.lectureId = "${lecture.id}"
             message.userId = "${userId}"
-            let username = document.getElementById("username").value
-            message.chatUserName = username.length > 0 ? username : "Anonymer Absender"
+            message.chatUserName = "${userName}"
             message.text = document.getElementById("text").value
             message.createdAt = new Date().toISOString()
             ws.send(JSON.stringify(message))

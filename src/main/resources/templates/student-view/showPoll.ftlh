@@ -15,7 +15,7 @@
 
             const answers = document.querySelectorAll("li");
             const link = document.createElement("a");
-            link.href = "/app/users/${userId}/polls/${poll.id}/results";
+            link.href = "/app/user/polls/${poll.id}/results";
             answers.forEach(a => {
                 a.addEventListener("click", (event) => {
                     ws.send(JSON.stringify({answerId: event.target.id}))
@@ -33,27 +33,5 @@
                 console.log("Closing connection: " + msg.reason)
             }
         });
-
-        // If there were multiple polls
-        /*const answers = document.querySelectorAll("li")
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("DOM content loaded");
-            answers.forEach(a => {
-                a.addEventListener("click", disableChoiceOptions);
-            });
-        });
-
-        function disableChoiceOptions(answer) {
-            console.log("Answer was chosen: ");
-            answers.forEach(a => a.removeEventListener("click", disableChoiceOptions));
-            showResultsLink(answer);
-        }
-
-        function showResultsLink(answer) {
-            const link = document.createElement("a");
-            link.href = "/app/users/${userId}/polls/${pollId}/results";
-            link.innerHTML = "See results";
-            answer.appendChild(link);
-        }*/
     </script>
 </@base.layout>
