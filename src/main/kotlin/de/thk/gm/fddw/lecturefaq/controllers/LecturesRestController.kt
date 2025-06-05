@@ -1,18 +1,21 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
+import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.LectureResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
+import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
 @RequestMapping("/api/v1")
-class LecturesRestController(private val lecturesService: LecturesService) {
+class LecturesRestController(private val lecturesService: LecturesService, private val usersService: UsersService) {
 
 
     @GetMapping("/users/{userId}/lectures/{lectureId}")
@@ -58,9 +61,14 @@ class LecturesRestController(private val lecturesService: LecturesService) {
     fun createLecture(
         @PathVariable userId: UUID,
         @Valid @RequestBody lectureDTO: CreateLectureRequestDTO
-    ): LectureResponseDTO {
+    ): Any {
         try {
-            return lecturesService.save(lectureDTO)
+            val user = usersService.findById(userId)
+            if (user.role == Role.LECTURER) {
+                return lecturesService.save(lectureDTO)
+            } else {
+                return ResponseEntity("Only lecturers can create new lectures", HttpStatus.UNAUTHORIZED)
+            }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create lecture")
         }

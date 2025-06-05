@@ -43,6 +43,28 @@ class SecurityConfig(private val loginSuccessHandler: LoginSuccessHandler) {
                 authorize(HttpMethod.POST, "/app/api/v1/users/students/**", hasAuthority("ROLE_${Role.STUDENT}"))
 
                 authorize(anyRequest, authenticated)
+
+//                authorize("/app/api/v1/users/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize("/app/api/v1/users", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//
+//                authorize(HttpMethod.GET, "/app/api/v1/lectures/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize(HttpMethod.POST, "/app/api/v1/lectures/**", hasAnyRole(Role.LECTURER.name))
+//                authorize(HttpMethod.PUT, "/app/api/v1/lectures/**", hasAnyRole(Role.LECTURER.name))
+//                authorize(HttpMethod.GET, "/app/api/v1/questions", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//
+//                authorize(HttpMethod.GET, "/app/api/v1/polls", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize(HttpMethod.GET, "/app/api/v1/users/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize(HttpMethod.PUT, "/app/api/v1/users/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize("/app/api/v1/lecturers/**", hasAnyRole(Role.LECTURER.name))
+//
+//                authorize(HttpMethod.GET, "/app/api/v1/lectures", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize(HttpMethod.GET, "/app/api/v1/polls/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+//                authorize(HttpMethod.DELETE, "/app/api/v1/polls/**", hasAnyRole(Role.LECTURER.name))
+//                authorize(HttpMethod.PUT, "/app/api/v1/polls/**", hasAnyRole(Role.LECTURER.name))
+//                authorize(HttpMethod.GET, "/app/api/v1/answers", hasAnyRole(Role.LECTURER.name))
+//                authorize(HttpMethod.GET, "/app/api/v1/lecturers/**", hasAnyRole(Role.LECTURER.name))
+//
+//                authorize(anyRequest, denyAll)
             }
             formLogin {
                 permitAll()

@@ -1,11 +1,14 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
+import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.PollResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.UpdatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.PollsService
+import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
@@ -14,7 +17,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/v1")
 class PollsRestController(
-    private val pollsService: PollsService
+    private val pollsService: PollsService,
+    private val usersService: UsersService
 ) {
 
     @GetMapping("/users/{userId}/polls")
@@ -42,15 +46,20 @@ class PollsRestController(
         }
     }
 
-    @PostMapping("/users/lecturers/{userId}/polls")
+    @PostMapping("/lecturers/users/{userId}/polls")
     @ResponseStatus(HttpStatus.CREATED)
     fun createPoll(
         @PathVariable userId: UUID,
         @Validated @RequestBody poll: CreatePollRequestDTO,
-    ): PollResponseDTO {
+    ): Any {
         try {
-            val createdPoll = pollsService.save(poll, userId)
-            return createdPoll
+            val user = usersService.findById(userId)
+            if (user.role == Role.LECTURER) {
+                val createdPoll = pollsService.save(poll, userId)
+                return createdPoll
+            } else {    // TODO: Use ResponseEntity<PollResponseDTO> as return value
+                return ResponseEntity("Only lecturers can crete new polls", HttpStatus.UNAUTHORIZED)
+            }
         } catch (e: ResponseStatusException) {
             throw e
         } catch (e: Exception) {
