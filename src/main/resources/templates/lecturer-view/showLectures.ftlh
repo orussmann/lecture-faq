@@ -7,18 +7,12 @@
         <#list allLectures as lecture>
             <li>
                 <a href="/app/user/lectures/${lecture.id}">
-                    <h3>Name:</h3>
-                    <p>${lecture.title}</p>
-                    <h3>Typ:</h3>
-                    <p>${lecture.type}</p><br>
-                    <h3>Beschreibung:</h3>
-                    <p>${lecture.description}</p><br>
-                    <h3>Link:</h3>
-                    <p>${lecture.link}</p>
-                    <h3>Nutzer ID:</h3>
-                    <p>${userId}</p>
-                    <h3>Vorlesungscode:</h3>
-                    <p>Lecture code</p>: ${lecture.code?c}
+                    Name: ${lecture.title}
+                    Typ: ${lecture.type}
+                    Beschreibung: ${lecture.description}
+                    Link: ${lecture.link}"
+                    Nutzer ID:${userId}
+                    Vorlesungscode:${lecture.code?c}
                 </a>
             </li>
         </#list>
