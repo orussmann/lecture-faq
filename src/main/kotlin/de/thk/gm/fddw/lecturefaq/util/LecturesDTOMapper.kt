@@ -30,7 +30,8 @@ class LecturesDTOMapper {
             type = lecture.type,
             link = lecture.link,
             code = lecture.code,
-            users = mutableListOf(user)
+            users = mutableListOf(user),
+            creatorId = user.id
         )
     }
 

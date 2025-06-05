@@ -3,6 +3,8 @@ package de.thk.gm.fddw.lecturefaq.controllers
 import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
+import de.thk.gm.fddw.lecturefaq.repositories.LecturesRepository
+import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
@@ -22,7 +24,11 @@ import kotlin.NoSuchElementException
 //TODO: Redesign URIs -> /app/user/lectures (decouple user from lectures, because the URi doesn't contain User ID anymore)
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
-class UsersController(private val usersService: UsersService, private val usersRestController: UsersRestController) {
+class UsersController(
+    private val usersService: UsersService,
+    private val lecturesRepository: LecturesRepository,
+    private val usersRepository: UsersRepository
+) {
 
     private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
@@ -69,7 +75,22 @@ class UsersController(private val usersService: UsersService, private val usersR
         model: Model
     ): String {
         try {
+            // TODO: Move all the business logic from Controller to Service
             val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            val subscriptions = user.subscriptions
+            val allLectures = lecturesRepository.findAll().toList()
+            val newLectures =
+                allLectures.filter { subscriptions.contains(it.creatorId) && it.createdAt >= user.lastVisited }
+            val allLecturers = usersService.findAll().filter { it.role == Role.LECTURER }
+            val newLecturesMessages =
+                newLectures.map { l ->
+                    "${
+                        allLecturers.find { it.userId == l.creatorId }.let { it?.firstName + it?.lastName }
+                    } hat eine neue Vorlesung ${l.title} erstellt!"
+                }
+            user.lastVisited = Date()
+            usersRepository.save(user)
+            model.addAttribute("newLectures", newLecturesMessages)
             model.addAttribute("user", user)
             val lecturerIds = usersService.findById(user.id).subscriptions
             model.addAttribute("lecturerIds", lecturerIds)

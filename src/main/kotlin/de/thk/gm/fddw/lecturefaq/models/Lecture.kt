@@ -31,7 +31,13 @@ class Lecture(
     val questions: MutableList<Question> = mutableListOf(),
 
     @Column(nullable = false)
-    var code: Short
+    var code: Short,
+
+    @Column(nullable = true)    //TODO: Should be false
+    var createdAt: Date = Date(),
+
+    @Column(nullable = true)
+    var creatorId: UUID
 ) {
     fun addUser(user: User) {
         users.add(user)

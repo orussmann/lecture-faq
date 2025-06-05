@@ -1,5 +1,6 @@
 <#import "../base-layout-student.ftlh" as base>
 <@base.layout>
+<#--    <div id="newLecturesContainer"></div>-->
     <form action="/app/users/${user.id}" method="post">
 
         <label>User e-mail</label><br>
@@ -16,10 +17,16 @@
         <button>Update</button>
 -->
         <button onclick="updateCredentials()" type="button">Update</button>
-
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const lecturerIds = [<#list lecturerIds as l>"${l}"<#if l_has_next>, </#if></#list>];
+                const newLectures = [<#list newLectures as l>"${l}"<#if l_has_next>, </#if></#list>];
+                // const newLecturesContainer = document.querySelector("#newLecturesContainer");
+                newLectures.forEach(nl => {
+                    console.log("New lecture: ", nl);
+                    // newLecturesContainer.innerHTML += "<p>" + nl + "</p>";
+                    window.alert(nl);
+                });
                 for (let lecturerId of lecturerIds) {
                     console.log(lecturerId);
                     const ws = new WebSocket("/app/new-lecture?studentId=${user.id}&lecturerId=" + lecturerId + "&role=STUDENT");

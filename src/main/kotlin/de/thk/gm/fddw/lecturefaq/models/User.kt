@@ -47,7 +47,10 @@ class User(
     val lectures: MutableList<Lecture> = mutableListOf(),
 
     @ElementCollection
-    var subscriptions: MutableList<UUID> = mutableListOf()
+    var subscriptions: MutableList<UUID> = mutableListOf(),
+
+    @Column
+    var lastVisited: Date = Date()
 ) {
     fun addLecture(lecture: Lecture) {
         lectures.add(lecture)
