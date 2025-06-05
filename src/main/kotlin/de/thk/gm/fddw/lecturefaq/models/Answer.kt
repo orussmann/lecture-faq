@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 import java.util.*
 
@@ -10,6 +11,7 @@ class Answer(
 
     @ManyToOne
     @JoinColumn(name = "poll_id", nullable = false)
+    @JsonIgnoreProperties("answers")
     val poll: Poll,
 
     @Column(nullable = false)

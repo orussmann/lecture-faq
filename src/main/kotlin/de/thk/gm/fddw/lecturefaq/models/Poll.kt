@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.*
 import java.util.UUID
 
@@ -14,6 +15,7 @@ class Poll(
     var user: User,
 
     @OneToMany(mappedBy = "poll", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JsonIgnoreProperties("poll")
     var answers: MutableList<Answer> = mutableListOf(),
 
     @Column(nullable = false)
