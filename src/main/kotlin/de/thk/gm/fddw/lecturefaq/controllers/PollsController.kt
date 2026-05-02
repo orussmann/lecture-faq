@@ -233,7 +233,7 @@ class PollsController(
         model: Model
     ): String {
         try {
-            val poll = pollsService.findById(pollId)    //TODO: View only needs title
+            val poll = pollsService.findById(pollId)
             model.addAttribute("poll", poll)
             val answers = answersService.findAllByPollId(pollId)
             model.addAttribute("answers", answers)
@@ -243,30 +243,36 @@ class PollsController(
         }
     }
 
-    @GetMapping("/user/polls/{pollId}/results")
-    fun getPollResults(
+    @GetMapping("/user/lecturer/polls/{pollId}/results")
+    fun getPollResultsLecturerView(
+        @PathVariable pollId: UUID,
+        model: Model
+    ): String {
+        try {
+            val title = pollsService.findById(pollId).title
+            model.addAttribute("title", title)  //TODO: Refactor, if views stay identical
+            model.addAttribute("pollId", pollId)
+            val answers = answersService.findAllByPollId(pollId)
+            model.addAttribute("answers", answers)
+            return "lecturer-view/showPollResults"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @GetMapping("/user/student/polls/{pollId}/results")
+    fun getPollResultsStudentView(
         principal: Principal,
         @PathVariable pollId: UUID,
         model: Model
     ): String {
         try {
-            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
-            val isLecturer = usersService.findById(userId).role == Role.LECTURER
-            if (isLecturer) {
-                val title = pollsService.findById(pollId).title
-                model.addAttribute("title", title)  //TODO: Refactor, if views stay identical
-                model.addAttribute("pollId", pollId)
-                val answers = answersService.findAllByPollId(pollId)
-                model.addAttribute("answers", answers)
-                return "lecturer-view/showPollResults"
-            } else {
-                val title = pollsService.findById(pollId).title
-                model.addAttribute("title", title)
-                model.addAttribute("pollId", pollId)
-                val answers = answersService.findAllByPollId(pollId)
-                model.addAttribute("answers", answers)
-                return "student-view/showPollResults"
-            }
+            val title = pollsService.findById(pollId).title
+            model.addAttribute("title", title)  //TODO: Refactor, if views stay identical
+            model.addAttribute("pollId", pollId)
+            val answers = answersService.findAllByPollId(pollId)
+            model.addAttribute("answers", answers)
+            return "student-view/showPollResults"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }

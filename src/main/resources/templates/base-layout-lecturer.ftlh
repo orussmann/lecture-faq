@@ -14,7 +14,7 @@
         <nav>
             <a href="/app/user/lecturer/profile">Profil</a>
             <a href="/app/user/lectures">Meine Vorlesungen</a>
-            <a href="/app/user/polls/poll-form">Multiple-Choice-Fragen</a>
+            <a href="/app/user/lecturer/poll-form">Multiple-Choice-Fragen</a>
         </nav>
     </header>
     <hr>

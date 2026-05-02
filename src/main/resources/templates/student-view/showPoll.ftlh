@@ -15,7 +15,7 @@
 
             const answers = document.querySelectorAll("li");
             const link = document.createElement("a");
-            link.href = "/app/user/polls/${poll.id}/results";
+            link.href = "/app/user/student/polls/${poll.id}/results";
             answers.forEach(a => {
                 a.addEventListener("click", (event) => {
                     ws.send(JSON.stringify({answerId: event.target.id}))

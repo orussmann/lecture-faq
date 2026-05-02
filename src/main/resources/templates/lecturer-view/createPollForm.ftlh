@@ -2,7 +2,7 @@
 
 <@base.layout>
     <h1>Multiple-Choice Fragen stellen</h1>
-    <form action="/app/user/polls/poll-form" method="post">
+    <form action="/app/user/lecturer/poll-form" method="post">
         <input type="text" name="title" placeholder="Titel">
         <#if errors?? && errors.getFieldError("title")??>
             ${errors.getFieldError("title")["defaultMessage"]}
@@ -33,11 +33,11 @@
     <ul>
         <#list polls as poll>
             <li>
-                <a href="/app/user/polls/${poll.id}">
+                <a href="/app/user/lecturer/polls/${poll.id}">
                     Poll ID: ${poll.id}, User: ${poll.userId}, Title: ${poll.title},
                     Description: ${poll.description}
                 </a>
-                <a href="/app/user/polls/${poll.id}/results">See results</a>
+                <a href="/app/user/lecturer/polls/${poll.id}/results">See results</a>
             </li>
         </#list>
     </ul>
