@@ -47,7 +47,6 @@ class PollsController(
         }
     }*/
 
-    //TODO: Fix -> Refreshing the page causes a form resubmit
     // TODO: Redesign URIs
     @GetMapping("/user/lecturer/poll-form")
     fun getPollForm(
@@ -135,7 +134,7 @@ class PollsController(
             val polls = pollsService.findAllByUserId(userId)
             model.addAttribute("userId", userId)
             model.addAttribute("polls", polls)
-            return "lecturer-view/createPollForm"
+            return "redirect:/app/user/lecturer/poll-form"
         } catch (e: ResponseStatusException) {
             throw e
         } catch (e: Exception) {
