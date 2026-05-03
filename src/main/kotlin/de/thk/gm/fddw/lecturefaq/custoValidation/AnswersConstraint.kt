@@ -1,0 +1,36 @@
+package de.thk.gm.fddw.lecturefaq.custoValidation
+
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.AnswerResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
+import jakarta.validation.Constraint
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
+import org.springframework.messaging.handler.annotation.Payload
+import kotlin.compareTo
+import kotlin.reflect.KClass
+
+
+@Target(AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+@Constraint(validatedBy = [AnswersConstraintValidator::class])
+annotation class AnswersConstraint(
+    val message: String = "At least 2 answers must be provided",
+    val groups: Array<KClass<out Any>> = [],
+    val payload: Array<KClass<out Payload>> = []
+)
+
+class AnswersConstraintValidator : ConstraintValidator<AnswersConstraint, List<CreateAnswerRequestDTO>> {
+    override fun isValid(value: List<CreateAnswerRequestDTO>, context: ConstraintValidatorContext?): Boolean {
+        val validAnswersCount = value.count { it.text.isNotBlank() } >= 2
+
+        if (validAnswersCount) {
+            return true
+        }
+
+        context?.disableDefaultConstraintViolation()
+        context?.buildConstraintViolationWithTemplate(context.defaultConstraintMessageTemplate)
+            ?.addConstraintViolation()
+
+        return false
+    }
+}

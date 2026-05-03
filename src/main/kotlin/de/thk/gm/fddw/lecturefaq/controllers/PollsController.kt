@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
 import java.util.*
 
@@ -47,37 +48,11 @@ class PollsController(
         }
     }*/
 
-    // TODO: Redesign URIs
-    @GetMapping("/user/lecturer/poll-form")
-    fun getPollForm(
-        principal: Principal,
-        model: Model
-    ): String {
-        try {
-            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
-            model.addAttribute("userId", userId)
-            val polls = pollsService.findAllByUserId(userId)
-            model.addAttribute("polls", polls)
-            return "lecturer-view/createPollForm"
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch polls")
-        }
-    }
-
-
     //TODO: Consider removing this
-    /*@GetMapping("/polls")
-    @ResponseStatus(HttpStatus.OK)
-    fun getAllPolls(): MutableIterable<PollResponseDTO> {
-        try {
-            val allPolls = pollsService.findAll()
-            return allPolls
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch polls")
-        }
-    }*/
+
 
     // Original implementation, using the test views
+
     /*@PostMapping("/users/{userId}/polls")
     fun createPoll(
         @PathVariable userId: UUID,
@@ -109,7 +84,35 @@ class PollsController(
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create poll")
         }
     }*/
+    /*@GetMapping("/polls")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllPolls(): MutableIterable<PollResponseDTO> {
+        try {
+            val allPolls = pollsService.findAll()
+            return allPolls
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch polls")
+        }
+    }*/
+    // TODO: Redesign URIs
+    @GetMapping("/user/lecturer/poll-form")
+    fun getPollForm(
+        principal: Principal,
+        model: Model
+    ): String {
+        try {
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
+            model.addAttribute("userId", userId)
+            val polls = pollsService.findAllByUserId(userId)
+            model.addAttribute("polls", polls)
+            return "lecturer-view/createPollForm"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch polls")
+        }
+    }
 
+    //TODO: Fix -> Currently, when there are errors, the poll is not saved, but the user is redirected to the poll form without any error messages.
+    // The error messages should be displayed on the poll form.
     @PostMapping("/user/lecturer/poll-form")
     fun createPoll(
         principal: Principal,
@@ -120,11 +123,13 @@ class PollsController(
         try {
             val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             if (bindingResult.hasErrors()) {
-                model.addAttribute("errors", bindingResult)
                 logger.info("There are >>Errors: " + bindingResult.hasErrors())
-                println("There are >>Errors: " + bindingResult.hasErrors())
                 logger.info(">>Errors: " + bindingResult.allErrors.toString())
-                println(">>Errors: " + bindingResult.allErrors.toString())
+                model.addAttribute("errors", bindingResult)
+                model.addAttribute("userId", userId)
+                val polls = pollsService.findAllByUserId(userId)
+                model.addAttribute("polls", polls)
+                return "lecturer-view/createPollForm"
             } else {
                 logger.info("There are no >>Errors.")
                 println("There are no >>Errors.")
@@ -134,6 +139,7 @@ class PollsController(
             val polls = pollsService.findAllByUserId(userId)
             model.addAttribute("userId", userId)
             model.addAttribute("polls", polls)
+            logger.info("Poll created successfully.")
             return "redirect:/app/user/lecturer/poll-form"
         } catch (e: ResponseStatusException) {
             throw e
