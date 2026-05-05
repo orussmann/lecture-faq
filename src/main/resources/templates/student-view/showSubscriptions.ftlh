@@ -39,7 +39,7 @@
             buttons.forEach(btn => btn.addEventListener("click", () => {
                 const xhr = new XMLHttpRequest();
                 const lecturerId = btn.id;
-                xhr.open("PUT", "/app/api/v1/users/students/${studentId}/subscriptions/" + lecturerId);
+                xhr.open("PUT", "/app/api/v1/user/students/${studentId}/subscriptions/" + lecturerId);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.send(JSON.stringify({subscription: lecturerId}));
                 // TODO: Now a page reload is needed to load updated subscriptions state -> SSE would be a better solution,

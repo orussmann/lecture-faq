@@ -54,8 +54,8 @@ class SecurityConfig(
                 authorize(HttpMethod.GET, "/api/v1/questions", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
 
                 authorize(HttpMethod.GET, "/api/v1/polls", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.GET, "/api/v1/users/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.PUT, "/api/v1/users/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+                authorize(HttpMethod.GET, "/api/v1/user/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
+                authorize(HttpMethod.PUT, "/api/v1/user/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
                 authorize("/api/v1/lecturers/**", hasAnyRole(Role.LECTURER.name))
 
                 authorize(HttpMethod.GET, "/api/v1/lectures", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))

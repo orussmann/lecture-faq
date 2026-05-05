@@ -17,7 +17,7 @@ class UsersRestController(private val usersService: UsersService) {
 
     private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getUser(@PathVariable id: UUID): UserResponseDTO {
         try {
@@ -28,7 +28,7 @@ class UsersRestController(private val usersService: UsersService) {
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     fun getAllUsers(): MutableIterable<UserResponseDTO> {
         try {
@@ -39,7 +39,7 @@ class UsersRestController(private val usersService: UsersService) {
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     fun createUser(
         @Valid @RequestBody userDTO: CreateUserRequestDTO
@@ -54,7 +54,7 @@ class UsersRestController(private val usersService: UsersService) {
         }
     }
 
-    @DeleteMapping("/users/{id}")   //TODO: Handln, wenn nichts gelöscht wird
+    @DeleteMapping("/user/{id}")   //TODO: Handln, wenn nichts gelöscht wird
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteUser(@PathVariable id: UUID) {
         try {
@@ -64,7 +64,7 @@ class UsersRestController(private val usersService: UsersService) {
         }
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun updateUser(
         @PathVariable id: UUID,
@@ -79,7 +79,7 @@ class UsersRestController(private val usersService: UsersService) {
 
     //TODO: Check if all endpoints follow best practices
     // TODO: Should there be a @Controller method as well?
-    @PutMapping("/users/students/{studentId}/subscriptions/{lecturerId}")
+    @PutMapping("/user/students/{studentId}/subscriptions/{lecturerId}")
     @ResponseStatus(HttpStatus.OK)
     fun updateLecturersSubscriptions(
         @PathVariable studentId: UUID,
