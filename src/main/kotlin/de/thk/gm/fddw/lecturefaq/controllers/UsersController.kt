@@ -32,42 +32,6 @@ class UsersController(
 
     private val logger = LoggerFactory.getLogger(PollsController::class.java)
 
-    /*@GetMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getUser(
-        @PathVariable id: UUID,
-        model: Model
-    ): String {
-        try {
-            val user = usersService.findById(id)
-            model.addAttribute("user", user)
-            return "users/showUser"
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
-        }
-    }
-    @GetMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    fun getUser(
-        @PathVariable id: UUID,
-        model: Model
-    ): String {
-        try {
-            val user = usersService.findById(id)
-            model.addAttribute("user", user)
-            model.addAttribute("userId", user.userId)
-            return if (user.role == Role.STUDENT) {
-                val lecturerIds = usersService.findById(user.userId).subscriptions
-                model.addAttribute("lecturerIds", lecturerIds)
-                "student-view/showProfile"
-            } else {
-                "lecturer-view/showProfile"
-            }
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
-        }
-    }
-     */
     @GetMapping("/user/student/profile")
     @ResponseStatus(HttpStatus.OK)
     fun showStudentProfile(
@@ -114,37 +78,6 @@ class UsersController(
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch user")
         }
     }
-
-    // TODO: Not needed for now
-    /* @GetMapping("/users")
-     @ResponseStatus(HttpStatus.OK)
-     fun getAllUsers(model: Model): String {
-         try {
-             val users = usersService.findAll()
-             model.addAttribute("users", users)
-             return "users/showUsers"
-         } catch (e: Exception) {
-             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch users")
-         }
-     }*/
-
-    /*@PostMapping("/users")
-    fun createUser(
-        @Valid user: CreateUserRequestDTO,
-        bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes
-    ): String {
-        try {
-            if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute("errors", bindingResult)
-            } else {
-                usersService.save(user)
-            }
-            return "redirect:/app/users"
-        } catch (e: java.lang.Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }*/
 
     @PostMapping("/register")
     fun registerUser(
