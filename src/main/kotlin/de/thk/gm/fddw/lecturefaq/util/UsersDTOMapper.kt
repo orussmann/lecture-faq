@@ -4,7 +4,7 @@ import de.thk.gm.fddw.lecturefaq.models.User
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserResponseDTO
-import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserSubscriptionResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.user_dtos.SubscriptionDTO
 import org.springframework.stereotype.Component
 
 @Component
@@ -46,12 +46,12 @@ class UsersDTOMapper {  //TODO: Find better name
         return user
     }
 
-    fun mapToUserSubscriptionsResponse(student: User, lecturers: List<UserResponseDTO>): List<UserSubscriptionResponseDTO> {
+    fun mapToUserSubscriptionsResponse(student: User, lecturers: List<UserResponseDTO>): List<SubscriptionDTO> {
         return lecturers.map { lecturer ->
-            UserSubscriptionResponseDTO(
-                userId = lecturer.userId,
-                firstName = lecturer.firstName,
-                lastName = lecturer.lastName,
+            SubscriptionDTO(
+                lecturerId = lecturer.userId,
+                lecturerFirstName = lecturer.firstName,
+                lecturerLastName = lecturer.lastName,
                 subscribed = student.subscriptions.contains(lecturer.userId)
             )
         }

@@ -3,15 +3,15 @@
 <@base.layout>
     <h2>Dozenten</h2>
     <ul>
-        <#list lecturers as lecturer>
+        <#list lecturers as l>
             <li>
-                <h3>${lecturer.firstName} ${lecturer.lastName}</h3><br>
+                <h3>${l.lecturerFirstName} ${l.lecturerLastName}</h3><br>
                 <button
-                        id="${lecturer.userId}"
+                        id="${l.lecturerId}"
                         class="subscription"
                         type="button"
-                        data-subscription="${lecturer.subscribed?c}">
-                    <#if lecturer.subscribed>
+                        data-subscription="${l.subscribed?c}">
+                    <#if l.subscribed>
                         Deabonnieren
                     <#else>
                         Abonnieren
