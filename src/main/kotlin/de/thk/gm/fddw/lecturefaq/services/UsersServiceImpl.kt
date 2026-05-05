@@ -5,6 +5,7 @@ import de.thk.gm.fddw.lecturefaq.models.UserDetailsModel
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.CreateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UpdateUserRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserResponseDTO
+import de.thk.gm.fddw.lecturefaq.models.user_dtos.UserSubscriptionResponseDTO
 import de.thk.gm.fddw.lecturefaq.repositories.UsersRepository
 import de.thk.gm.fddw.lecturefaq.util.UsersDTOMapper
 import org.springframework.security.core.userdetails.UserDetails
@@ -70,5 +71,9 @@ class UsersServiceImpl(
         val user = findByEmail(username!!)
         val userDetailsModel = UserDetailsModel(user.role, user.password, user.email)
         return userDetailsModel
+    }
+
+    override fun findSubscriptions(student: User, lecturers: List<UserResponseDTO>): List<UserSubscriptionResponseDTO> {
+        return usersDTOMapper.mapToUserSubscriptionsResponse(student, lecturers)
     }
 }

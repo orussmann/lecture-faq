@@ -150,27 +150,10 @@ class UsersController(
         try {
             val student = usersService.findByEmail(principal.name)
                 ?: throw NoSuchElementException("User not found")
-            val studentsSubscriptions = student.subscriptions
             val studentId = student.id
             val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }
 
-
-            // Mapping: UserResponseDTO mit zusätzlichem Feld "subscribed"
-            data class UserSubscriptionResponse(
-                var userId: UUID,
-                var firstName: String,
-                var lastName: String,
-                var subscribed: Boolean
-            )
-            // TODO: Move logic out of controller
-            val lecturersWithSubscriptionInfo = lecturers.map { lecturer ->
-                UserSubscriptionResponse(
-                    lecturer.userId,
-                    lecturer.firstName,
-                    lecturer.lastName,
-                    studentsSubscriptions.contains(lecturer.userId)
-                )
-            }
+            val lecturersWithSubscriptionInfo = usersService.findSubscriptions(student, lecturers)
 
             model.addAttribute("lecturers", lecturersWithSubscriptionInfo)
             model.addAttribute("studentId", studentId) // TODO: Should be unified to userId
