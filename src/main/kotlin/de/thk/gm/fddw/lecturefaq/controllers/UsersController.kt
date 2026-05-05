@@ -142,9 +142,7 @@ class UsersController(
         }
     }
 
-    // TODO: Should have its own Controller (?)
-    // TODO: Wouldn't that make more sense? -> /users/{studentId}/subscriptions
-    @GetMapping("/user/students/subscriptions")
+    @GetMapping("/user/student/subscriptions")
     fun getAllSubscriptions(
         principal: Principal,
         model: Model
