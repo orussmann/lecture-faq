@@ -177,7 +177,7 @@ class UsersController(
             model.addAttribute("userId", studentId)
             val lecturerIds = usersService.findById(studentId).subscriptions
             model.addAttribute("lecturerIds", lecturerIds)
-            return "student-view/showLecturers"
+            return "student-view/showSubscriptions"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
