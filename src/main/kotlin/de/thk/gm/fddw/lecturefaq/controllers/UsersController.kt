@@ -156,8 +156,7 @@ class UsersController(
             val lecturersWithSubscriptionInfo = usersService.findSubscriptions(student, lecturers)
 
             model.addAttribute("lecturers", lecturersWithSubscriptionInfo)
-            model.addAttribute("studentId", studentId) // TODO: Should be unified to userId
-            model.addAttribute("userId", studentId)
+            model.addAttribute("studentId", studentId)
             val lecturerIds = usersService.findById(studentId).subscriptions
             model.addAttribute("lecturerIds", lecturerIds)
             return "student-view/showSubscriptions"
