@@ -5,7 +5,7 @@
     <ul>
         <#list allLectures as lecture>
             <li>
-                <a href="/app/user/lectures/${lecture.id}">
+                <a href="/app/user/student/lectures/${lecture.id}">
                     <h3>Name:</h3>
                     <p>${lecture.title}</p>
                     <h3>Typ:</h3>

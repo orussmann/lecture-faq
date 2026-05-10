@@ -6,7 +6,7 @@
     <ul>
         <#list allLectures as lecture>
             <li>
-                <a href="/app/user/lectures/${lecture.id}">
+                <a href="/app/user/lecturer/lectures/${lecture.id}">
                     Name: ${lecture.title}
                     Typ: ${lecture.type}
                     Beschreibung: ${lecture.description}

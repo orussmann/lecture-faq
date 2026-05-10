@@ -28,9 +28,9 @@ class LecturesController(
     private val usersService: UsersService
 ) {
 
-    @GetMapping("/user/lectures/{lectureId}")
+    @GetMapping("/user/lecturer/lectures/{lectureId}")
     @ResponseStatus(HttpStatus.OK)
-    fun getLecture(
+    fun getLectureLecturerView(
         principal: Principal,
         @PathVariable lectureId: UUID,
         model: Model
@@ -45,12 +45,30 @@ class LecturesController(
             model.addAttribute("userId", userId)
             model.addAttribute("chatMessages", chatMessages)
             model.addAttribute("userName", userName)
-            val isStudent = usersService.findById(userId).role == Role.STUDENT
-            return if (isStudent) {
-                "student-view/showLecture"
-            } else {
-                "lecturer-view/showLecture"
-            }
+            return "lecturer-view/showLecture"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")
+        }
+    }
+
+    @GetMapping("/user/student/lectures/{lectureId}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getLectureStudentView(
+        principal: Principal,
+        @PathVariable lectureId: UUID,
+        model: Model
+    ): String {
+        try {
+            val lecture = lecturesService.findById(lectureId)
+            val chatMessages = questionsService.findAllByLectureIdOrderByCreatedAt(lecture.id)
+            val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            val userId = user.id
+            val userName = "${user.firstName} ${user.lastName}"
+            model.addAttribute("lecture", lecture)
+            model.addAttribute("userId", userId)
+            model.addAttribute("chatMessages", chatMessages)
+            model.addAttribute("userName", userName)
+            return "student-view/showLecture"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")
         }
