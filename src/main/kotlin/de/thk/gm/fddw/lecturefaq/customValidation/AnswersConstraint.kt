@@ -1,12 +1,10 @@
-package de.thk.gm.fddw.lecturefaq.custoValidation
+package de.thk.gm.fddw.lecturefaq.customValidation
 
-import de.thk.gm.fddw.lecturefaq.models.answer_dtos.AnswerResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
-import org.springframework.messaging.handler.annotation.Payload
-import kotlin.compareTo
+import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
 
