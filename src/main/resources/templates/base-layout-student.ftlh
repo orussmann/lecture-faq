@@ -13,7 +13,7 @@
     <header>
         <nav>
             <a href="/app/user/student/profile">Profil</a>
-            <a href="/app/user/lectures">Vorlesungen</a>
+            <a href="/app/user/student/lectures">Vorlesungen</a>
             <a href="/app/user/student/subscriptions">Dozenten</a>
             <a href="/app/user/polls">Multiple-Choice-Fragen</a>
         </nav>

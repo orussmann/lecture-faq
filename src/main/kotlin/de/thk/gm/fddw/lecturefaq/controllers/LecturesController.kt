@@ -119,9 +119,9 @@ class LecturesController(
     }*/
 
 
-    @GetMapping("/user/lectures")
+    @GetMapping("/user/student/lectures")
     @ResponseStatus(HttpStatus.OK)
-    fun getAllLecturesFromUser(
+    fun getAllLecturesForStudent(
         principal: Principal,
         model: Model
     ): String {
@@ -132,18 +132,33 @@ class LecturesController(
             val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             model.addAttribute("allLectures", allLectures)
             model.addAttribute("userId", userId)
-            val user = usersService.findById(userId)
-            return if (user.role == Role.LECTURER) {
-                "lecturer-view/showLectures"
-            } else {
-                val lecturerIds = usersService.findById(userId).subscriptions
-                model.addAttribute("lecturerIds", lecturerIds)
-                "student-view/showLectures"
-            }
+            val lecturerIds = usersService.findById(userId).subscriptions
+            model.addAttribute("lecturerIds", lecturerIds)
+            return "student-view/showLectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
         }
     }
+
+    @GetMapping("/user/lecturer/lectures")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllLecturesForLecturer(
+        principal: Principal,
+        model: Model
+    ): String {
+        try {
+//            val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }.map { it.userId }
+//            val lecturersForResponse = lectures.filter { it.userId in lecturers }
+            val allLectures = lecturesService.findAll()
+            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
+            model.addAttribute("allLectures", allLectures)
+            model.addAttribute("userId", userId)
+            return "lecturer-view/showLectures"
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
+        }
+    }
+
 
     @GetMapping("/public-lectures")
     @ResponseStatus(HttpStatus.OK)
