@@ -11,13 +11,13 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [PasswordConfirmationValidator::class])
-annotation class PasswordConfirmationConstraint(
+annotation class PasswordConfirmation(
     val message: String = "Password confirmation does not match",
     val groups: Array<KClass<out Any>> = [],
     val payload: Array<KClass<out Payload>> = []
 )
 
-class PasswordConfirmationValidator : ConstraintValidator<PasswordConfirmationConstraint, CreateUserRequestDTO> {
+class PasswordConfirmationValidator : ConstraintValidator<PasswordConfirmation, CreateUserRequestDTO> {
     override fun isValid(value: CreateUserRequestDTO, context: ConstraintValidatorContext?): Boolean {
         val passwordConfirmationValid = value.password == value.passwordConfirmation
 

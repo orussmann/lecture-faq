@@ -1,7 +1,7 @@
 package de.thk.gm.fddw.lecturefaq.models.poll_dtos
 
 import de.thk.gm.fddw.lecturefaq.constants.*
-import de.thk.gm.fddw.lecturefaq.customValidation.AnswersConstraint
+import de.thk.gm.fddw.lecturefaq.customValidation.TwoAnswersMinimum
 import de.thk.gm.fddw.lecturefaq.models.answer_dtos.CreateAnswerRequestDTO
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
@@ -17,6 +17,6 @@ class CreatePollRequestDTO {
     var description: String = ""
 
     @field:Valid
-    @field:AnswersConstraint
+    @field:TwoAnswersMinimum
     var answers: MutableList<CreateAnswerRequestDTO> = mutableListOf()
 }

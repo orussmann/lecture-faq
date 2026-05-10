@@ -17,7 +17,7 @@ class User(
     @Column(name = "user_id", nullable = false)
     val id: UUID = UUID.randomUUID(),
 
-    @field:Email    // TODO: Should be unique?
+    @field:Email
     @Column(name = "email", nullable = false, unique = true)
     var email: String = "",
 
@@ -52,6 +52,7 @@ class User(
     @Column
     var lastVisited: Date = Date()
 ) {
+    //TODO: Is this an atomic operation?
     fun addLecture(lecture: Lecture) {
         lectures.add(lecture)
         lecture.users.add(this)
