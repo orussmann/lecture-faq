@@ -40,7 +40,7 @@ class SecurityConfig(
                 authorize("/user/lecturer/**", hasAuthority("ROLE_${Role.LECTURER}"))
                 authorize("/user/student/**", hasAuthority("ROLE_${Role.STUDENT}"))    // Prefix student -> Controller for student view
 
-                authorize("/user/*", authenticated)
+                authorize("/user/**", authenticated)
 
 
 
