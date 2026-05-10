@@ -1,7 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
 import de.thk.gm.fddw.lecturefaq.constants.DUMMY_USER_ID
-import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.CreateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.LecturesService
@@ -139,7 +138,7 @@ class LecturesController(
 
     @GetMapping("/user/student/lectures")
     @ResponseStatus(HttpStatus.OK)
-    fun getAllLecturesForStudent(
+    fun getAllLecturesStudentView(
         principal: Principal,
         model: Model
     ): String {
@@ -160,7 +159,7 @@ class LecturesController(
 
     @GetMapping("/user/lecturer/lectures")
     @ResponseStatus(HttpStatus.OK)
-    fun getAllLecturesForLecturer(
+    fun getAllLecturesLecturerView(
         principal: Principal,
         model: Model
     ): String {
