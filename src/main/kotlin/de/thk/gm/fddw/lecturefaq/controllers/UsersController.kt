@@ -83,25 +83,17 @@ class UsersController(
     fun registerUser(
         @Valid user: CreateUserRequestDTO,
         bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes,
         model: Model
     ): String {
-        try {   // TODO: Fix redirect not showing any flash attributes. Current solution, not following the PRG pattern causes duplicate POST on page reload
+        try {
             if (bindingResult.hasErrors()) {
-//                redirectAttributes.addFlashAttribute("errors", bindingResult)
                 logger.info("UsersController hasErrors()")
                 model.addAttribute("errors", bindingResult)
-            } else if (user.password != user.passwordConfirmation) {
-//                redirectAttributes.addFlashAttribute("error", "Passwords do not match")
-                logger.info("UsersController error")
-                model.addAttribute("error", "Passwords do not match")
             } else {
-//                redirectAttributes.addFlashAttribute("success", "User registered successfully")
                 logger.info("UsersController success")
                 model.addAttribute("success", "User registered successfully")
                 usersService.save(user)
             }
-//            return "redirect:/app/"
             return "index"
         } catch (e: DataIntegrityViolationException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)

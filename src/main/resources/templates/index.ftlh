@@ -53,6 +53,9 @@
         Password Confirmation
         <input type="password" name="passwordConfirmation" placeholder="password confirmation">
     </label>
+    <#if errors?? && errors.getFieldError("passwordConfirmation")??>
+        ${errors.getFieldError("passwordConfirmation")["defaultMessage"]}
+    </#if>
     <#if error??>
         <p style="color: red">${error}</p>
     </#if>
