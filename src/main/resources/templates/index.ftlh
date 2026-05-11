@@ -31,11 +31,6 @@
 <br>
 <h2>Register</h2>
 <hr>
-<footer>
-    <a href="#">Imprint</a>
-    <a href="#">About us</a>
-    <a href="#">Support</a>
-</footer>
 <form action="/app/register" method="post">
     <#if success??>
         ${success}
@@ -84,5 +79,10 @@
     </#if>
     <button>Register</button>
 </form>
+<footer>
+    <a href="#">Imprint</a>
+    <a href="#">About us</a>
+    <a href="#">Support</a>
+</footer>
 </body>
 </html>
