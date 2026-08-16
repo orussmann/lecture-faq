@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.lecturefaq.models.user_dtos
 
+import de.thk.gm.fddw.lecturefaq.constants.MAXIMUM_EMAIL_LENGTH
 import de.thk.gm.fddw.lecturefaq.constants.MAXIMUM_NAME_LENGTH
 import de.thk.gm.fddw.lecturefaq.constants.MINIMUM_NAME_LENGTH
 import de.thk.gm.fddw.lecturefaq.models.enums.Role
@@ -11,10 +12,15 @@ import java.util.*
 
 class UpdateUserRequestDTO(
     @field:Email(message = "You must provide a valid e-mail address, like 'tom123@gmail.com'")
+    @field:Size(
+        max = MAXIMUM_EMAIL_LENGTH,
+        message = "The input should be max. $MAXIMUM_EMAIL_LENGTH characters",
+    )
     var email: String? = null,
 
-    @field:Pattern(regexp = "^\\p{L}+\$", message = "The name should contain only characters")
+    @field:Pattern(regexp = "^\\p{L}+$", message = "The name should contain only characters")
     @field:Size(
+        min = MINIMUM_NAME_LENGTH,
         max = MAXIMUM_NAME_LENGTH,
         message = "The input should be max. $MAXIMUM_NAME_LENGTH characters",
     )
@@ -22,6 +28,7 @@ class UpdateUserRequestDTO(
 
     @field:Pattern(regexp = "^\\p{L}+$", message = "The name should contain only characters")
     @field:Size(
+        min = MINIMUM_NAME_LENGTH,
         max = MAXIMUM_NAME_LENGTH,
         message = "The input should be max. $MAXIMUM_NAME_LENGTH characters",
     )
