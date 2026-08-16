@@ -14,8 +14,6 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
 
-//TODO: Consider using ResponseEntity
-
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
 class AnswersController(
@@ -36,20 +34,6 @@ class AnswersController(
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch answers")
         }
     }
-
-    //TODO: Consider removing this
-    /*@GetMapping("/answers")
-    @ResponseStatus(HttpStatus.OK)
-    fun getAllAnswers(model: Model): String {
-        try {
-            val allAnswers = answersService.findAll()
-            model.addAttribute("answers", allAnswers)
-            return "answers/showAnswers"
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch answers")
-        }
-    }
-*/
 
     @PostMapping("/polls/{pollId}/answers")
     fun createAnswer(

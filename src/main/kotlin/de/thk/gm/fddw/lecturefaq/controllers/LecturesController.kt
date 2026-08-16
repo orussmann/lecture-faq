@@ -106,36 +106,6 @@ class LecturesController(
         }
     }
 
-    /*
-    @GetMapping("/lectures")
-    @ResponseStatus(HttpStatus.OK)
-    fun getAllLectures(): MutableIterable<LectureResponseDTO> {
-        try {
-            val lectures = lecturesService.findAll()
-            return lectures
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
-        }
-    }
-     */
-
-    /*@GetMapping("/users/{userId}/lectures")
-    @ResponseStatus(HttpStatus.OK)
-    fun getAllLecturesFromUser(
-        @PathVariable userId: UUID,
-        model: Model
-    ): String {
-        try {
-            val lectures = lecturesService.findAllByUserId(userId)
-            model.addAttribute("lectures", lectures)
-            model.addAttribute("userId", userId)
-            return "lectures/showLectures"
-        } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lectures")
-        }
-    }*/
-
-
     @GetMapping("/user/student/lectures")
     @ResponseStatus(HttpStatus.OK)
     fun getAllLecturesStudentView(
@@ -143,8 +113,6 @@ class LecturesController(
         model: Model
     ): String {
         try {
-//            val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }.map { it.userId }
-//            val lecturersForResponse = lectures.filter { it.userId in lecturers }
             val allLectures = lecturesService.findAll()
             val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             model.addAttribute("allLectures", allLectures)
@@ -164,8 +132,6 @@ class LecturesController(
         model: Model
     ): String {
         try {
-//            val lecturers = usersService.findAll().filter { it.role == Role.LECTURER }.map { it.userId }
-//            val lecturersForResponse = lectures.filter { it.userId in lecturers }
             val allLectures = lecturesService.findAll()
             val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
             model.addAttribute("allLectures", allLectures)
@@ -210,7 +176,7 @@ class LecturesController(
         }
     }
 
-    @DeleteMapping("/user/lectures/{lectureId}")   //TODO: Handln, wenn nichts gelöscht wird
+    @DeleteMapping("/user/lectures/{lectureId}")   //TODO: Delete not working + Handlen, wenn nichts gelöscht wird
     fun deleteLecture(
         @PathVariable lectureId: UUID,
         principal: Principal

@@ -21,7 +21,6 @@ import java.security.Principal
 import java.util.*
 import kotlin.NoSuchElementException
 
-//TODO: Redesign URIs -> /app/user/lectures (decouple user from lectures, because the URi doesn't contain User ID anymore)
 @Controller
 @RequestMapping(produces = [MediaType.TEXT_HTML_VALUE])
 class UsersController(

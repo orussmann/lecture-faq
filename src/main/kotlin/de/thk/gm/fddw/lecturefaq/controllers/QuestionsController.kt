@@ -34,19 +34,6 @@ class QuestionsController(private val questionsService: QuestionsService) {
         }
     }
 
-    /*
-        @GetMapping("/questions")
-        @ResponseStatus(HttpStatus.OK)
-        fun getAllQuestions(): MutableIterable<QuestionResponseDTO> {
-            try {
-                val questions = questionsService.findAll()
-                return questions
-            } catch (e: Exception) {
-                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch question")
-            }
-        }
-     */
-
     @GetMapping("/lectures/{lectureId}/questions")
     @ResponseStatus(HttpStatus.OK)
     fun getAllQuestionsForLecture(
