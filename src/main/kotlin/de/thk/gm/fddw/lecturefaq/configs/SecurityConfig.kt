@@ -58,7 +58,7 @@ class SecurityConfig(
             logout {
                 permitAll()
                 logoutUrl = "/logout"
-                logoutSuccessUrl = "/app/"
+                logoutSuccessUrl = "/"
                 logoutSuccessHandler = customLogoutSuccessHandler
             }
             httpBasic { }

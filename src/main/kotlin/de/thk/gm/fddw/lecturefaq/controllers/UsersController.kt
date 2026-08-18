@@ -106,7 +106,7 @@ class UsersController(
     fun deleteUser(@PathVariable id: UUID): String {
         try {
             usersService.removeById(id)
-            return "redirect:/app/users"
+            return "redirect:/users"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete user")
         }
@@ -131,9 +131,9 @@ class UsersController(
             usersService.updateById(user.id, userDTO)
 
             return if (emailChanged) {
-                "redirect:/app/logout?emailChanged=true"
+                "redirect:/logout?emailChanged=true"
             } else {
-                "redirect:/app/user/lecturer/profile"
+                "redirect:/user/lecturer/profile"
             }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")

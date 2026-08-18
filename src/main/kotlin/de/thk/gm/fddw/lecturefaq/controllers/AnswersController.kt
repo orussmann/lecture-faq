@@ -48,7 +48,7 @@ class AnswersController(
             } else {
                 answersService.save(answer)
             }
-            return "redirect:/app/polls/${pollId}/answers"
+            return "redirect:/polls/${pollId}/answers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create answer")
         }
@@ -78,7 +78,7 @@ class AnswersController(
     ): String {
         try {
             answersService.removeById(answerId)
-            return "redirect:/app/polls/${pollId}/answers"
+            return "redirect:/polls/${pollId}/answers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete answer")
         }
@@ -98,7 +98,7 @@ class AnswersController(
             } else {
                 answersService.updateById(answerId, answer)
             }
-            return "redirect:/app/polls/${pollId}/answers"
+            return "redirect:/polls/${pollId}/answers"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update answer")
         }

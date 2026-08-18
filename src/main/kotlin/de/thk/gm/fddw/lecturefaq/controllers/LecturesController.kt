@@ -165,6 +165,7 @@ class LecturesController(
         model: Model
     ): String {
         try {
+            // TODO: Validation constraints should be reflected in the DB!!! App crashes when description is varchar(255).
             return if (bindingResult.hasErrors()) {
                 model.addAttribute("errors", bindingResult)
                 val allLectures = lecturesService.findAll()
@@ -176,7 +177,7 @@ class LecturesController(
             } else {
                 val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
                 lecturesService.save(lecture, user.id)
-                "redirect:/app/user/lecturer/lectures"
+                "redirect:/user/lecturer/lectures"
             }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create lecture")
@@ -192,7 +193,7 @@ class LecturesController(
             val userId = usersService.findByEmail(principal.name)?.id
                 ?: throw NoSuchElementException("User not found")
             lecturesService.removeById(lectureId, userId)
-            return "redirect:/app/user/lectures"
+            return "redirect:/user/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete lecture")
         }
@@ -223,7 +224,7 @@ class LecturesController(
                 return "/lecturer-view/showLecture"
             } else {
                 lecturesService.updateById(lectureId, userId, lectureDTO)
-                return "redirect:/app/user/lecturer/lectures/$lectureId"
+                return "redirect:/user/lecturer/lectures/$lectureId"
             }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update lecture")

@@ -63,7 +63,7 @@ class QuestionsController(private val questionsService: QuestionsService) {
             } else {
                 questionsService.save(question)
             }
-            return "redirect:/app/lectures/$lectureId/questions"
+            return "redirect:/lectures/$lectureId/questions"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create question")
         }
@@ -76,7 +76,7 @@ class QuestionsController(private val questionsService: QuestionsService) {
     ): String {
         try {
             questionsService.removeById(questionId)
-            return "redirect:/app/lectures/$lectureId/questions"
+            return "redirect:/lectures/$lectureId/questions"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete question")
         }
@@ -97,7 +97,7 @@ class QuestionsController(private val questionsService: QuestionsService) {
             } else {
                 questionsService.updateById(questionId, question)
             }
-            return "redirect:/app/lectures/$lectureId/questions"
+            return "redirect:/lectures/$lectureId/questions"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update question")
         }

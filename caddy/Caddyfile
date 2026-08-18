@@ -5,7 +5,6 @@
 #    }
 
     route /app/* {
-        uri strip_prefix /app
         reverse_proxy springboot:8080
     }
 #    route /pgadmin {

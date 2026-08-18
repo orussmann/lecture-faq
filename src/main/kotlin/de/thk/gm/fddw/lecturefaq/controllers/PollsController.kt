@@ -77,7 +77,7 @@ class PollsController(
             model.addAttribute("userId", userId)
             model.addAttribute("polls", polls)
             logger.info("Poll created successfully.")
-            return "redirect:/app/user/lecturer/poll-form"
+            return "redirect:/user/lecturer/poll-form"
         } catch (e: ResponseStatusException) {
             throw e
         } catch (e: Exception) {
