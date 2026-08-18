@@ -6,7 +6,7 @@ import de.thk.gm.fddw.lecturefaq.models.lecture_dtos.UpdateLectureRequestDTO
 import java.util.*
 
 interface LecturesService {
-    fun save(lecture: CreateLectureRequestDTO): LectureResponseDTO
+    fun save(lecture: CreateLectureRequestDTO, userId: UUID): LectureResponseDTO
     fun findAll(): MutableIterable<LectureResponseDTO>
     fun findById(lectureId: UUID): LectureResponseDTO
     fun findAllByUserId(userId: UUID): List<LectureResponseDTO>

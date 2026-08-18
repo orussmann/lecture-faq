@@ -162,15 +162,23 @@ class LecturesController(
     fun createLecture(
         @Valid lecture: CreateLectureRequestDTO,
         bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes
+        principal: Principal,
+        model: Model
     ): String {
         try {
-            if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute("errors", bindingResult)
+            return if (bindingResult.hasErrors()) {
+                model.addAttribute("errors", bindingResult)
+                val allLectures = lecturesService.findAll()
+                val userId =
+                    usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
+                model.addAttribute("allLectures", allLectures)
+                model.addAttribute("userId", userId)
+                "lecturer-view/showLectures"
             } else {
-                lecturesService.save(lecture)
+                val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+                lecturesService.save(lecture, user.id)
+                "redirect:/app/user/lecturer/lectures"
             }
-            return "redirect:/app/user/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create lecture")
         }

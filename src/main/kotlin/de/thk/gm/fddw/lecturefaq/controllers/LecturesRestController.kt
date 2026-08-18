@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import java.security.Principal
 import java.util.*
 
 @RestController
@@ -60,12 +61,13 @@ class LecturesRestController(private val lecturesService: LecturesService, priva
     @ResponseStatus(HttpStatus.CREATED)
     fun createLecture(
         @PathVariable userId: UUID,
-        @Valid @RequestBody lectureDTO: CreateLectureRequestDTO
+        @Valid @RequestBody lectureDTO: CreateLectureRequestDTO,
+        principal: Principal
     ): Any {
         try {
-            val user = usersService.findById(userId)
+            val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
             if (user.role == Role.LECTURER) {
-                return lecturesService.save(lectureDTO)
+                return lecturesService.save(lectureDTO, user.id)
             } else {
                 return ResponseEntity("Only lecturers can create new lectures", HttpStatus.UNAUTHORIZED)
             }

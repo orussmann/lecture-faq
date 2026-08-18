@@ -23,9 +23,9 @@ class LecturesServiceImpl(
     private val usersRepository: UsersRepository
 ) : LecturesService {
     @Transactional
-    override fun save(lecture: CreateLectureRequestDTO): LectureResponseDTO {
+    override fun save(lecture: CreateLectureRequestDTO, userId: UUID): LectureResponseDTO {
         val user = usersRepository
-            .findById(lecture.userId)
+            .findById(userId)
             .orElseThrow { NoSuchElementException("User for this lecture not found") }
         logger.debug(MarkerFactory.getMarker("LecturesServiceImpl"), "User: {}", user)
         val newLecture = lecturesDTOMapper.mapToNewLecture(lecture, user)
