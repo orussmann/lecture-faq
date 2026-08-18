@@ -35,6 +35,9 @@
         })
     </script>
 <#--Lower section is only for the lecturer/ admin view-->
+    <#if notification??>
+        <div id="notification">${notification}</div>
+    </#if>
     <form action="/app/user/lectures/${lecture.id}" method="post">
 
         <p>Lecture ID: ${lecture.id}</p>
@@ -81,20 +84,29 @@
         <input type="number" value="${lecture.code?c}" placeholder="123" name="code" id="code" min="0" max="32767"
                required><br>
 
-        <#--<input type="hidden" name="_method" value="PUT"/>
-        <button>Update</button>-->
+        <input type="hidden" name="_method" value="PUT"/>
+        <button>Update</button>
 
-        <button onclick="updateLectureRestAPI()" type="button">Update via AJAX</button>
+<#--        <button onclick="updateLectureRestAPI()" type="button">Update via AJAX</button>-->
     </form>
 
     <form action="/app/user/lectures/${lecture.id}" method="post">
 
-        <#--<input type="hidden" name="_method" value="DELETE"/>
-        <button>Delete</button>-->
+        <input type="hidden" name="_method" value="DELETE"/>
+        <button>Delete</button>
 
-        <button onclick="deleteLecture()" type="button">Delete via AJAX</button>
+<#--        <button onclick="deleteLecture()" type="button">Delete via AJAX</button>-->
     </form>
     <script>
+
+        let notification = document.getElementById("notification")
+
+        if (notification){
+            setTimeout(() => {
+                notification.hidden = true;
+            }, 3000)
+        }
+
         //TODO: RegEx for pattern should be updated -> it's not a valid regex
         function updateLectureRestAPI() {
             const xhr = new XMLHttpRequest()

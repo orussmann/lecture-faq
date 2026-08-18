@@ -14,7 +14,6 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
 import java.util.*
 import kotlin.NoSuchElementException
@@ -203,18 +202,29 @@ class LecturesController(
     fun updateLecture(
         principal: Principal,
         @PathVariable lectureId: UUID,
-        @Valid lecture: UpdateLectureRequestDTO,
+        @Valid lectureDTO: UpdateLectureRequestDTO,
         bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes
+        model: Model,
     ): String {
         try {
-            val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
+            val lecture = lecturesService.findById(lectureId)
+            val chatMessages = questionsService.findAllByLectureIdOrderByCreatedAt(lecture.id)
+            val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            val userId = user.id
+            val userName = "${user.firstName} ${user.lastName}"
             if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute("errors", bindingResult)
+                model.addAttribute("errors", bindingResult)
+                model.addAttribute("lecture", lecture)
+                model.addAttribute("userId", userId)
+                model.addAttribute("chatMessages", chatMessages)
+                model.addAttribute("userName", userName)
+                model.addAttribute("lecture", lecture)
+                model.addAttribute("userId", userId)
+                return "/lecturer-view/showLecture"
             } else {
-                lecturesService.updateById(lectureId, userId, lecture)
+                lecturesService.updateById(lectureId, userId, lectureDTO)
+                return "redirect:/app/user/lecturer/lectures/$lectureId"
             }
-            return "redirect:/app/user/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update lecture")
         }
