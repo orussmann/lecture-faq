@@ -60,6 +60,9 @@
     <#if error??>
         <p style="color: red">${error}</p>
     </#if>
+    <#if notification??>
+        ${notification}
+    </#if>
 
     <br>
 

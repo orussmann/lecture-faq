@@ -1,12 +1,12 @@
 package de.thk.gm.fddw.lecturefaq.configs
 
+import de.thk.gm.fddw.lecturefaq.loginHandlers.CustomLogoutSuccessHandler
 import de.thk.gm.fddw.lecturefaq.loginHandlers.LoginSuccessHandler
 import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.services.LecturesServiceImpl
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
@@ -19,7 +19,9 @@ private val logger = LoggerFactory.getLogger(LecturesServiceImpl::class.java)
 @EnableWebSecurity
 @Configuration
 class SecurityConfig(
-    private val loginSuccessHandler: LoginSuccessHandler) {
+    private val loginSuccessHandler: LoginSuccessHandler,
+    private val customLogoutSuccessHandler: CustomLogoutSuccessHandler
+) {
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -39,33 +41,11 @@ class SecurityConfig(
                 // TODO: Divide the Controller into several Controllers -> at this point the separation of views happens in one Controller (for each ressource)
                 authorize("/user/lecturer/**", hasAuthority("ROLE_${Role.LECTURER}"))
                 authorize("/user/student/**", hasAuthority("ROLE_${Role.STUDENT}"))    // Prefix student -> Controller for student view
-
+                authorize("/new-lecture", hasRole(Role.LECTURER.name))
                 authorize("/user/**", authenticated)
 
-
-
-
-
-                authorize("/api/v1/user**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-
-                authorize(HttpMethod.GET, "/api/v1/lectures/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.POST, "/api/v1/lectures/**", hasAnyRole(Role.LECTURER.name))
-                authorize(HttpMethod.PUT, "/api/v1/lectures/**", hasAnyRole(Role.LECTURER.name))
-                authorize(HttpMethod.GET, "/api/v1/questions", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-
-                authorize(HttpMethod.GET, "/api/v1/polls", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.GET, "/api/v1/user/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.PUT, "/api/v1/user/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize("/api/v1/lecturers/**", hasAnyRole(Role.LECTURER.name))
-
-                authorize(HttpMethod.GET, "/api/v1/lectures", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.GET, "/api/v1/polls/**", hasAnyRole(Role.LECTURER.name, Role.STUDENT.name))
-                authorize(HttpMethod.DELETE, "/api/v1/polls/**", hasAnyRole(Role.LECTURER.name))
-                authorize(HttpMethod.PUT, "/api/v1/polls/**", hasAnyRole(Role.LECTURER.name))
-                authorize(HttpMethod.GET, "/api/v1/answers", hasAnyRole(Role.LECTURER.name))
-                authorize(HttpMethod.GET, "/api/v1/lecturers/**", hasAnyRole(Role.LECTURER.name))
-
-                authorize(anyRequest, denyAll)
+                // REST API
+                authorize("/api/**", authenticated)
             }
             formLogin {
                 permitAll()
@@ -78,7 +58,8 @@ class SecurityConfig(
             logout {
                 permitAll()
                 logoutUrl = "/logout"
-                logoutSuccessUrl = "/"
+                logoutSuccessUrl = "/app/"
+                logoutSuccessHandler = customLogoutSuccessHandler
             }
             httpBasic { }
         }

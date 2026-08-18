@@ -112,22 +112,29 @@ class UsersController(
         }
     }
 
-    @PutMapping("/user")
-    fun updateUser(
+    @PutMapping("/user/lecturer/profile")
+    fun updateLecturer(
         principal: Principal,
-        @Valid user: UpdateUserRequestDTO,
+        @Valid userDTO: UpdateUserRequestDTO,
         bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes
+        model: Model
     ): String {
         try {
             if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute("errors", bindingResult)
-            } else {
-                val userId =
-                    usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
-                usersService.updateById(userId, user)
+                model.addAttribute("user", userDTO)
+                model.addAttribute("errors", bindingResult)
+                return "lecturer-view/showProfile"
             }
-            return "redirect:/app/user/profile"
+            val user =
+                usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            val emailChanged = user.email != userDTO.email
+            usersService.updateById(user.id, userDTO)
+
+            return if (emailChanged) {
+                "redirect:/app/logout?emailChanged=true"
+            } else {
+                "redirect:/app/user/lecturer/profile"
+            }
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
         }
