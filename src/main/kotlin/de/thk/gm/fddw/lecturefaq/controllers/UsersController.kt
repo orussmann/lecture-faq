@@ -55,6 +55,7 @@ class UsersController(
             usersRepository.save(user)
             model.addAttribute("newLectures", newLecturesMessages)
             model.addAttribute("user", user)
+            model.addAttribute("userId", user.id)
             val lecturerIds = usersService.findById(user.id).subscriptions
             model.addAttribute("lecturerIds", lecturerIds)
             return "student-view/showProfile"
@@ -148,13 +149,34 @@ class UsersController(
         model: Model
     ): String {
         try {
+
+            val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
             if (bindingResult.hasErrors()) {
+                val subscriptions = user.subscriptions
+                val allLectures = lecturesRepository.findAll().toList()
+                val newLectures =
+                    allLectures.filter { subscriptions.contains(it.creatorId) && it.createdAt >= user.lastVisited }
+                val allLecturers = usersService.findAll().filter { it.role == Role.LECTURER }
+                val newLecturesMessages =
+                    newLectures.map { l ->
+                        "${
+                            allLecturers.find { it.userId == l.creatorId }.let { it?.firstName + it?.lastName }
+                        } hat eine neue Vorlesung ${l.title} erstellt!"
+                    }
+                user.lastVisited = Date()
+                usersRepository.save(user)
+                model.addAttribute("newLectures", newLecturesMessages)
+                model.addAttribute("user", user)
+                val lecturerIds = usersService.findById(user.id).subscriptions
+                model.addAttribute("lecturerIds", lecturerIds)
+
+                model.addAttribute("userId", user.id)
                 model.addAttribute("user", userDTO)
                 model.addAttribute("errors", bindingResult)
                 return "student-view/showProfile"
             }
-            val user =
-                usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+
+
             val emailChanged = user.email != userDTO.email
             usersService.updateById(user.id, userDTO)
 

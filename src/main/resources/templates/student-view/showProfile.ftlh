@@ -29,7 +29,7 @@
                 });
                 for (let lecturerId of lecturerIds) {
                     console.log(lecturerId);
-                    const ws = new WebSocket("/app/new-lecture?studentId=${user.id}&lecturerId=" + lecturerId + "&role=STUDENT");
+                    const ws = new WebSocket("/app/new-lecture?studentId=${userId}&lecturerId=" + lecturerId + "&role=STUDENT");
                     ws.onmessage = (msg) => {
                         const lectureInfo = JSON.parse(msg.data);
                         const lecturerFullName = lectureInfo.lecturerSurName + " " + lectureInfo.lecturerLastName;
