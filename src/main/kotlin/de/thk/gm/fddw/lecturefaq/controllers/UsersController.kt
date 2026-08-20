@@ -140,6 +140,34 @@ class UsersController(
         }
     }
 
+    @PutMapping("/user/student/profile")
+    fun updateStudent(
+        principal: Principal,
+        @Valid userDTO: UpdateUserRequestDTO,
+        bindingResult: BindingResult,
+        model: Model
+    ): String {
+        try {
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("user", userDTO)
+                model.addAttribute("errors", bindingResult)
+                return "student-view/showProfile"
+            }
+            val user =
+                usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
+            val emailChanged = user.email != userDTO.email
+            usersService.updateById(user.id, userDTO)
+
+            return if (emailChanged) {
+                "redirect:/logout?emailChanged=true"
+            } else {
+                "redirect:/user/student/profile"
+            }
+        } catch (e: Exception) {
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update user")
+        }
+    }
+
     @GetMapping("/user/student/subscriptions")
     fun getAllSubscriptions(
         principal: Principal,

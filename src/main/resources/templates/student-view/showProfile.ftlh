@@ -1,7 +1,7 @@
 <#import "../base-layout-student.ftlh" as base>
 <@base.layout>
 <#--    <div id="newLecturesContainer"></div>-->
-    <form action="/app/users/${user.id}" method="post">
+    <form action="/app/user/student/profile" method="post">
 
         <label>User e-mail</label><br>
         <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" required><br>
@@ -13,10 +13,10 @@
         <input type="text" value="${user.lastName}" placeholder="Mustermann" name="lastName" id="lastName" required><br>
 
         <!--Used before AJAX-->
-        <#--<input type="hidden" name="_method" value="PUT"/>
+        <input type="hidden" name="_method" value="PUT"/>
         <button>Update</button>
--->
-        <button onclick="updateCredentials()" type="button">Update</button>
+
+<#--        <button onclick="updateCredentials()" type="button">Update</button>-->
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const lecturerIds = [<#list lecturerIds as l>"${l}"<#if l_has_next>, </#if></#list>];
@@ -41,18 +41,19 @@
         </script>
     </form>
 
-    <script>
-        function updateCredentials() {
-            const xhr = new XMLHttpRequest()
-            const user = {}
-            user.email = document.getElementById("email").value
-            user.firstName = document.getElementById("firstName").value
-            user.lastName = document.getElementById("lastName").value
-            console.log(user)
-            xhr.open("PUT", "/app/api/v1/users/${user.id}")
-            console.log("${user.id}")
-            xhr.setRequestHeader("Content-Type", "application/json")
-            xhr.send(JSON.stringify(user))
-        }
-    </script>
+    <#--Update via AJAX-->
+<#--    <script>-->
+<#--        function updateCredentials() {-->
+<#--            const xhr = new XMLHttpRequest()-->
+<#--            const user = {}-->
+<#--            user.email = document.getElementById("email").value-->
+<#--            user.firstName = document.getElementById("firstName").value-->
+<#--            user.lastName = document.getElementById("lastName").value-->
+<#--            console.log(user)-->
+<#--            xhr.open("PUT", "/app/api/v1/users/${user.id}")-->
+<#--            console.log("${user.id}")-->
+<#--            xhr.setRequestHeader("Content-Type", "application/json")-->
+<#--            xhr.send(JSON.stringify(user))-->
+<#--        }-->
+<#--    </script>-->
 </@base.layout>
