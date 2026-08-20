@@ -51,7 +51,7 @@
 
         function showResultsLink(answer) {
             const link = document.createElement("a");
-            link.href = "/app/users/${userId}/polls/${pollId}/results";
+            link.href = "/app/users/${poll.userId}/polls/${poll.id}/results";
             link.innerHTML = "See results";
             answer.appendChild(link);
         }*/
