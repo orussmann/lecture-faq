@@ -48,7 +48,7 @@ class UsersController(
             val newLecturesMessages =
                 newLectures.map { l ->
                     "${
-                        allLecturers.find { it.userId == l.creatorId }.let { it?.firstName + it?.lastName }
+                        allLecturers.find { it.userId == l.creatorId }.let { "${it?.firstName} ${it?.lastName}" }
                     } hat eine neue Vorlesung ${l.title} erstellt!"
                 }
             user.lastVisited = Date()
@@ -160,7 +160,7 @@ class UsersController(
                 val newLecturesMessages =
                     newLectures.map { l ->
                         "${
-                            allLecturers.find { it.userId == l.creatorId }.let { it?.firstName + it?.lastName }
+                            allLecturers.find { it.userId == l.creatorId }.let { "${it?.firstName} ${it?.lastName}" }
                         } hat eine neue Vorlesung ${l.title} erstellt!"
                     }
                 user.lastVisited = Date()
