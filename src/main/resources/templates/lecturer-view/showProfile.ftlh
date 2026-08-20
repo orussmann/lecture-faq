@@ -3,19 +3,19 @@
     <form action="/app/user/lecturer/profile" method="post">
 
         <label>User e-mail</label><br>
-        <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" required><br>
+        <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" minlength="1" maxlength="100" required><br>
         <#if errors?? && errors.getFieldError("email")??>
             ${errors.getFieldError("email")["defaultMessage"]}
         </#if>
 
         <label>User first name</label><br>
-        <input type="text" value="${user.firstName}" placeholder="Max" name="firstName" id="firstName" required><br>
+        <input type="text" value="${user.firstName}" placeholder="Max" name="firstName" id="firstName" minlength="1" maxlength="100" required><br>
         <#if errors?? && errors.getFieldError("firstName")??>
             ${errors.getFieldError("firstName")["defaultMessage"]}
         </#if>
 
         <label>User last name</label><br>
-        <input type="text" value="${user.lastName}" placeholder="Mustermann" name="lastName" id="lastName" required><br>
+        <input type="text" value="${user.lastName}" placeholder="Mustermann" name="lastName" id="lastName" minlength="1" maxlength="100" required><br>
         <#if errors?? && errors.getFieldError("lastName")??>
             ${errors.getFieldError("lastName")["defaultMessage"]}
         </#if>
