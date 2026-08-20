@@ -194,7 +194,7 @@ class LecturesController(
             val userId = usersService.findByEmail(principal.name)?.id
                 ?: throw NoSuchElementException("User not found")
             lecturesService.removeById(lectureId, userId)
-            return "redirect:/user/lectures"
+            return "redirect:/user/lecturer/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete lecture")
         }
