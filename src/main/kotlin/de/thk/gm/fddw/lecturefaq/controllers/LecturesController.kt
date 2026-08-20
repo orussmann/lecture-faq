@@ -14,6 +14,7 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.security.Principal
 import java.util.*
 import kotlin.NoSuchElementException
@@ -205,6 +206,7 @@ class LecturesController(
         @PathVariable lectureId: UUID,
         @Valid lectureDTO: UpdateLectureRequestDTO,
         bindingResult: BindingResult,
+        redirectAttributes: RedirectAttributes,
         model: Model,
     ): String {
         try {
@@ -224,6 +226,7 @@ class LecturesController(
                 return "/lecturer-view/showLecture"
             } else {
                 lecturesService.updateById(lectureId, userId, lectureDTO)
+                redirectAttributes.addFlashAttribute("notification", "Lecture details updated!")
                 return "redirect:/user/lecturer/lectures/$lectureId"
             }
         } catch (e: Exception) {
