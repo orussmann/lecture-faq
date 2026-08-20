@@ -17,6 +17,11 @@
             </li>
         </#list>
     </ul>
+
+    <#if notification??>
+        <div id="notification">${notification}</div>
+    </#if>
+
     <form id="lecture-form" action="/app/user/lectures" method="post">
 
         <label>Lecture title</label><br>
@@ -67,6 +72,14 @@
     <br>
 
     <script>
+        let notification = document.getElementById("notification")
+
+        if (notification){
+            setTimeout(() => {
+                notification.hidden = true;
+            }, 3000)
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             const form = document.querySelector("#lecture-form");
 

@@ -90,22 +90,54 @@
 <#--        <button onclick="updateLectureRestAPI()" type="button">Update via AJAX</button>-->
     </form>
 
-    <form action="/app/user/lectures/${lecture.id}" method="post">
+    <form action="/app/user/lectures/${lecture.id}" id="deletion-form" method="post">
 
         <input type="hidden" name="_method" value="DELETE"/>
-        <button>Delete</button>
+        <button id="delete-button">Delete</button>
 
 <#--        <button onclick="deleteLecture()" type="button">Delete via AJAX</button>-->
     </form>
+    <div id="deletion-confirmation" hidden>
+        <label for="confirmation-input">Please confirm that you want to delete this lecture. Enter ${randomString}</label>
+        <input type="text" id="confirmation-input">
+        <button id="confirmation-button">Confirm</button>
+    </div>
     <script>
 
         let notification = document.getElementById("notification")
+        const deletionForm = document.querySelector("#deletion-form");
+        const deleteButton = document.getElementById("delete-button");
+        const deletionConfirmation = document.getElementById("deletion-confirmation");
+        const conformationButton = document.getElementById("confirmation-button");
 
         if (notification){
             setTimeout(() => {
                 notification.hidden = true;
             }, 3000)
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("#deletion-form");
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+            });
+        });
+
+        const confirmationInput = document.getElementById("confirmation-input")
+        confirmationInput.addEventListener("input", () => {
+            const input = confirmationInput.value;
+            const expected = "${randomString}";
+            if (input === expected) {
+                conformationButton.addEventListener("click", () => {
+                    deletionForm.submit();
+                })
+            }
+        });
+
+        deleteButton.addEventListener("click", () => {
+            deletionConfirmation.hidden = false;
+        });
+
 
         //TODO: RegEx for pattern should be updated -> it's not a valid regex
         function updateLectureRestAPI() {

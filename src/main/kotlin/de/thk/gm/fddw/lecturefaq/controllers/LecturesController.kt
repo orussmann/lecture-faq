@@ -44,6 +44,11 @@ class LecturesController(
             model.addAttribute("userId", userId)
             model.addAttribute("chatMessages", chatMessages)
             model.addAttribute("userName", userName)
+            val symbols = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+            val randomString = (1..5)
+                .map { symbols.random() }
+                .joinToString("")
+            model.addAttribute("randomString", randomString)
             return "lecturer-view/showLecture"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")
@@ -188,12 +193,14 @@ class LecturesController(
     @DeleteMapping("/user/lectures/{lectureId}")   //TODO: Delete not working + Handlen, wenn nichts gelöscht wird
     fun deleteLecture(
         @PathVariable lectureId: UUID,
-        principal: Principal
+        principal: Principal,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
             val userId = usersService.findByEmail(principal.name)?.id
                 ?: throw NoSuchElementException("User not found")
             lecturesService.removeById(lectureId, userId)
+            redirectAttributes.addFlashAttribute("notification", "Lecture deleted!")
             return "redirect:/user/lecturer/lectures"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete lecture")
