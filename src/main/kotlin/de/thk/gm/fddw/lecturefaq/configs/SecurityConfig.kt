@@ -29,7 +29,6 @@ class SecurityConfig(
             csrf { disable() }
             authorizeHttpRequests {
                 // TODO: Adjust to security constraints
-                // TODO: Implement logout
                 authorize("/", permitAll)
                 authorize("/login", permitAll)
                 authorize("/register", permitAll)
@@ -38,7 +37,6 @@ class SecurityConfig(
                 authorize("/poll-completion", permitAll)
                 authorize("/public-polls/**", permitAll)
                 // TODO: If POST is not allowed, then PUT shouldn't be either
-                // TODO: Divide the Controller into several Controllers -> at this point the separation of views happens in one Controller (for each ressource)
                 authorize("/user/lecturer/**", hasAuthority("ROLE_${Role.LECTURER}"))
                 authorize("/user/student/**", hasAuthority("ROLE_${Role.STUDENT}"))    // Prefix student -> Controller for student view
                 authorize("/new-lecture", hasRole(Role.LECTURER.name))
@@ -50,7 +48,7 @@ class SecurityConfig(
             formLogin {
                 permitAll()
                 loginPage = "/"
-                loginProcessingUrl = "/login"   //TODO: Implement logout
+                loginProcessingUrl = "/login"   //TODO: Implement logout with CSRF
                 failureUrl = "/login-error"
                 defaultSuccessUrl("/user/profile", true)
                 authenticationSuccessHandler = loginSuccessHandler
