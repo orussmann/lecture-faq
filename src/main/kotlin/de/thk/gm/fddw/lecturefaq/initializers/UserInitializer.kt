@@ -14,36 +14,22 @@ import java.util.*
 @Component
 class UserInitializer(
     private val usersService: UsersService,
-    private val usersDTOMapper: UsersDTOMapper,
     private val usersRepository: UsersRepository
 ) : CommandLineRunner {
     override fun run(vararg args: String?) {
-        val userLecturer = CreateUserRequestDTO(
-            email = "v.n@mail.de",
-            firstName = "Viet",
-            lastName = "Nguyen",
-            role = Role.LECTURER,
-            password = "password"
-        )
-        val userStudent = CreateUserRequestDTO(
-            email = "o.r@mail.de",
-            firstName = "Oliver",
-            lastName = "Russmann",
-            role = Role.STUDENT,
-            password = "password"
-        )
 
-        // Dummy-User-Instanz
-        val dummyUser = User(
-            id = UUID.fromString(DUMMY_USER_ID),
-            email = "dummy@lecturefaq.com",
-            firstName = "Anonymer",
-            lastName = "Benutzer",
-            role = Role.STUDENT  // oder ROLE_ANONYMOUS, falls du eine spezielle Rolle für den Dummy-User verwendest
-        )
+        val dummyId = UUID.fromString(DUMMY_USER_ID)
 
-        //usersService.save(userLecturer)
-        //usersService.save(userStudent)
-        //usersRepository.save(dummyUser)
+        if (!usersRepository.existsById(dummyId)) {
+            usersRepository.save(
+                User(
+                    id = dummyId,
+                    email = "dummy@lecturefaq.com",
+                    firstName = "Anonymer",
+                    lastName = "Benutzer",
+                    role = Role.STUDENT
+                )
+            )
+        }
     }
 }

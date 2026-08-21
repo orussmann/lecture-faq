@@ -87,7 +87,7 @@ class LecturesController(
         try {
             val lecture = lecturesService.findById(lectureId)
             val chatMessages = questionsService.findAllByLectureIdOrderByCreatedAt(lecture.id)
-            val userId = usersService.findById(UUID.fromString(DUMMY_USER_ID))
+            val userId = UUID.fromString(DUMMY_USER_ID)
             model.addAttribute("lecture", lecture)
             model.addAttribute("chatMessages", chatMessages)
             model.addAttribute("userId", userId)
