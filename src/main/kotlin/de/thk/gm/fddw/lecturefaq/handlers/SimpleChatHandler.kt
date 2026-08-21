@@ -9,6 +9,7 @@ import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
 import org.springframework.web.util.UriComponents
 import org.springframework.web.util.UriComponentsBuilder
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
 import kotlin.collections.ArrayList
@@ -48,12 +49,22 @@ class SimpleChatHandler(private val questionsService: QuestionsService) : TextWe
             chatUserName = chatMessageJSONObject.getString("chatUserName")
         )
 
-        questionsService.save(chatQuestion)
+
+
+        val savedMessage = questionsService.save(chatQuestion)
+        val jsonObject = JSONObject()
+        jsonObject.put("chatUserName", savedMessage.chatUserName)
+        jsonObject.put("text", savedMessage.text)
+        val formatter = SimpleDateFormat("dd.MM.yyyy, HH:mm:ss")
+        val formattedDate = formatter.format(savedMessage.createdAt)
+        jsonObject.put("createdAt", formattedDate)
+
+        val newMessage = TextMessage(jsonObject.toString())
 
         val sessions: ArrayList<WebSocketSession>? = hashMapOfSessions[roomId]
         if (sessions != null) {
             for (chatSession in sessions) {
-                chatSession.sendMessage(message)
+                chatSession.sendMessage(newMessage)
             }
         }
     }
