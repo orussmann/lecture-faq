@@ -5,7 +5,7 @@
         <#list chatMessages as chatMessage>
             <p><b>${chatMessage.chatUserName}</b><br>${chatMessage.text}, ${chatMessage.createdAt}</p>
         </#list>
-    </div>Z
+    </div>
     <input type="text" id="text" placeholder="Nachricht...">
     <br>
     <button onclick="sendMessage()">Send</button>
