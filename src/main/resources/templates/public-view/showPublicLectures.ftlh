@@ -1,38 +1,77 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lecture FAQ</title>
+    <title>Lecture FAQ - Public Lectures</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-<h2>Public Lectures</h2>
-<ul>
-    <#list allLectures as lecture>
-        <li>
-            <a href="/app/public-lectures/${lecture.id}">
-                <h3>Name:</h3>
-                <p>${lecture.title}</p>
-                <h3>Typ:</h3>
-                <p>${lecture.type}</p><br>
-                <h3>Beschreibung:</h3>
-                <p>${lecture.description}</p><br>
-                <h3>Link:</h3>
-                <p>${lecture.link}</p>
-                <h3>Vorlesungscode:</h3>
-                <p>Lecture code</p>: ${lecture.code?c}
-            </a>
-            <button type="button" data-lecture-id="${lecture.id}">Beitreten</button>
-        </li>
-    </#list>
-</ul>
-<footer>
-    <a href="#">Imprint</a>
-    <a href="#">About us</a>
-    <a href="#">Support</a>
+<body class="min-h-screen flex flex-col bg-base-200">
+<header>
+    <nav class="navbar bg-base-100 shadow-lg">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="/app/public-polls">Multiple-Choice-Fragen</a></li>
+                    <li><a href="/app/public-lectures">Lectures</a></li>
+                </ul>
+            </div>
+            <a href="/app/" class="btn btn-ghost text-xl">Lecture FAQ</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="/app/public-polls">Multiple-Choice-Fragen</a></li>
+                <li><a href="/app/public-lectures">Lectures</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="/app/" class="btn btn-ghost">Back to Home</a>
+        </div>
+    </nav>
+</header>
+
+<main class="flex-grow container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-8">Public Lectures</h1>
+    <div class="grid gap-6">
+        <#list allLectures as lecture>
+            <article class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl">${lecture.title}</h2>
+                    <div class="space-y-2">
+                        <p><strong>Typ:</strong> ${lecture.type}</p>
+                        <p><strong>Beschreibung:</strong> ${lecture.description}</p>
+                        <p><strong>Link:</strong> <a href="${lecture.link}" class="link link-primary">${lecture.link}</a></p>
+                        <p><strong>Vorlesungscode:</strong> ${lecture.code?c}</p>
+                    </div>
+                    <div class="card-actions justify-end mt-4">
+                        <a href="/app/public-lectures/${lecture.id}" class="btn btn-primary">Details ansehen</a>
+                        <button type="button" data-lecture-id="${lecture.id}" class="btn btn-secondary">Beitreten</button>
+                    </div>
+                </div>
+            </article>
+        </#list>
+    </div>
+</main>
+
+<footer class="footer footer-center p-10 bg-base-300 text-base-content rounded">
+    <nav class="grid grid-flow-col gap-4">
+        <a href="#" class="link link-hover">Imprint</a>
+        <a href="#" class="link link-hover">About us</a>
+        <a href="#" class="link link-hover">Support</a>
+    </nav>
+    <aside>
+        <p>Lecture FAQ © 2026 - All rights reserved</p>
+    </aside>
 </footer>
 </body>
 </html>
