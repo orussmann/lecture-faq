@@ -8,5 +8,6 @@ class QuestionResponseDTO(
     val userId: UUID,
     val text: String,
     val createdAt: Date,
-    val chatUserName: String
+    val chatUserName: String,
+    val likesCount: Int
 )

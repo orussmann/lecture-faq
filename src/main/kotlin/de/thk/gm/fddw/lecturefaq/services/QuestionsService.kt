@@ -15,4 +15,6 @@ interface QuestionsService {
     fun removeById(questionId: UUID)
     fun updateById(questionId: UUID, questionDTO: UpdateQuestionRequestDTO): QuestionResponseDTO
     fun findAllByLectureIdOrderByCreatedAt(lectureId: UUID): List<QuestionResponseDTO>
+    fun updateLikes(questionId: UUID, userId: UUID, liked: Boolean): Int
+    fun findLikedQuestionIds(lectureId: UUID, userId: UUID): Set<UUID>
 }

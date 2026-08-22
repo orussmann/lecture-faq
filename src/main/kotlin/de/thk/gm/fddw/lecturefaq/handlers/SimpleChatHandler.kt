@@ -58,6 +58,8 @@ class SimpleChatHandler(private val questionsService: QuestionsService) : TextWe
         val formatter = SimpleDateFormat("dd.MM.yyyy, HH:mm:ss")
         val formattedDate = formatter.format(savedMessage.createdAt)
         jsonObject.put("createdAt", formattedDate)
+        jsonObject.put("id", savedMessage.id)
+        jsonObject.put("likesCount", savedMessage.likesCount)
 
         val newMessage = TextMessage(jsonObject.toString())
 

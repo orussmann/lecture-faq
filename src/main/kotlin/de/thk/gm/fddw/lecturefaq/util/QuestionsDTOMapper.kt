@@ -18,7 +18,8 @@ class QuestionsDTOMapper {
             userId = question.user.id,
             text = question.text,
             createdAt = question.createdAt,
-            chatUserName = question.chatUserName
+            chatUserName = question.chatUserName,
+            likesCount = question.likedBy.size,
         )
     }
 

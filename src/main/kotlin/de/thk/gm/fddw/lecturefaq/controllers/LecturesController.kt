@@ -68,10 +68,13 @@ class LecturesController(
             val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
             val userId = user.id
             val userName = "${user.firstName} ${user.lastName}"
+            val likedQuestionIds =
+                questionsService.findLikedQuestionIds(lecture.id, user.id)
             model.addAttribute("lecture", lecture)
             model.addAttribute("userId", userId)
             model.addAttribute("chatMessages", chatMessages)
             model.addAttribute("userName", userName)
+            model.addAttribute("likedQuestionIds", likedQuestionIds)
             return "student-view/showLecture"
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not fetch lecture")

@@ -101,4 +101,29 @@ class QuestionsServiceImpl(
         val questionsOrdered = questionsRepository.findAllByLectureIdOrderByCreatedAt(lectureId)
         return questionsOrdered.map(questionsDTOMapper::mapToQuestionResponse)
     }
+
+    @Transactional
+    override fun updateLikes(
+        questionId: UUID,
+        userId: UUID,
+        liked: Boolean
+    ): Int {
+        val question = questionsRepository.findById(questionId)
+            .orElseThrow()
+
+        val user = usersRepository.findById(userId)
+            .orElseThrow()
+
+        if (liked) {
+            question.likedBy.add(user)
+        } else {
+            question.likedBy.remove(user)
+        }
+
+        return question.likedBy.size
+    }
+
+    override fun findLikedQuestionIds(lectureId: UUID, userId: UUID): Set<UUID> {
+        return questionsRepository.findLikedQuestionIds(lectureId, userId)
+    }
 }

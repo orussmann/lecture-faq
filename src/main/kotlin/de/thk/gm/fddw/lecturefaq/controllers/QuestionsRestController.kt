@@ -1,18 +1,24 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
 import de.thk.gm.fddw.lecturefaq.models.question_dtos.CreateQuestionRequestDTO
+import de.thk.gm.fddw.lecturefaq.models.question_dtos.LikeQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.models.question_dtos.QuestionResponseDTO
 import de.thk.gm.fddw.lecturefaq.models.question_dtos.UpdateQuestionRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.QuestionsService
+import de.thk.gm.fddw.lecturefaq.services.UsersService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import java.security.Principal
 import java.util.*
 
 @RestController
 @RequestMapping("/api/v1")
-class QuestionsRestController(private val questionsService: QuestionsService) {
+class QuestionsRestController(
+    private val questionsService: QuestionsService,
+    private val usersService: UsersService
+) {
 
 
     @GetMapping("/lectures/{lectureId}/questions/{questionId}")
@@ -90,5 +96,24 @@ class QuestionsRestController(private val questionsService: QuestionsService) {
         } catch (e: Exception) {
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not update question")
         }
+    }
+
+    @PatchMapping("/lectures/{lectureId}/questions/{questionId}/likes")
+    fun likeQuestion(
+        @PathVariable questionId: UUID,
+        @RequestBody likeQuestionRequestDTO: LikeQuestionRequestDTO,
+        principal: Principal
+    ): Map<String, Int> {
+
+        val user = usersService.findByEmail(principal.name)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+        val likes = questionsService.updateLikes(
+            questionId,
+            user.id,
+            likeQuestionRequestDTO.liked
+        )
+
+        return mapOf("likes" to likes)
     }
 }
