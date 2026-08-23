@@ -1,8 +1,5 @@
 package de.thk.gm.fddw.lecturefaq.controllers
 
-import de.thk.gm.fddw.lecturefaq.models.Answer
-import de.thk.gm.fddw.lecturefaq.models.Poll
-import de.thk.gm.fddw.lecturefaq.models.enums.Role
 import de.thk.gm.fddw.lecturefaq.models.poll_dtos.CreatePollRequestDTO
 import de.thk.gm.fddw.lecturefaq.services.AnswersService
 import de.thk.gm.fddw.lecturefaq.services.PollsService
@@ -55,7 +52,8 @@ class PollsController(
         principal: Principal,
         @Validated @ModelAttribute poll: CreatePollRequestDTO,
         bindingResult: BindingResult,
-        model: Model
+        model: Model,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
             val userId = usersService.findByEmail(principal.name)?.id ?: throw NoSuchElementException("User not found")
@@ -76,6 +74,7 @@ class PollsController(
             val polls = pollsService.findAllByUserId(userId)
             model.addAttribute("userId", userId)
             model.addAttribute("polls", polls)
+            redirectAttributes.addFlashAttribute("notification", "Poll created successfully.")
             logger.info("Poll created successfully.")
             return "redirect:/user/lecturer/poll-form"
         } catch (e: ResponseStatusException) {
