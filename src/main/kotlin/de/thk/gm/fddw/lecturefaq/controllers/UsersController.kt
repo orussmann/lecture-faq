@@ -118,7 +118,8 @@ class UsersController(
         principal: Principal,
         @Valid userDTO: UpdateUserRequestDTO,
         bindingResult: BindingResult,
-        model: Model
+        model: Model,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
             if (bindingResult.hasErrors()) {
@@ -130,6 +131,7 @@ class UsersController(
                 usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
             val emailChanged = user.email != userDTO.email
             usersService.updateById(user.id, userDTO)
+            redirectAttributes.addFlashAttribute("notification", "Profile updated successfully!")
 
             return if (emailChanged) {
                 "redirect:/logout?emailChanged=true"
@@ -146,7 +148,8 @@ class UsersController(
         principal: Principal,
         @Valid userDTO: UpdateUserRequestDTO,
         bindingResult: BindingResult,
-        model: Model
+        model: Model,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
 
@@ -179,6 +182,7 @@ class UsersController(
 
             val emailChanged = user.email != userDTO.email
             usersService.updateById(user.id, userDTO)
+            redirectAttributes.addFlashAttribute("notification", "Profile updated successfully!")
 
             return if (emailChanged) {
                 "redirect:/logout?emailChanged=true"

@@ -1,5 +1,10 @@
 <#import "../base-layout-lecturer.ftlh" as base>
 <@base.layout>
+    <#if notification??>
+        <div class="alert alert-info max-w-2xl mx-auto mb-4">
+            <span>${notification}</span>
+        </div>
+    </#if>
     <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
         <div class="card-body">
             <h2 class="card-title text-2xl mb-6">Profil bearbeiten</h2>
