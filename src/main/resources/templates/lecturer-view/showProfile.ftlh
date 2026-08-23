@@ -1,31 +1,56 @@
 <#import "../base-layout-lecturer.ftlh" as base>
 <@base.layout>
-    <form action="/app/user/lecturer/profile" method="post">
+    <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">Profil bearbeiten</h2>
+            <form action="/app/user/lecturer/profile" method="post" class="space-y-4">
+                
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">E-Mail</span>
+                    </label>
+                    <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" minlength="1" maxlength="100" required class="input input-bordered w-full" />
+                    <#if errors?? && errors.getFieldError("email")??>
+                        <label class="label">
+                            <span class="label-text-alt text-error">${errors.getFieldError("email")["defaultMessage"]}</span>
+                        </label>
+                    </#if>
+                </div>
 
-        <label>User e-mail</label><br>
-        <input type="email" value="${user.email}" placeholder="gamer123@mail.com" name="email" id="email" minlength="1" maxlength="100" required><br>
-        <#if errors?? && errors.getFieldError("email")??>
-            ${errors.getFieldError("email")["defaultMessage"]}
-        </#if>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Vorname</span>
+                    </label>
+                    <input type="text" value="${user.firstName}" placeholder="Max" name="firstName" id="firstName" minlength="1" maxlength="100" required class="input input-bordered w-full" />
+                    <#if errors?? && errors.getFieldError("firstName")??>
+                        <label class="label">
+                            <span class="label-text-alt text-error">${errors.getFieldError("firstName")["defaultMessage"]}</span>
+                        </label>
+                    </#if>
+                </div>
 
-        <label>User first name</label><br>
-        <input type="text" value="${user.firstName}" placeholder="Max" name="firstName" id="firstName" minlength="1" maxlength="100" required><br>
-        <#if errors?? && errors.getFieldError("firstName")??>
-            ${errors.getFieldError("firstName")["defaultMessage"]}
-        </#if>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Nachname</span>
+                    </label>
+                    <input type="text" value="${user.lastName}" placeholder="Mustermann" name="lastName" id="lastName" minlength="1" maxlength="100" required class="input input-bordered w-full" />
+                    <#if errors?? && errors.getFieldError("lastName")??>
+                        <label class="label">
+                            <span class="label-text-alt text-error">${errors.getFieldError("lastName")["defaultMessage"]}</span>
+                        </label>
+                    </#if>
+                </div>
 
-        <label>User last name</label><br>
-        <input type="text" value="${user.lastName}" placeholder="Mustermann" name="lastName" id="lastName" minlength="1" maxlength="100" required><br>
-        <#if errors?? && errors.getFieldError("lastName")??>
-            ${errors.getFieldError("lastName")["defaultMessage"]}
-        </#if>
-
-        <#--Used before AJAX-->
-        <input type="hidden" name="_method" value="PUT"/>
-        <button>Update</button>
-        <#--Solution with AJAX-->
+                <#--Used before AJAX-->
+                <input type="hidden" name="_method" value="PUT"/>
+                <div class="form-control mt-6">
+                    <button type="submit" class="btn btn-primary w-full">Update</button>
+                </div>
+                <#--Solution with AJAX-->
 <#--        <button onclick="updateCredentials()" type="button">Update</button>-->
-    </form>
+            </form>
+        </div>
+    </div>
 
 <#--    <script>-->
 <#--        function updateCredentials() {-->
