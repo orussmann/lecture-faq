@@ -1,25 +1,33 @@
 <#import "../base-layout-student.ftlh" as base>
 
 <@base.layout>
-    <h2>Dozenten</h2>
-    <ul>
-        <#list lecturers as l>
-            <li>
-                <h3>${l.lecturerFirstName} ${l.lecturerLastName}</h3><br>
-                <button
-                        id="${l.lecturerId}"
-                        class="subscription"
-                        type="button"
-                        data-subscription="${l.subscribed?c}">
-                    <#if l.subscribed>
-                        Deabonnieren
-                    <#else>
-                        Abonnieren
-                    </#if>
-                </button>
-            </li>
-        </#list>
-    </ul>
+    <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">Dozenten</h2>
+            <ul class="space-y-3">
+                <#list lecturers as l>
+                    <li class="card bg-base-200">
+                        <div class="card-body p-4">
+                            <h3 class="font-bold text-lg">${l.lecturerFirstName} ${l.lecturerLastName}</h3>
+                            <div class="card-actions justify-end mt-2">
+                                <button
+                                    id="${l.lecturerId}"
+                                    class="subscription btn btn-sm"
+                                    type="button"
+                                    data-subscription="${l.subscribed?c}">
+                                    <#if l.subscribed>
+                                        Deabonnieren
+                                    <#else>
+                                        Abonnieren
+                                    </#if>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </#list>
+            </ul>
+        </div>
+    </div>
     <script>
         const buttons = document.querySelectorAll(".subscription");
 
