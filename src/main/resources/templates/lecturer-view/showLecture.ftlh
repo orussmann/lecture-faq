@@ -1,15 +1,40 @@
 <#import "../base-layout-lecturer.ftlh" as base>
 <@base.layout>
-    <h1>"${lecture.title}"</h1>
-    <div id="chat">
-        <#list chatMessages as chatMessage>
-            <p><b>${chatMessage.chatUserName}</b><br>${chatMessage.text}, ${chatMessage.createdAt}</p>
-        </#list>
+    <#if notification??>
+        <div class="alert alert-info max-w-4xl mx-auto mb-4">
+            <span>${notification}</span>
+        </div>
+    </#if>
+
+    <div class="card bg-base-100 shadow-xl max-w-4xl mx-auto mb-8">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">${lecture.title}</h2>
+            <div class="card bg-base-200 mb-4">
+                <div class="card-body p-4">
+                    <h3 class="font-bold text-lg mb-4">Live Chat</h3>
+                    <div id="chat" class="bg-base-300 p-4 rounded-lg h-96 overflow-y-auto mb-4 space-y-2">
+                        <#list chatMessages as chatMessage>
+                            <div class="chat chat-start">
+                                <div class="chat-bubble chat-bubble-primary">
+                                    <div class="chat-header">
+                                        <strong>${chatMessage.chatUserName}</strong>
+                                        <time class="text-xs opacity-50">${chatMessage.createdAt}</time>
+                                    </div>
+                                    <p>${chatMessage.text}</p>
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <input type="text" id="username" placeholder="Benutzername... (optional)" class="input input-bordered w-1/3" />
+                        <input type="text" id="text" placeholder="Nachricht..." class="input input-bordered flex-grow" />
+                        <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <input type="text" id="username" placeholder="Benutzername... (optional)">
-    <input type="text" id="text" placeholder="Nachricht...">
-    <br>
-    <button onclick="sendMessage()">Send</button>
     <script>
         let ws;
         let message = {};
@@ -22,6 +47,7 @@
             message.text = document.getElementById("text").value
             message.createdAt = new Date().toISOString()
             ws.send(JSON.stringify(message))
+            document.getElementById("text").value = ""
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -30,76 +56,137 @@
 
             ws.onmessage = function (msg) {
                 message = JSON.parse(msg.data)  // TODO: Fix time formatting -> different format when reloading the page and when receiving new message (also for student view)
-                chat.innerHTML += "<p><b>" + message.chatUserName + "</b><br>" + message.text + ", " + message.createdAt + "</p>"
+                const chatBubble = document.createElement("div")
+                chatBubble.className = "chat chat-start"
+                <#noparse>
+                chatBubble.innerHTML = `
+                    <div class="chat-bubble chat-bubble-primary">
+                        <div class="chat-header">
+                            <strong>${message.chatUserName}</strong>
+                            <time class="text-xs opacity-50">${message.createdAt}</time>
+                        </div>
+                        <p>${message.text}</p>
+                    </div>
+                `
+                </#noparse>
+                chat.appendChild(chatBubble)
+                chat.scrollTop = chat.scrollHeight
             }
         })
     </script>
 <#--Lower section is only for the lecturer/ admin view-->
-    <#if notification??>
-        <div id="notification">${notification}</div>
-    </#if>
-    <form action="/app/user/lectures/${lecture.id}" method="post">
 
-        <p>Lecture ID: ${lecture.id}</p>
+    <div class="card bg-base-100 shadow-xl max-w-4xl mx-auto mb-8">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">Lecture bearbeiten</h2>
+            <form action="/app/user/lectures/${lecture.id}" method="post" class="space-y-4">
 
-        <a href="/app/lectures/${lecture.id}/questions">Questions</a><br>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Lecture ID</span>
+                    </label>
+                    <input type="text" value="${lecture.id}" disabled class="input input-bordered w-full bg-base-200" />
+                </div>
 
-        <label>Lecture title</label><br>
-        <input type="text" value="${lecture.title}" placeholder="FDDW" name="title" id="title" required><br>
+                <div class="form-control">
+                    <a href="/app/lectures/${lecture.id}/questions" class="btn btn-outline w-full">Questions</a>
+                </div>
 
-        <label>Lecture description</label>
-        <input type="text" value="${lecture.description}" placeholder="A course that focuses on web services"
-               name="description" id="description" required><br>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Lecture title</span>
+                    </label>
+                    <input type="text" value="${lecture.title}" placeholder="FDDW" name="title" id="title" required class="input input-bordered w-full" />
+                </div>
 
-        <label>
-            Lecture type
-            <select name="type" id="type" required>
-                <option value="ONSITE" <#if lecture.type == "ONSITE">selected</#if>>OnSite</option>
-                <option value="ONLINE" <#if lecture.type == "ONLINE">selected</#if>>Online</option>
-                <option value="HYBRID" <#if lecture.type == "HYBRID">selected</#if>>Hybrid</option>
-            </select>
-        </label>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Lecture description</span>
+                    </label>
+                    <input type="text" value="${lecture.description}" placeholder="A course that focuses on web services"
+                           name="description" id="description" required class="input input-bordered w-full" />
+                </div>
 
-        <label>Lecture link</label>
-        <input type="url"
-               value="${lecture.link}"
-               placeholder="https://test.com"
-               name="link"
-               id="link"
-               required
-        ><br>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Lecture type</span>
+                    </label>
+                    <select name="type" id="type" required class="select select-bordered w-full">
+                        <option value="ONSITE" <#if lecture.type == "ONSITE">selected</#if>>OnSite</option>
+                        <option value="ONLINE" <#if lecture.type == "ONLINE">selected</#if>>Online</option>
+                        <option value="HYBRID" <#if lecture.type == "HYBRID">selected</#if>>Hybrid</option>
+                    </select>
+                </div>
 
-        <label>User ID</label>
-        <input type="text"
-               value="${userId}"
-               placeholder="12345678-abcd-efgh-1234-12aB34Cd56eF"
-               name="userId"
-               id="userId"
-               pattern="^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
-               required
-        ><br>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Lecture link</span>
+                    </label>
+                    <input type="url"
+                           value="${lecture.link}"
+                           placeholder="https://test.com"
+                           name="link"
+                           id="link"
+                           required
+                           class="input input-bordered w-full"
+                    />
+                </div>
 
-        <label>Lecture code</label>
-        <input type="number" value="${lecture.code?c}" placeholder="123" name="code" id="code" min="0" max="32767"
-               required><br>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">User ID</span>
+                    </label>
+                    <input type="text"
+                           value="${userId}"
+                           placeholder="12345678-abcd-efgh-1234-12aB34Cd56eF"
+                           name="userId"
+                           id="userId"
+                           pattern="^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+                           required
+                           class="input input-bordered w-full"
+                    />
+                </div>
 
-        <input type="hidden" name="_method" value="PUT"/>
-        <button>Update</button>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Lecture code</span>
+                    </label>
+                    <input type="number" value="${lecture.code?c}" placeholder="123" name="code" id="code" min="0" max="32767"
+                           required class="input input-bordered w-full" />
+                </div>
+
+                <input type="hidden" name="_method" value="PUT"/>
+                <div class="form-control mt-6">
+                    <button type="submit" class="btn btn-primary w-full">Update</button>
+                </div>
 
 <#--        <button onclick="updateLectureRestAPI()" type="button">Update via AJAX</button>-->
-    </form>
+            </form>
+        </div>
+    </div>
 
-    <form action="/app/user/lectures/${lecture.id}" id="deletion-form" method="post">
+    <div class="card bg-base-100 shadow-xl max-w-4xl mx-auto">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6 text-error">Lecture löschen</h2>
+            <form action="/app/user/lectures/${lecture.id}" id="deletion-form" method="post">
 
-        <input type="hidden" name="_method" value="DELETE"/>
-        <button id="delete-button">Delete</button>
+                <input type="hidden" name="_method" value="DELETE"/>
+                <div class="form-control">
+                    <button id="delete-button" class="btn btn-error w-full">Delete</button>
+                </div>
 
 <#--        <button onclick="deleteLecture()" type="button">Delete via AJAX</button>-->
-    </form>
-    <div id="deletion-confirmation" hidden>
-        <label for="confirmation-input">Please confirm that you want to delete this lecture. Enter ${randomString}</label>
-        <input type="text" id="confirmation-input">
-        <button id="confirmation-button">Confirm</button>
+            </form>
+            <div id="deletion-confirmation" hidden class="mt-4">
+                <div class="alert alert-warning">
+                    <label class="label">
+                        <span class="label-text">Bitte bestätigen Sie, dass Sie diese Lecture löschen möchten. Geben Sie ${randomString} ein:</span>
+                    </label>
+                    <input type="text" id="confirmation-input" class="input input-bordered w-full mt-2" />
+                    <button id="confirmation-button" class="btn btn-error mt-2">Confirm</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
 
