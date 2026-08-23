@@ -1,9 +1,12 @@
 <#import "../base-layout-student.ftlh" as base>
 <@base.layout>
-    <h1>${title}</h1>
-<#--    <div id="answers"></div>-->
-    <div>
-        <canvas id="myChart"></canvas>
+    <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">${title}</h2>
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
     </div>
 
     <script>
