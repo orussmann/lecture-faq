@@ -171,7 +171,8 @@ class LecturesController(
         @Valid lecture: CreateLectureRequestDTO,
         bindingResult: BindingResult,
         principal: Principal,
-        model: Model
+        model: Model,
+        redirectAttributes: RedirectAttributes
     ): String {
         try {
             // TODO: Validation constraints should be reflected in the DB!!! App crashes when description is varchar(255).
@@ -186,6 +187,7 @@ class LecturesController(
             } else {
                 val user = usersService.findByEmail(principal.name) ?: throw NoSuchElementException("User not found")
                 lecturesService.save(lecture, user.id)
+                redirectAttributes.addFlashAttribute("notification", "Lecture created successfully!")
                 "redirect:/user/lecturer/lectures"
             }
         } catch (e: Exception) {
