@@ -1,26 +1,29 @@
 <#import "../base-layout-student.ftlh" as base>
 
 <@base.layout>
-    <h2>My Lectures</h2>
-    <ul>
-        <#list allLectures as lecture>
-            <li>
-                <a href="/app/user/student/lectures/${lecture.id}">
-                    <h3>Name:</h3>
-                    <p>${lecture.title}</p>
-                    <h3>Typ:</h3>
-                    <p>${lecture.type}</p><br>
-                    <h3>Beschreibung:</h3>
-                    <p>${lecture.description}</p><br>
-                    <h3>Link:</h3>
-                    <p>${lecture.link}</p>
-                    <h3>Vorlesungscode:</h3>
-                    <p>Lecture code</p>: ${lecture.code?c}
-                </a>
-                <button type="button" data-lecture-id="${lecture.id}">Beitreten</button>
-            </li>
-        </#list>
-    </ul>
+    <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">My Lectures</h2>
+            <ul class="space-y-3">
+                <#list allLectures as lecture>
+                    <li class="card bg-base-200">
+                        <div class="card-body p-4">
+                            <h3 class="font-bold text-lg">${lecture.title}</h3>
+                            <div class="text-sm space-y-1">
+                                <p><strong>Typ:</strong> ${lecture.type}</p>
+                                <p><strong>Beschreibung:</strong> ${lecture.description}</p>
+                                <p><strong>Link:</strong> <a href="${lecture.link}" class="link link-primary">${lecture.link}</a></p>
+                                <p><strong>Vorlesungscode:</strong> ${lecture.code?c}</p>
+                            </div>
+                            <div class="card-actions justify-end mt-2">
+                                <a href="/app/user/student/lectures/${lecture.id}" class="btn btn-sm btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </li>
+                </#list>
+            </ul>
+        </div>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll("button").forEach(btn => {
